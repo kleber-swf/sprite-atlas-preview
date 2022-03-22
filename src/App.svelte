@@ -1,20 +1,28 @@
 <script lang="ts">
+	import ContentsPanel from './components/contents/ContentsPanel.svelte';
 	import PreviewArea from './components/preview/PreviewArea.svelte';
+	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
+	import { DATA } from './data';
 
-	import Panel from './ui/Panel.svelte';
+	const data = DATA;
+
+	function onNodeSelected(e: CustomEvent<string>) {
+		console.log('selection changed');
+		data.selection = e.detail;
+	}
 </script>
 
 <main>
 	<div class="container-fluid h-100 m-0 p-0">
 		<div class="h-100 d-flex flex-row">
 			<div class="left-container">
-				<Panel title="Left panel" />
+				<ContentsPanel frames={data.data.frames} selected={data.selection} on:select={onNodeSelected} />
 			</div>
 			<div class="center-container">
 				<PreviewArea />
 			</div>
 			<div class="right-container">
-				<Panel title="Right panel" />
+				<PropertiesPanel />
 			</div>
 		</div>
 	</div>
@@ -43,6 +51,24 @@
 		.center-container {
 			flex: 1;
 			align-items: stretch;
+		}
+
+		::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+
+		::-webkit-scrollbar-track {
+			background: darken($dark-background, 1%);
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: rgba($primary-color, 0.3);
+			border-radius: 4px;
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+			background-color: $primary-color;
 		}
 	}
 </style>

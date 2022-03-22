@@ -5,8 +5,9 @@ html, body{
 	padding: 0;
 	margin: 0;
 	height: 100%;
-	font-size: 14px;
 	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	color: #666;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }

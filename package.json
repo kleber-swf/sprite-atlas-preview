@@ -1,7 +1,20 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
-  "private": true,
+  "name": "sprite-atlas-preview",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kleber-swf/sprite-atlas-preview"
+  },
+  "author": {
+    "name": "Kleber Silva",
+    "email": "kleber.swf@gmail.com",
+    "url": "http://kleber-silva.com"
+  },
+  "bugs": {
+    "url": "https://github.com/kleber-swf/sprite-atlas-preview/issues"
+  },
+  "homepage": "https://github.com/kleber-swf/sprite-atlas-preview",
+  "license": "MIT",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",

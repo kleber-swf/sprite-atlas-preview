@@ -10,14 +10,14 @@
 		data.selection = e.detail;
 	}
 
-	$: selection = data.selection ? data.data.frames[data.selection] : null;
+	$: selection = data.selection ? data.frames[data.selection] : null;
 </script>
 
 <main>
 	<div class="container-fluid h-100 m-0 p-0">
 		<div class="h-100 d-flex flex-row">
 			<div class="left-container">
-				<ContentsPanel frames={data.data.frames} selected={data.selection} on:select={onNodeSelected} />
+				<ContentsPanel nodes={data.root} selected={data.selection} on:select={onNodeSelected} />
 			</div>
 			<div class="center-container">
 				<PreviewArea />

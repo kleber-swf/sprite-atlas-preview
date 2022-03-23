@@ -27,12 +27,6 @@ export interface AtlasDataModel {
 export interface TreeNodeModel {
 	name: string;
 	path: string;
-	selected: boolean;
 	children: TreeNodeModel[];
 }
 
-
-export interface AppModel {
-	selection: string;
-	data: AtlasDataModel;
-}

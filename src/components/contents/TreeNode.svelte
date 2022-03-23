@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
 	export let name = '';
 	export let children = [];
 	export let indent = 0;
 	export let path = '';
-	export let selected = false;
+	export let selected: string;
 
 	let open = true;
 	const dispatch = createEventDispatcher();
@@ -15,13 +15,13 @@
 	}
 </script>
 
-<div class="tree-node {selected ? 'selected' : ''}" style="padding-left: {indent}px" on:click={selectNode}>
+<div class="tree-node {selected === path ? 'selected' : ''}" style="padding-left: {indent}px" on:click={selectNode}>
 	{name}
 </div>
 
 {#if open}
 	{#each children as child (child.path)}
-		<svelte:self {...child} indent={indent + 12} on:select />
+		<svelte:self {...child} indent={indent + 12} {selected} on:select />
 	{/each}
 {/if}
 

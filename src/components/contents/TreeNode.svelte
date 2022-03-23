@@ -12,7 +12,6 @@
 
 	function selectNode() {
 		dispatch('select', path);
-		// if (children.length > 0) open = !open;
 	}
 </script>
 
@@ -27,13 +26,15 @@
 {/if}
 
 <style lang="scss" scoped>
+	@import 'variables';
 	.tree-node {
 		cursor: pointer;
 		user-select: none;
-		font-size: 12px;
+		padding: 4px;
 
 		&.selected {
-			color: white;
+			color: $on-primary;
+			background-color: $primary-color;
 		}
 	}
 </style>

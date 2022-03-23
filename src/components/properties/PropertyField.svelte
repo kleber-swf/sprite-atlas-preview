@@ -25,6 +25,7 @@
 		.title {
 			flex: 0.3;
 			margin-right: 10px;
+			user-select: none;
 		}
 
 		.value {

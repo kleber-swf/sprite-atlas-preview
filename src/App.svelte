@@ -7,9 +7,10 @@
 	const data = DATA;
 
 	function onNodeSelected(e: CustomEvent<string>) {
-		console.log('selection changed');
 		data.selection = e.detail;
 	}
+
+	$: selection = data.selection ? data.data.frames[data.selection] : null;
 </script>
 
 <main>
@@ -22,14 +23,14 @@
 				<PreviewArea />
 			</div>
 			<div class="right-container">
-				<PropertiesPanel />
+				<PropertiesPanel {selection} />
 			</div>
 		</div>
 	</div>
 	<div class="content" />
 </main>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import 'variables.scss';
 
 	main {
@@ -40,6 +41,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
+		color: $text-color;
 
 		.left-container,
 		.right-container {

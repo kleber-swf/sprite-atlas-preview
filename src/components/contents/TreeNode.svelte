@@ -26,7 +26,7 @@
 	{/each}
 {/if}
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.tree-node {
 		cursor: pointer;
 		user-select: none;

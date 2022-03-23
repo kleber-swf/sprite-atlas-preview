@@ -456,20 +456,19 @@ class AppModel {
 	public get imageUrl() { return this._imageUrl; }
 	public get root() { return this._root; }
 
+	public get selection() { return this._selection; }
+	public set selection(path: string) { this._selection = path; }
+
+	public get selectedFrame() {
+		return this._frames && this._selection ? this._frames[this._selection] : null;
+	}
+
 	public get frames() { return this._frames; }
 
 	public set frames(value: FramesMap) {
 		this._frames = value;
 		this._root = value ? this.framesToRoot(value) : null;
 	}
-
-	public get selection() { return this._selection; }
-
-	public set selection(path: string) {
-		this._selection = path;
-		// TODO mark selection inside root
-	}
-
 
 	public setData(imageUrl: string, data: AtlasDataModel) {
 		this._imageUrl = imageUrl;

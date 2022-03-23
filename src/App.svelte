@@ -10,19 +10,19 @@
 		data.selection = e.detail;
 	}
 
-	$: selection = data.selection ? data.frames[data.selection] : null;
+	$: selection = data.selectedFrame;
 </script>
 
 <main>
 	<div class="container-fluid h-100 m-0 p-0">
 		<div class="h-100 d-flex flex-row">
-			<div class="left-container">
+			<div class="left-container h-100">
 				<ContentsPanel nodes={data.root} selected={data.selection} on:select={onNodeSelected} />
 			</div>
-			<div class="center-container">
-				<PreviewArea />
+			<div class="center-container h-100">
+				<PreviewArea imgSrc={data.imageUrl} {selection} />
 			</div>
-			<div class="right-container">
+			<div class="right-container h-100">
 				<PropertiesPanel {selection} />
 			</div>
 		</div>

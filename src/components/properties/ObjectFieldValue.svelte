@@ -5,7 +5,7 @@
 <div class="field-value">
 	{#each Object.keys(value) as key}
 		<div class="field">
-			<div class="key"><span>{key}</span></div>
+			<div class="key">{key}</div>
 			<div class="value">{value[key]}</div>
 		</div>
 	{/each}
@@ -21,17 +21,14 @@
 			display: flex;
 			margin-bottom: 6px;
 			.key {
-				margin-right: 10px;
+				margin-right: 5px;
 				width: 16px;
-				span {
-					vertical-align: middle;
-				}
 			}
 			.value {
 				flex: 1;
-				border: 1px solid rgba($text-color, 0.3);
-				background-color: rgba($text-color, 0.1);
-				padding: 4px;
+				// border: 1px solid rgba($text-color, 0.3);
+				// background-color: rgba($text-color, 0.1);
+				// padding-bottom: 4px;
 			}
 		}
 	}

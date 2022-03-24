@@ -20,9 +20,6 @@
 
 		.title {
 			background-color: $dark-background;
-			font-size: 10px;
-			font-weight: bold;
-			text-transform: uppercase;
 			padding: 4px 8px;
 		}
 

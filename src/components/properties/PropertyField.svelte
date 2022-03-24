@@ -18,18 +18,21 @@
 </div>
 
 <style lang="scss" scoped>
+	@import 'variables.scss';
 	.properties-field {
 		display: flex;
 		margin-bottom: 20px;
 
 		.title {
-			flex: 0.3;
-			margin-right: 10px;
+			flex: 0.5;
+			margin-right: 20px;
 			user-select: none;
+			color: $text-color;
 		}
 
 		.value {
-			flex: 0.7;
+			flex: 0.5;
+			margin-top: -4px;
 		}
 	}
 </style>

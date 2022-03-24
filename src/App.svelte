@@ -21,6 +21,7 @@
 	<div class="preview-area">
 		<PreviewArea imgSrc={data.imageUrl} {selection} />
 	</div>
+	<PropertiesPanel {selection} />
 	<!-- <div class="container-fluid h-100 m-0 p-0">
 			<div class="h-100 d-flex flex-row">
 				<div class="left-container h-100">
@@ -28,7 +29,6 @@
 				<div class="center-container h-100">
 				</div>
 				<div class="right-container h-100">
-				<PropertiesPanel {selection} />
 			</div>
 		</div>
 	</div>
@@ -37,8 +37,6 @@
 
 <style lang="scss" global>
 	@import 'variables.scss';
-	$topbar-height: 25px;
-	$left-width: 320px;
 
 	main {
 		width: 100%;
@@ -61,13 +59,13 @@
 			top: $topbar-height;
 			left: 0;
 			bottom: 0;
-			width: $left-width;
+			width: $left-panel-width;
 			box-shadow: 0px 0px 12px $shadow-color;
 			z-index: 100;
 		}
 		.preview-area {
 			top: $topbar-height;
-			left: $left-width;
+			left: $left-panel-width;
 			bottom: 0;
 			right: 0;
 			overflow: auto;

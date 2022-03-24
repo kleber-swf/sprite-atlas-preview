@@ -68,7 +68,6 @@
 			left: $left-panel-width;
 			bottom: 0;
 			right: 0;
-			overflow: auto;
 		}
 	}
 </style>

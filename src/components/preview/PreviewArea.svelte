@@ -13,6 +13,10 @@
 	@import 'variables.scss';
 	.preview {
 		background-color: $dark-background;
+		// background-image: url('/assets/patterns/checkers.png');
+		background-image: url('/assets/patterns/shadow-checkers.png');
+		height: 100%;
+		overflow: auto;
 	}
 	.test {
 		width: 2000px;

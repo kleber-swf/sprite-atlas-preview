@@ -13,8 +13,6 @@
 	@import 'variables.scss';
 
 	.panel {
-		box-shadow: 0px 0px 12px $shadow-color;
-		z-index: 1000;
 		width: 100%;
 		height: 100%;
 		display: flex;

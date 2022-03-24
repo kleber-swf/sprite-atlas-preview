@@ -5,7 +5,7 @@
 	export let selection: FrameModel;
 </script>
 
-<div class="preview h-100">
+<div class="preview">
 	<div class="test">xxx</div>
 </div>
 
@@ -13,12 +13,10 @@
 	@import 'variables.scss';
 	.preview {
 		background-color: $dark-background;
-		overflow: auto;
-		display: block;
 	}
 	.test {
-		height: 2000px;
-		width: 300px;
+		width: 2000px;
+		height: 300px;
 		background-color: cornflowerblue;
 	}
 </style>

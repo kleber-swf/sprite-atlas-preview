@@ -14,63 +14,63 @@
 </script>
 
 <main>
-	<div class="container-fluid h-100 m-0 p-0">
-		<div class="h-100 d-flex flex-row">
-			<div class="left-container h-100">
-				<ContentsPanel nodes={data.root} selected={data.selection} on:select={onNodeSelected} />
-			</div>
-			<div class="center-container h-100">
-				<PreviewArea imgSrc={data.imageUrl} {selection} />
-			</div>
-			<div class="right-container h-100">
+	<div class="toolbar" />
+	<div class="left-area">
+		<ContentsPanel nodes={data.root} selected={data.selection} on:select={onNodeSelected} />
+	</div>
+	<div class="preview-area">
+		<PreviewArea imgSrc={data.imageUrl} {selection} />
+	</div>
+	<!-- <div class="container-fluid h-100 m-0 p-0">
+			<div class="h-100 d-flex flex-row">
+				<div class="left-container h-100">
+				</div>
+				<div class="center-container h-100">
+				</div>
+				<div class="right-container h-100">
 				<PropertiesPanel {selection} />
 			</div>
 		</div>
 	</div>
-	<div class="content" />
+	<div class="content" /> -->
 </main>
 
-<style lang="scss" scoped>
+<style lang="scss" global>
 	@import 'variables.scss';
+	$topbar-height: 25px;
+	$left-width: 320px;
 
 	main {
-		border: 0;
-		padding: 0;
-		margin: 0;
+		width: 100%;
 		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		color: $text-color;
 
-		.left-container,
-		.right-container {
-			width: 320px;
-			display: flex;
-			align-items: stretch;
+		& > * {
+			position: absolute;
 		}
 
-		.center-container {
-			flex: 1;
-			align-items: stretch;
+		.toolbar {
+			top: 0;
+			left: 0;
+			right: 0;
+			height: $topbar-height;
+			background-color: $dark-background;
+			box-shadow: 0px 0px 12px $shadow-color;
+			z-index: 1000;
 		}
-
-		::-webkit-scrollbar {
-			width: 8px;
-			height: 8px;
+		.left-area {
+			top: $topbar-height;
+			left: 0;
+			bottom: 0;
+			width: $left-width;
+			box-shadow: 0px 0px 12px $shadow-color;
+			z-index: 100;
 		}
-
-		::-webkit-scrollbar-track {
-			background: darken($dark-background, 1%);
-		}
-
-		::-webkit-scrollbar-thumb {
-			background-color: rgba($primary-color, 0.3);
-			border-radius: 4px;
-		}
-
-		::-webkit-scrollbar-thumb:hover {
-			background-color: $primary-color;
+		.preview-area {
+			top: $topbar-height;
+			left: $left-width;
+			bottom: 0;
+			right: 0;
+			overflow: auto;
 		}
 	}
 </style>

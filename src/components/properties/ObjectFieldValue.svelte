@@ -23,6 +23,7 @@
 			.key {
 				margin-right: 5px;
 				width: 16px;
+				user-select: none;
 			}
 			.value {
 				flex: 1;

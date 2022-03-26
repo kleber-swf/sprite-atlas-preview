@@ -1,9 +1,9 @@
 <script lang="ts">
-	export let width: number;
-	export let height: number;
+	import type { Rect } from '../../model/model';
+	export let rect: Rect;
 </script>
 
-<div class="rect" style="width:{width}px; height:{height}px">
+<div class="rect" style="top:{rect.y}px; left:{rect.x}px; width:{rect.w}px; height:{rect.h}px">
 	<div class="name">super_folder/master_name</div>
 </div>
 
@@ -21,11 +21,7 @@
 
 	.name {
 		color: #fff;
-		text-shadow: 
-		0 0 2px rgba(255, 255, 255, 0.8), 
-		0 0 4px #0df,
-		0 0 8px #0df, 
-		0 0 12px #0ff;
+		text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px #0df, 0 0 8px #0df, 0 0 12px #0ff;
 		margin-top: -27px;
 	}
 </style>

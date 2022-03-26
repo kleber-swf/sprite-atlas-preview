@@ -3,7 +3,7 @@
 	import PropertyField from './PropertyField.svelte';
 	export let selection: FrameModel;
 
-	let collapsed = true;
+	let collapsed = false;
 	function toggleVisible() {
 		collapsed = !collapsed;
 	}
@@ -39,6 +39,12 @@
 		box-shadow: 0px 0px 12px $shadow-color;
 		border-radius: 4px;
 		width: 220px;
+		transition: opacity 0.25s;
+		
+		&:hover {
+			opacity: 0.95;
+			transition: opacity 0.5s;
+		}
 
 		&.collapsed {
 			.content {

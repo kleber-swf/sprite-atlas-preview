@@ -9,7 +9,9 @@
 <div class="preview">
 	<div class="image-container">
 		<img src={imgSrc} alt="" />
-		<PreviewRect width={300} height={200} />
+		{#if selection}
+			<PreviewRect rect={selection.frame} />
+		{/if}
 	</div>
 </div>
 
@@ -23,6 +25,7 @@
 		overflow: auto;
 
 		.image-container {
+			position: relative;
 			img {
 				transform-origin: center center;
 				// transform: scale(0.5, 0.5);

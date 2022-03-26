@@ -1,12 +1,16 @@
 <script lang="ts">
 	import type { FrameModel } from '../../model/model';
+	import PreviewRect from './PreviewRect.svelte';
 
 	export let imgSrc: string;
 	export let selection: FrameModel;
 </script>
 
 <div class="preview">
-	<div class="test">xxx</div>
+	<div class="image-container">
+		<img src={imgSrc} alt="" />
+		<PreviewRect width={300} height={200} />
+	</div>
 </div>
 
 <style lang="scss" scoped>
@@ -17,10 +21,12 @@
 		background-image: url('/assets/patterns/shadow-checkers.png');
 		height: 100%;
 		overflow: auto;
-	}
-	.test {
-		width: 2000px;
-		height: 300px;
-		background-color: cornflowerblue;
+
+		.image-container {
+			img {
+				transform-origin: center center;
+				// transform: scale(0.5, 0.5);
+			}
+		}
 	}
 </style>

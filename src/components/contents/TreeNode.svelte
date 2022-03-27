@@ -7,15 +7,25 @@
 	export let path = '';
 	export let selected: string;
 
+	let element: HTMLElement;
 	let open = true;
+
 	const dispatch = createEventDispatcher();
 
 	function selectNode() {
 		dispatch('select', path);
 	}
+
+	let isSelected: boolean;
+	$: {
+		isSelected = selected === path;
+		if (isSelected) {
+			element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		}
+	}
 </script>
 
-<div class="tree-node {selected === path ? 'selected' : ''}" style="padding-left: {indent}px" on:click={selectNode}>
+<div bind:this={element} class="tree-node {isSelected ? 'selected' : ''}" style="padding-left: {indent}px" on:click={selectNode}>
 	{name}
 </div>
 

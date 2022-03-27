@@ -30,3 +30,7 @@ export interface TreeNodeModel {
 	children: TreeNodeModel[];
 }
 
+export interface SelectionModel {
+	path: string;
+	frame: FrameModel;
+}

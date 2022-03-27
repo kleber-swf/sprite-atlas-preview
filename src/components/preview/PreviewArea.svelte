@@ -1,16 +1,16 @@
 <script lang="ts">
-	import type { FrameModel } from '../../model/model';
+	import type { SelectionModel } from '../../model/model';
 	import PreviewRect from './PreviewRect.svelte';
 
 	export let imgSrc: string;
-	export let selection: FrameModel;
+	export let selection: SelectionModel;
 </script>
 
 <div class="preview">
 	<div class="image-container">
 		<img src={imgSrc} alt="" />
 		{#if selection}
-			<PreviewRect rect={selection.frame} />
+			<PreviewRect {selection} />
 		{/if}
 	</div>
 </div>

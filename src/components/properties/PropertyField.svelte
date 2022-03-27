@@ -1,6 +1,7 @@
 <script lang="ts">
 	import BooleanFieldValue from './BooleanFieldValue.svelte';
 	import ObjectFieldValue from './ObjectFieldValue.svelte';
+	import StringFieldValue from './StringFieldValue.svelte';
 
 	export let title: string;
 	export let value: any;
@@ -11,6 +12,8 @@
 	<div class="value">
 		{#if typeof value === 'boolean'}
 			<BooleanFieldValue {value} />
+		{:else if typeof value === 'string'}
+			<StringFieldValue {value} />
 		{:else}
 			<ObjectFieldValue {value} />
 		{/if}

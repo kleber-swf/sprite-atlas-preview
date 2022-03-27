@@ -1,4 +1,5 @@
-import type { AtlasDataModel, FramesMap, TreeNodeModel } from './model/model';
+import { writable } from 'svelte/store';
+import type { AtlasDataModel, FramesMap, SelectionModel, TreeNodeModel } from './model/model';
 
 export const RAW_DATA: AtlasDataModel = {
 	frames: {
@@ -446,36 +447,18 @@ export const RAW_DATA: AtlasDataModel = {
 	}
 };
 
+export interface AppModel {
+	imageUrl: string;
+	frames: FramesMap;
+	root: TreeNodeModel;
+	selection: SelectionModel;
+}
 
-class AppModel {
-	private _imageUrl: string;
-	private _frames: FramesMap;
-	private _selection: string;
-	private _root: TreeNodeModel;
+function createAppModel() {
+	const { subscribe, update, set } = writable<AppModel>();
 
-	public get imageUrl() { return this._imageUrl; }
-	public get root() { return this._root; }
-
-	public get selection() { return this._selection; }
-	public set selection(path: string) { this._selection = path; }
-
-	public get selectedFrame() {
-		return this._frames && this._selection ? this._frames[this._selection] : null;
-	}
-
-	public get frames() { return this._frames; }
-
-	public set frames(value: FramesMap) {
-		this._frames = value;
-		this._root = value ? this.framesToRoot(value) : null;
-	}
-
-	public setData(imageUrl: string, data: AtlasDataModel) {
-		this._imageUrl = imageUrl;
-		this.frames = data?.frames;
-	}
-
-	private framesToRoot(framesMap: FramesMap) {
+	const framesToRoot = (framesMap: FramesMap) => {
+		if (!framesMap) return null;
 		const content: TreeNodeModel = { name: '', path: '', children: [] };
 
 		Object.keys(framesMap).forEach((key) => {
@@ -494,8 +477,29 @@ class AppModel {
 
 		return content;
 	}
+
+	return {
+		subscribe,
+
+		setData(imageUrl: string, data: AtlasDataModel) {
+			set({
+				imageUrl,
+				frames: data.frames,
+				root: framesToRoot(data.frames),
+				selection: null,
+			});
+		},
+
+		select(path: string) {
+			update(data => {
+				data.selection = path
+					? { path, frame: data.frames[path] }
+					: null;
+				return data;
+			});
+		}
+	}
 }
 
-export const DATA = new AppModel();
-// TODO this should be called by the open... method
-DATA.setData('./test/game-ui.png', RAW_DATA)
+export const DATA = createAppModel();
+DATA.setData('./test/game-ui.png', RAW_DATA);

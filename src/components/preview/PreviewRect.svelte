@@ -1,11 +1,15 @@
 <script lang="ts">
-	import type { Rect } from '../../model/model';
-	export let rect: Rect;
+	import type { Rect, SelectionModel } from '../../model/model';
+	export let selection: SelectionModel;
+	let frame: Rect;
+	$: frame = selection?.frame?.frame;
 </script>
 
-<div class="rect" style="top:{rect.y}px; left:{rect.x}px; width:{rect.w}px; height:{rect.h}px">
-	<div class="name">super_folder/master_name</div>
-</div>
+{#if frame}
+	<div class="rect" style="top:{frame.y}px; left:{frame.x}px; width:{frame.w}px; height:{frame.h}px">
+		<div class="name">{selection.path}</div>
+	</div>
+{/if}
 
 <style lang="scss">
 	$shadow-1: 0 0 4px #0df;

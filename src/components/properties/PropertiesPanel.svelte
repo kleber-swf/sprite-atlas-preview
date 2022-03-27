@@ -1,7 +1,9 @@
 <script lang="ts">
-	import type { FrameModel } from '../../model/model';
+	import type { SelectionModel } from '../../model/model';
 	import PropertyField from './PropertyField.svelte';
-	export let selection: FrameModel;
+	export let selection: SelectionModel;
+
+	const frame = selection?.frame;
 
 	let collapsed = false;
 	function toggleVisible() {
@@ -9,17 +11,18 @@
 	}
 </script>
 
-{#if selection}
+{#if selection && frame}
 	<div class="properties" class:collapsed>
 		<div class="content">
 			<div class="title">
 				<div>Properties</div>
 			</div>
-			<PropertyField title="Frame" value={selection.frame} />
-			<PropertyField title="Rotated" value={selection.rotated} />
-			<PropertyField title="Trimmed" value={selection.trimmed} />
-			<PropertyField title="Sprite Source Size" value={selection.spriteSourceSize} />
-			<PropertyField title="Source Size" value={selection.sourceSize} />
+			<PropertyField title="Frame" value={selection.path} />
+			<PropertyField title="Frame" value={frame.frame} />
+			<PropertyField title="Rotated" value={frame.rotated} />
+			<PropertyField title="Trimmed" value={frame.trimmed} />
+			<PropertyField title="Sprite Source Size" value={frame.spriteSourceSize} />
+			<PropertyField title="Source Size" value={frame.sourceSize} />
 		</div>
 		<div class="close" on:click={toggleVisible}>⬤</div>
 	</div>
@@ -40,7 +43,7 @@
 		border-radius: 4px;
 		width: 220px;
 		transition: opacity 0.25s;
-		
+
 		&:hover {
 			opacity: 0.95;
 			transition: opacity 0.5s;

@@ -5,6 +5,7 @@
 	import { createAppModel } from './data';
 	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
+	import type { FramesMap, Point } from './model/atlas.model';
 
 	const data = createAppModel();
 	data.setData('./test/game-ui.png', EXAMPLE_DATA);
@@ -16,12 +17,23 @@
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
 	let imageUrl: string;
+	let frames: FramesMap;
 
 	data.subscribe((value) => {
 		root = value.root;
+		frames = value.frames;
 		imageUrl = value.imageUrl;
 		selection = value.selection;
 	});
+
+	const framesArray = Object.keys(frames).map((path) => ({ path, ...frames[path].frame }));
+	function onPreviewAreaTouch(e: CustomEvent<Point>) {
+		const x = e.detail.x;
+		const y = e.detail.y;
+		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
+		console.log({x, y, frame});
+		data.select(frame?.path);
+	}
 </script>
 
 <main>
@@ -30,7 +42,7 @@
 		<ContentsPanel nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="preview-area">
-		<PreviewArea imgSrc={imageUrl} {selection} />
+		<PreviewArea imgSrc={imageUrl} {selection} on:touch={onPreviewAreaTouch} />
 	</div>
 	<PropertiesPanel {selection} />
 </main>

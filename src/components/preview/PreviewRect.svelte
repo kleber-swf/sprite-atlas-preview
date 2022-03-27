@@ -1,15 +1,17 @@
 <script lang="ts">
 	import type { SelectionModel } from '../../model/app.model';
 	import type { Rect } from '../../model/atlas.model';
-	
+
 	export let selection: SelectionModel;
+	export let zoom: number;
+
 	let frame: Rect;
 	$: frame = selection?.frame?.frame;
 </script>
 
 {#if frame}
 	<div class="rect" style="top:{frame.y}px; left:{frame.x}px; width:{frame.w}px; height:{frame.h}px">
-		<div class="name">{selection.path}</div>
+		<div class="name" style="zoom:{1 / zoom}">{selection.path}</div>
 	</div>
 {/if}
 

@@ -1,17 +1,18 @@
 <script lang="ts">
 	import type { SelectionModel } from '../../model/app.model';
-	import type { Rect } from '../../model/atlas.model';
 
 	export let selection: SelectionModel;
 	export let zoom: number;
 
-	let frame: Rect;
-	$: frame = selection?.frame?.frame;
+	$: frame = selection.frame?.frame;
+	$: labelMargin = selection.frame?.frame.y < 12 ? { left: 10, top: 3 } : { left: 0, top: -27 };
 </script>
 
 {#if frame}
 	<div class="rect" style="top:{frame.y}px; left:{frame.x}px; width:{frame.w}px; height:{frame.h}px">
-		<div class="name" style="zoom:{1 / zoom}">{selection.path}</div>
+		<div class="name" style="zoom:{1 / zoom}; margin:{labelMargin.top}px 0 0 {labelMargin.left}px">
+			{selection.path}
+		</div>
 	</div>
 {/if}
 
@@ -30,6 +31,7 @@
 	.name {
 		color: #fff;
 		text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px #0df, 0 0 8px #0df, 0 0 12px #0ff;
-		margin-top: -27px;
+		overflow: visible;
+		white-space: nowrap;
 	}
 </style>

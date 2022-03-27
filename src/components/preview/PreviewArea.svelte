@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-
 	import type { SelectionModel } from '../../model/app.model';
-	import type { FramesMap } from '../../model/atlas.model';
 	import PreviewRect from './PreviewRect.svelte';
 
 	export let imgSrc: string;

@@ -31,7 +31,6 @@
 		const x = e.detail.x;
 		const y = e.detail.y;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-		console.log({x, y, frame});
 		data.select(frame?.path);
 	}
 </script>

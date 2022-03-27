@@ -23,14 +23,3 @@ export interface FrameModel {
 export interface AtlasDataModel {
 	frames: FramesMap;
 }
-
-export interface TreeNodeModel {
-	name: string;
-	path: string;
-	children: TreeNodeModel[];
-}
-
-export interface SelectionModel {
-	path: string;
-	frame: FrameModel;
-}

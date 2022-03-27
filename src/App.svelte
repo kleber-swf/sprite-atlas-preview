@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { validate_each_argument } from 'svelte/internal';
-
 	import ContentsPanel from './components/contents/ContentsPanel.svelte';
 	import PreviewArea from './components/preview/PreviewArea.svelte';
 	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
-	import { DATA } from './data';
-	import type { SelectionModel, TreeNodeModel } from './model/model';
+	import { createAppModel } from './data';
+	import { EXAMPLE_DATA } from './example.data';
+	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 
-	const data = DATA;
+	const data = createAppModel();
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	function onNodeSelected(e: CustomEvent<string>) {
 		data.select(e.detail);

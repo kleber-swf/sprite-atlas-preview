@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionModel } from '../../model/model';
+	import type { SelectionModel } from '../../model/app.model';
 	import PropertyField from './PropertyField.svelte';
 	export let selection: SelectionModel;
 

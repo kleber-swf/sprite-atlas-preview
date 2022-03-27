@@ -1,5 +1,7 @@
 <script lang="ts">
-	import type { Rect, SelectionModel } from '../../model/model';
+	import type { SelectionModel } from '../../model/app.model';
+	import type { Rect } from '../../model/atlas.model';
+	
 	export let selection: SelectionModel;
 	let frame: Rect;
 	$: frame = selection?.frame?.frame;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionModel } from '../../model/model';
+	import type { SelectionModel } from '../../model/app.model';
 	import PreviewRect from './PreviewRect.svelte';
 
 	export let imgSrc: string;

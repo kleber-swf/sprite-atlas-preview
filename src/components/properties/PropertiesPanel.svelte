@@ -3,7 +3,7 @@
 	import PropertyField from './PropertyField.svelte';
 	export let selection: SelectionModel;
 
-	const frame = selection?.frame;
+	$: frame = selection?.frame;
 
 	let collapsed = false;
 	function toggleVisible() {

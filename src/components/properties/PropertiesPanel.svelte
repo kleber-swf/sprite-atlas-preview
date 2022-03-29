@@ -1,13 +1,18 @@
 <script lang="ts">
 	import type { SelectionModel } from '../../model/app.model';
 	import PropertyField from './fields/PropertyField.svelte';
+
+	const LS_KEY = 'properties-panel-collapsed';
+
 	export let selection: SelectionModel;
 
 	$: frame = selection?.frame;
 
-	let collapsed = false;
+	let collapsed = !!localStorage.getItem(LS_KEY);
+
 	function toggleVisible() {
 		collapsed = !collapsed;
+		localStorage.setItem(LS_KEY, collapsed ? '1' : '0');
 	}
 </script>
 

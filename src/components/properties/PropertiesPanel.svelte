@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SelectionModel } from '../../model/app.model';
-	import PropertyField from './PropertyField.svelte';
+	import PropertyField from './fields/PropertyField.svelte';
 	export let selection: SelectionModel;
 
 	$: frame = selection?.frame;
@@ -54,10 +54,8 @@
 				display: none;
 			}
 			.close {
-				opacity: 0.3;
-				&:hover {
-					opacity: 1;
-				}
+				color: #fff;
+				text-shadow: 0 0px 9px #0ff;
 			}
 		}
 

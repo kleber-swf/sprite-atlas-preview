@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { SelectionModel } from '../../model/app.model';
-	import PreviewRect from './PreviewRect.svelte';
+	import FrameSelection from './FrameSelection.svelte';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
@@ -30,14 +30,29 @@
 			zoom = container.clientHeight / img.height;
 		}
 	}
+
+	let panning = false;
+
+	function onMouseDown(e: MouseEvent) {
+		panning = e.button === 1;
+	}
+
+	document.addEventListener('mouseup', () => (panning = false));
+
+	function onMouseMove(e: MouseEvent) {
+		if (!panning) return; // middle button
+		container.scrollTop -= e.movementY;
+		container.scrollLeft -= e.movementX;
+		e.preventDefault();
+	}
 </script>
 
-<div class="preview" on:wheel={onMouseWheel} bind:this={container}>
+<div class="preview" bind:this={container} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mousemove={onMouseMove}>
 	<div class="image-container">
 		<div class="internal" style="zoom:{zoom}">
 			<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
 			{#if selection}
-				<PreviewRect {selection} {zoom} />
+				<FrameSelection {selection} {zoom} />
 			{/if}
 		</div>
 	</div>

@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/kleber-swf/sprite-atlas-preview",
   "license": "MIT",
+  "private":false,
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",

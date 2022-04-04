@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionItem } from '../../model/app.model';
+	import type { SelectionItem } from 'model/app.model';
 
 	export let selection: SelectionItem;
 	export let scale: number;

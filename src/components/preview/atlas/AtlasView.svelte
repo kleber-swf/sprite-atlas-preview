@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { SelectionModel } from '../../model/app.model';
 	import FrameSelection from './FrameSelection.svelte';
+	import { createEventDispatcher } from 'svelte';
+	import type { SelectionModel } from 'model/app.model';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;

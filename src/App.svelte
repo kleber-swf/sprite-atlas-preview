@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ContentsPanel from './components/contents/ContentsPanel.svelte';
-	import PreviewArea from './components/preview/PreviewArea.svelte';
+	import AtlasView from './components/preview/atlas/AtlasView.svelte';
 	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
@@ -58,7 +58,7 @@
 		<ContentsPanel nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="preview-area">
-		<PreviewArea imgSrc={imageUrl} {selection} on:touch={onPreviewAreaTouch} />
+		<AtlasView imgSrc={imageUrl} {selection} on:touch={onPreviewAreaTouch} />
 	</div>
 	<PropertiesPanel {selection} />
 </main>

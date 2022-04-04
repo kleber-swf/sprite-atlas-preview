@@ -6,7 +6,7 @@
 
 	export let selection: SelectionModel;
 
-	$: frame = selection?.items[0]?.frame;
+	$: frame = selection?.items.length === 1 ? selection.items[0].frame : null;
 
 	let collapsed = !!localStorage.getItem(LS_KEY);
 
@@ -22,7 +22,7 @@
 			<div class="title">
 				<div>Properties</div>
 			</div>
-			<PropertyField title="Frame" value={selection.path} />
+			<PropertyField title="Path" value={selection.path} />
 			<PropertyField title="Frame" value={frame.frame} />
 			<PropertyField title="Rotated" value={frame.rotated} />
 			<PropertyField title="Trimmed" value={frame.trimmed} />

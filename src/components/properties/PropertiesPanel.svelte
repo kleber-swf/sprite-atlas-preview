@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionModel } from '../../model/app.model';
+	import type { SelectionModel } from 'model/app.model';
 	import PropertyField from './fields/PropertyField.svelte';
 
 	const LS_KEY = 'properties-panel-collapsed';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TreeNodeModel } from '../../model/app.model';
+	import type { TreeNodeModel } from 'model/app.model';
 	import TreeNode from './TreeNode.svelte';
 
 	export let nodes: TreeNodeModel;

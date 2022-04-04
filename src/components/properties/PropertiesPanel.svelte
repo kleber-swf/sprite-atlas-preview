@@ -6,7 +6,7 @@
 
 	export let selection: SelectionModel;
 
-	$: frame = selection?.frame;
+	$: frame = selection?.items[0]?.frame;
 
 	let collapsed = !!localStorage.getItem(LS_KEY);
 

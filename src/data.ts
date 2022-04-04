@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { AppModel, TreeNodeModel } from './model/app.model';
+import type { AppModel, SelectionItem, SelectionModel, TreeNodeModel } from './model/app.model';
 import type { AtlasDataModel, FramesMap } from './model/atlas.model';
 
 export function createAppModel() {
@@ -11,6 +11,7 @@ export function createAppModel() {
 
 		Object.keys(framesMap).forEach((key) => {
 			const parts = key.split('/');
+			framesMap[key].name = key;
 			let curr = content;
 			for (const name of parts) {
 				let child = curr.children.find((e) => e.name === name);
@@ -24,6 +25,17 @@ export function createAppModel() {
 		});
 
 		return content;
+	}
+
+	const getItemForPath = (data: AppModel, path: string): SelectionItem[] => {
+		if (path in data.frames) return [{ path, frame: data.frames[path] }];
+
+		const ipath = path + '/';
+		return Object.values(data.frames).filter(frame => frame.name.startsWith(ipath))
+			.map(frame => ({
+				frame,
+				path: ipath + frame.name
+			}));
 	}
 
 	return {
@@ -41,7 +53,7 @@ export function createAppModel() {
 		select(path: string) {
 			update(data => {
 				data.selection = path
-					? { path, frame: data.frames[path] }
+					? { path, items: getItemForPath(data, path) }
 					: null;
 				return data;
 			});

@@ -8,6 +8,11 @@ export interface TreeNodeModel {
 
 export interface SelectionModel {
 	path: string;
+	items: SelectionItem[];
+}
+
+export interface SelectionItem {
+	path: string;
 	frame: FrameModel;
 }
 

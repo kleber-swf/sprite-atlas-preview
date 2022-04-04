@@ -74,7 +74,9 @@
 		<div class="internal" style="transform:scale({scale})">
 			<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
 			{#if selection}
-				<FrameSelection {selection} {scale} />
+				{#each selection.items as item (item.path)}
+					<FrameSelection selection={item} {scale} />
+				{/each}
 			{/if}
 		</div>
 	</div>

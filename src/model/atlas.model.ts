@@ -13,6 +13,7 @@ export interface Rect extends Point, Dimension { }
 export type FramesMap = Record<string, FrameModel>;
 
 export interface FrameModel {
+	name?: string;
 	frame: Rect;
 	rotated: boolean;
 	trimmed: boolean;

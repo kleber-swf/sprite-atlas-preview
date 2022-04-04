@@ -49,6 +49,7 @@
 		panning = e.button === 1;
 	}
 
+	// TODO remove this listener when it's not visible
 	document.addEventListener('mouseup', () => (panning = false));
 
 	function onMouseMove(e: MouseEvent) {
@@ -102,6 +103,9 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			width: 100%;
+			height: 100%;
+
 			.internal {
 				img {
 					transform-origin: center;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import AtlasView from './atlas/AtlasView.svelte';
+	import FrameView from './frame/FrameView.svelte';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
@@ -17,7 +18,9 @@
 		<div class={selectedTab === 0 ? 'selected' : 'unselected'}>
 			<AtlasView {imgSrc} {selection} on:select />
 		</div>
-		<div class={selectedTab === 1 ? 'selected' : 'unselected'}>ok</div>
+		<div class={selectedTab === 1 ? 'selected' : 'unselected'}>
+			<FrameView {imgSrc} {selection} />
+		</div>
 	</div>
 </div>
 

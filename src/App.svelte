@@ -8,17 +8,13 @@
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
-	const data = createAppModel();
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
-
-	function onNodeSelected(e: CustomEvent<string>) {
-		data.select(e.detail);
-	}
-
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
 	let imageUrl: string;
 	let frames: FramesMap;
+
+	const data = createAppModel();
+	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -28,7 +24,19 @@
 		selection = value.selection;
 	});
 
+	document.addEventListener('keydown', (e) => {
+		if (!e.ctrlKey) return;
+		if (e.key !== 'c') return;
+		if (!selection?.items?.length) return;
+		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));
+		e.preventDefault();
+	});
+
 	$: framesArray = frames ? Object.keys(frames).map((path) => ({ path, ...frames[path].frame })) : [];
+
+	function onNodeSelected(e: CustomEvent<string>) {
+		data.select(e.detail);
+	}
 
 	function onPreviewAreaTouch(e: CustomEvent<Point>) {
 		const x = e.detail.x;

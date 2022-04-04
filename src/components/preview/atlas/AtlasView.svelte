@@ -17,7 +17,7 @@
 	const dispatch = createEventDispatcher();
 
 	function selectFrame(e: MouseEvent) {
-		dispatch('touch', { x: e.offsetX, y: e.offsetY });
+		dispatch('select', { x: e.offsetX, y: e.offsetY });
 	}
 
 	function onImageLoded(e: Event) {
@@ -69,7 +69,7 @@
 	}
 </script>
 
-<div class="preview" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mousemove={onMouseMove}>
+<div class="atlas-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mousemove={onMouseMove}>
 	<div class="image-container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
 		<div class="internal" style="transform:scale({scale})">
 			<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
@@ -84,7 +84,7 @@
 
 <style lang="scss" scoped>
 	@import 'variables.scss';
-	.preview {
+	.atlas-view {
 		background-color: $dark-background;
 		user-select: none;
 		// background-image: url('/assets/patterns/checkers.png');

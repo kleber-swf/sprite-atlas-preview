@@ -39,7 +39,7 @@
 	.properties {
 		opacity: 0.8;
 		position: absolute;
-		top: $topbar-height;
+		top: $topbar-height + $panel-title-height;
 		right: 0;
 		padding: 0 24px;
 		margin: 10px;

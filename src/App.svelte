@@ -1,10 +1,12 @@
 <script lang="ts">
+	import PreviewArea from './components/preview/preview-area.svelte';
+
 	import ContentsPanel from './components/contents/ContentsPanel.svelte';
 	import AtlasView from './components/preview/atlas/AtlasView.svelte';
 	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
-	// import { EXAMPLE_DATA } from './example.data';
+	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
@@ -14,7 +16,7 @@
 	let frames: FramesMap;
 
 	const data = createAppModel();
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -38,6 +40,7 @@
 		data.select(e.detail);
 	}
 
+	// TODO this should be inside preview area
 	function onPreviewAreaTouch(e: CustomEvent<Point>) {
 		const x = e.detail.x;
 		const y = e.detail.y;
@@ -57,8 +60,8 @@
 	<div class="left-area">
 		<ContentsPanel nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
-	<div class="preview-area">
-		<AtlasView imgSrc={imageUrl} {selection} on:touch={onPreviewAreaTouch} />
+	<div class="content-area">
+		<PreviewArea imgSrc={imageUrl} {selection} on:select={onPreviewAreaTouch} />
 	</div>
 	<PropertiesPanel {selection} />
 </main>
@@ -95,7 +98,7 @@
 			z-index: 100;
 		}
 
-		.preview-area {
+		.content-area {
 			top: $topbar-height;
 			left: $left-panel-width;
 			bottom: 0;

@@ -24,6 +24,7 @@
 
 		.title {
 			background-color: $dark-background;
+			height: $panel-title-height;
 			padding: 4px 8px;
 		}
 

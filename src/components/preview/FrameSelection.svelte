@@ -25,13 +25,15 @@
 		box-shadow: 0 0 2px #fff, $shadow-1, $shadow-2, $shadow-1 inset, $shadow-2 inset;
 		top: 100px;
 		left: 200px;
-	}
+		user-select: none;
+		pointer-events: none;
 
-	.name {
-		color: #fff;
-		text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px #0df, 0 0 8px #0df, 0 0 12px #0ff;
-		overflow: visible;
-		white-space: nowrap;
-		margin-top: -27px;
+		.name {
+			color: #fff;
+			text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px #0df, 0 0 8px #0df, 0 0 12px #0ff;
+			overflow: visible;
+			white-space: nowrap;
+			margin-top: -27px;
+		}
 	}
 </style>

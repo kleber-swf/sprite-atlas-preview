@@ -46,6 +46,7 @@
 			display: flex;
 			align-items: stretch;
 			justify-content: stretch;
+			z-index: 100;
 
 			& > div.tab {
 				flex: 0.5;
@@ -57,14 +58,15 @@
 				border-bottom: 2px solid;
 
 				&.selected {
-					background-color: #1b1b1b;
-					color: white;
+					background-color: $primary-color;
+					color: $on-primary;
 					border-color: transparent;
 				}
 
 				&.unselected {
 					color: rgba(white, 0.3);
 					border-color: #1b1b1b;
+					box-shadow: 0 4px 10px $shadow-color inset;
 				}
 			}
 		}

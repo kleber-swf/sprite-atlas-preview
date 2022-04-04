@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { SelectionModel } from '../../model/app.model';
+	import type { SelectionItem } from '../../model/app.model';
 
-	export let selection: SelectionModel;
+	export let selection: SelectionItem;
 	export let scale: number;
 
 	$: frame = selection.frame?.frame;

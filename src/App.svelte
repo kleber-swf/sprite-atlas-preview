@@ -4,12 +4,12 @@
 	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
-	// import { EXAMPLE_DATA } from './example.data';
+	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
 	const data = createAppModel();
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	function onNodeSelected(e: CustomEvent<string>) {
 		data.select(e.detail);

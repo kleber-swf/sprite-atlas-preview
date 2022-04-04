@@ -41,7 +41,7 @@ export function createAppModel() {
 		select(path: string) {
 			update(data => {
 				data.selection = path
-					? { path, frame: data.frames[path] }
+					? { path, items: [{ path, frame: data.frames[path] }] }
 					: null;
 				return data;
 			});

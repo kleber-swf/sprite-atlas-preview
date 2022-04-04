@@ -44,7 +44,7 @@
 		padding: 0 24px;
 		margin: 10px;
 		background-color: $background;
-		box-shadow: 0px 0px 12px $shadow-color;
+		box-shadow: $shadow-level-1;
 		border-radius: 4px;
 		width: 220px;
 		transition: opacity 0.25s;

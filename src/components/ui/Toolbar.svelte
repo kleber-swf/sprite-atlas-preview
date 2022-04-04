@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
+	let atlasName = '';
 
 	function onFileUploaded(ev: Event) {
 		const e = (ev.target as HTMLInputElement).files;
@@ -25,6 +26,7 @@
 		atlas
 			.text()
 			.then((content) => {
+				atlasName = atlas.name.substring(0, atlas.name.lastIndexOf('.'));
 				dispatch('files-uploaded', {
 					atlas: JSON.parse(content),
 					imageUrl: URL.createObjectURL(image),
@@ -35,34 +37,49 @@
 </script>
 
 <div class="toolbar">
-	<label class="custom-file-upload">
-		<input id="file-input" type="file" name="file" accept=".json,.png" multiple on:change={onFileUploaded} />
-		Open Atlas Files
-	</label>
+	<div class="menu">
+		<label class="custom-file-upload">
+			<input id="file-input" type="file" name="file" accept=".json,.png" multiple on:change={onFileUploaded} />
+			Open Atlas Files
+		</label>
+	</div>
+	<div class="atlas-name">{atlasName}</div>
 </div>
 
 <style lang="scss">
+	@import 'variables.scss';
+
 	div.toolbar {
-		background-color: #111;
+		background-color: #333;
+		color: #ddd;
 		margin-bottom: 4px;
 		display: flex;
+		align-items: center;
+		justify-content: stretch;
 
-		& > * {
-			padding: 8px;
-			font-size: 10px;
-			color: #ddd;
-			font-weight: bold;
-			text-transform: uppercase;
-			user-select: none;
-			cursor: pointer;
+		.menu {
+			width: $left-panel-width;
+			& > * {
+				padding: 4px 8px;
+				font-size: 10px;
+				font-weight: bold;
+				text-transform: uppercase;
+				user-select: none;
+				cursor: pointer;
+
+				&:hover {
+					background-color: #444;
+				}
+
+				& input[type='file'] {
+					display: none;
+				}
+			}
 		}
 
-		& > *:hover {
-			background-color: #333;
-		}
-
-		& input[type='file'] {
-			display: none;
+		.atlas-name {
+			text-align: center;
+			flex: 1;
 		}
 	}
 </style>

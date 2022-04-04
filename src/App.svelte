@@ -70,19 +70,23 @@
 			top: 0;
 			left: 0;
 			right: 0;
+			padding: 0;
+			margin: 0;
+			border: 0;
 			height: $topbar-height;
-			background-color: $dark-background;
-			box-shadow: 0px 0px 12px $shadow-color;
+			box-shadow: $shadow-level-1;
 			z-index: 1000;
 		}
+
 		.left-area {
 			top: $topbar-height;
 			left: 0;
 			bottom: 0;
 			width: $left-panel-width;
-			box-shadow: 0px 0px 12px $shadow-color;
+			box-shadow: $shadow-level-1;
 			z-index: 100;
 		}
+
 		.preview-area {
 			top: $topbar-height;
 			left: $left-panel-width;

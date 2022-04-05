@@ -3,8 +3,9 @@
 	import PropertyField from './fields/PropertyField.svelte';
 
 	export let content: Record<string, any>;
-	export let hasClose = true;
+	export let collapsable = true;
 	export let collapsed = false;
+	export let title = 'Properties';
 	const dispatch = createEventDispatcher();
 
 	function toggleVisible() {
@@ -18,14 +19,14 @@
 		<div class="container">
 			<div class="content">
 				<div class="title">
-					<div>Properties</div>
+					<div>{title}</div>
 				</div>
-				{#each Object.keys(content) as key(key)}
+				{#each Object.keys(content) as key (key)}
 					<PropertyField title={key} value={content[key]} />
 				{/each}
 			</div>
 		</div>
-		{#if hasClose}
+		{#if collapsable}
 			<div class="close" on:click={toggleVisible}>⬤</div>
 		{/if}
 	</div>

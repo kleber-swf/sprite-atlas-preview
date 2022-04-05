@@ -5,7 +5,7 @@
 </script>
 
 <div class="nine-slice-info-panel">
-	<PropertiesPanel content={model} />
+	<PropertiesPanel title="Nine Slice" content={model} collapsable={false} />
 </div>
 
 <style lang="scss">

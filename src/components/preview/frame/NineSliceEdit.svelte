@@ -1,4 +1,6 @@
 <script lang="ts">
+	export let scale = 1;
+
 	interface Props {
 		top: number;
 		left: number;
@@ -7,10 +9,10 @@
 	}
 
 	let handlers: Record<keyof Props, (e: MouseEvent) => void> = {
-		top: (e) => (props.top += e.movementY),
-		left: (e) => (props.left += e.movementX),
-		bottom: (e) => (props.bottom -= e.movementY),
-		right: (e) => (props.right -= e.movementX),
+		top: (e) => (props.top += e.movementY / scale),
+		left: (e) => (props.left += e.movementX / scale),
+		bottom: (e) => (props.bottom -= e.movementY / scale),
+		right: (e) => (props.right -= e.movementX / scale),
 	};
 
 	let props: Props = { top: 0, left: 0, bottom: 0, right: 0 };

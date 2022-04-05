@@ -56,7 +56,7 @@
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
 				<div class="frame" {style}>
-					<NineSliceEdit />
+					<NineSliceEdit {scale} />
 				</div>
 			{/if}
 		</div>

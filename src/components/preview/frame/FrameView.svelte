@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
-	import type { FrameModel, NineSliceModel } from 'model/atlas.model';
+	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
@@ -40,12 +40,13 @@
 	}
 
 	let frame: FrameModel;
+	let rect: Rect;
 
 	$: {
 		frame = selection?.items[0].frame;
+		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
-			const rect = frame?.frame;
 			const s = [`background-image: url(${imgSrc})`, `width: ${rect.w}px`, `height: ${rect.h}px`, `background-position: -${rect.x}px -${rect.y}px`];
 			style = s.join(';');
 			containerWidth = scale * (rect.w + 200);
@@ -68,7 +69,7 @@
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
 				<div class="frame" {style}>
-					<NineSliceEdit {scale} model={frame.slice} on:update={onUpdate} />
+					<NineSliceEdit {scale} model={frame.slice} frame={rect} on:update={onUpdate} />
 				</div>
 			{/if}
 		</div>

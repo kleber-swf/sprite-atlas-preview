@@ -1,17 +1,23 @@
 <script lang="ts">
-	import type { NineSliceModel } from 'model/atlas.model';
+	import type { NineSliceModel, Rect } from 'model/atlas.model';
 	import { createEventDispatcher } from 'svelte';
 
 	export let scale = 1;
 	export let model: NineSliceModel;
+	export let frame: Rect;
 	const dispatch = createEventDispatcher();
+
 	let _prop: number;
 
+	function handle(value: number, max: number) {
+		return Math.max(0, Math.min(max, Math.round((_prop += value))));
+	}
+
 	let handlers: Record<keyof NineSliceModel, (e: MouseEvent) => void> = {
-		top: (e) => (model.top = Math.round((_prop += e.movementY / scale))),
-		left: (e) => (model.left = Math.round((_prop += e.movementX / scale))),
-		bottom: (e) => (model.bottom = Math.round((_prop -= e.movementY / scale))),
-		right: (e) => (model.right = Math.round((_prop -= e.movementX / scale))),
+		top: (e) => (model.top = handle(e.movementY / scale, frame.h)),
+		left: (e) => (model.left = handle(e.movementX / scale, frame.w)),
+		bottom: (e) => (model.bottom = handle(-e.movementY / scale, frame.h)),
+		right: (e) => (model.right = handle(-e.movementX / scale, frame.w)),
 	};
 
 	let handler: (e: MouseEvent) => void;

@@ -13,7 +13,10 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		width: 200px;
+		width: 160px;
 		margin: 20px;
+		:global(.property-field) {
+			margin-bottom: 10px !important;
+		}
 	}
 </style>

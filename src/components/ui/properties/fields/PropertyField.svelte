@@ -7,7 +7,7 @@
 	export let value: any;
 </script>
 
-<div class="properties-field">
+<div class="property-field">
 	<div class="title">{title.replace(/([a-z])([A-Z])/g, '$1 $2')}</div>
 	<div class="value">
 		{#if typeof value === 'boolean'}
@@ -24,7 +24,7 @@
 
 <style lang="scss">
 	@import 'variables.scss';
-	.properties-field {
+	.property-field {
 		display: flex;
 		margin-bottom: 20px;
 

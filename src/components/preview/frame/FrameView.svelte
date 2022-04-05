@@ -67,10 +67,10 @@
 				</div>
 			{/if}
 		</div>
-		{#if style}
-			<NineSliceInfoPanel {model} />
-		{/if}
 	</div>
+	{#if style}
+		<NineSliceInfoPanel {model} />
+	{/if}
 </div>
 
 <style lang="scss">

@@ -63,7 +63,7 @@
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 	.frame-view {
 		background-color: $dark-background;

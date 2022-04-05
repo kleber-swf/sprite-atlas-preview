@@ -13,7 +13,7 @@
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 
 	.contents-panel {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import FrameSelection from './FrameSelection.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { SelectionModel } from 'model/app.model';
+	import { createEventDispatcher } from 'svelte';
+	import FrameSelection from './FrameSelection.svelte';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
@@ -86,7 +86,7 @@
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 	.atlas-view {
 		background-color: $dark-background;

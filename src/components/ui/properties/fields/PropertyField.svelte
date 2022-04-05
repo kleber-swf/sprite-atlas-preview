@@ -14,6 +14,8 @@
 			<BooleanFieldValue {value} />
 		{:else if typeof value === 'string'}
 			<StringFieldValue {value} />
+		{:else if typeof value === 'number'}
+			<StringFieldValue value={value.toString()} />
 		{:else}
 			<ObjectFieldValue {value} />
 		{/if}

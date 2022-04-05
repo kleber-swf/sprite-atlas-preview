@@ -1,21 +1,18 @@
 <script lang="ts">
+	import type { NineSliceModel } from 'model/app.model';
+	import { createEventDispatcher } from 'svelte';
+
 	export let scale = 1;
+	export let model: NineSliceModel;
+	const dispatch = createEventDispatcher();
 
-	interface Props {
-		top: number;
-		left: number;
-		bottom: number;
-		right: number;
-	}
-
-	let handlers: Record<keyof Props, (e: MouseEvent) => void> = {
-		top: (e) => (props.top += e.movementY / scale),
-		left: (e) => (props.left += e.movementX / scale),
-		bottom: (e) => (props.bottom -= e.movementY / scale),
-		right: (e) => (props.right -= e.movementX / scale),
+	let handlers: Record<keyof NineSliceModel, (e: MouseEvent) => void> = {
+		top: (e) => (model.top += e.movementY / scale),
+		left: (e) => (model.left += e.movementX / scale),
+		bottom: (e) => (model.bottom -= e.movementY / scale),
+		right: (e) => (model.right -= e.movementX / scale),
 	};
 
-	let props: Props = { top: 0, left: 0, bottom: 0, right: 0 };
 	let handler: (e: MouseEvent) => void;
 
 	function startDrag(e: MouseEvent) {
@@ -26,6 +23,7 @@
 
 	function dragHandle(e: MouseEvent) {
 		handler(e);
+		dispatch('update', model);
 	}
 
 	function stopDrag() {
@@ -36,10 +34,10 @@
 </script>
 
 <div class="nine-slice-edit">
-	<div class="handle left" data="left" style="left:{props.left}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle right" data="right" style="right:{props.right}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle top" data="top" style="top:{props.top}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle bottom" data="bottom" style="bottom:{props.bottom}px" on:mousedown={startDrag}>&nbsp;</div>
+	<div class="handle left" data="left" style="left:{model.left}px" on:mousedown={startDrag}>&nbsp;</div>
+	<div class="handle right" data="right" style="right:{model.right}px" on:mousedown={startDrag}>&nbsp;</div>
+	<div class="handle top" data="top" style="top:{model.top}px" on:mousedown={startDrag}>&nbsp;</div>
+	<div class="handle bottom" data="bottom" style="bottom:{model.bottom}px" on:mousedown={startDrag}>&nbsp;</div>
 </div>
 
 <style lang="scss">

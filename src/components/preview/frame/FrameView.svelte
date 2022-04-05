@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/app.model';
+	import type { NineSliceModel, SelectionModel } from 'model/app.model';
 	import NineSliceEdit from './NineSliceEdit.svelte';
+	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
 	export let selection: SelectionModel;
 	export let imgSrc: string;
@@ -49,6 +50,13 @@
 			containerHeight = 200;
 		}
 	}
+
+	let model: NineSliceModel = { top: 0, left: 0, bottom: 0, right: 0 };
+
+	function onUpdate(e: CustomEvent<NineSliceModel>) {
+		model = e.detail;
+		console.log(model);
+	}
 </script>
 
 <div class="frame-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
@@ -56,10 +64,13 @@
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
 				<div class="frame" {style}>
-					<NineSliceEdit {scale} />
+					<NineSliceEdit {scale} {model} on:update={onUpdate} />
 				</div>
 			{/if}
 		</div>
+		{#if style}
+			<NineSliceInfoPanel {model} />
+		{/if}
 	</div>
 </div>
 

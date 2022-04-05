@@ -20,7 +20,7 @@
 				<div class="title">
 					<div>Properties</div>
 				</div>
-				{#each Object.keys(content) as key}
+				{#each Object.keys(content) as key(key)}
 					<PropertyField title={key} value={content[key]} />
 				{/each}
 			</div>

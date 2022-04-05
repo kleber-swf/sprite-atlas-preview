@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { NineSliceModel, SelectionModel } from 'model/app.model';
+	import type { SelectionModel } from 'model/app.model';
+	import type { FrameModel, NineSliceModel } from 'model/atlas.model';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
@@ -38,23 +39,27 @@
 		e.preventDefault();
 	}
 
+	let frame: FrameModel;
+
 	$: {
-		const frame = selection?.items[0].frame?.frame;
+		frame = selection?.items[0].frame;
 		if (frame) {
-			const s = [`background-image: url(${imgSrc})`, `width: ${frame.w}px`, `height: ${frame.h}px`, `background-position: -${frame.x}px -${frame.y}px`];
+			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
+			const rect = frame?.frame;
+			const s = [`background-image: url(${imgSrc})`, `width: ${rect.w}px`, `height: ${rect.h}px`, `background-position: -${rect.x}px -${rect.y}px`];
 			style = s.join(';');
-			containerWidth = scale * (frame.w + 200);
-			containerHeight = scale * (frame.h + 200);
+			containerWidth = scale * (rect.w + 200);
+			containerHeight = scale * (rect.h + 200);
 		} else {
 			containerWidth = 200;
 			containerHeight = 200;
 		}
 	}
 
-	let model: NineSliceModel = { top: 0, left: 0, bottom: 0, right: 0 };
+	// let model: NineSliceModel;
 
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
-		model = e.detail;
+		frame.slice = e.detail;
 	}
 </script>
 
@@ -63,13 +68,13 @@
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
 				<div class="frame" {style}>
-					<NineSliceEdit {scale} {model} on:update={onUpdate} />
+					<NineSliceEdit {scale} model={frame.slice} on:update={onUpdate} />
 				</div>
 			{/if}
 		</div>
 	</div>
 	{#if style}
-		<NineSliceInfoPanel {model} />
+		<NineSliceInfoPanel model={frame.slice} />
 	{/if}
 </div>
 

@@ -22,10 +22,3 @@ export interface AppModel {
 	root: TreeNodeModel;
 	selection: SelectionModel;
 }
-
-export interface NineSliceModel {
-	top: number;
-	left: number;
-	bottom: number;
-	right: number;
-}

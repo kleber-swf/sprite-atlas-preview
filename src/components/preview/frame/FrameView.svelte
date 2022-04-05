@@ -7,7 +7,6 @@
 
 	let style: string;
 	let scale = 1;
-	let panning = false;
 	let containerWidth: number;
 	let containerHeight: number;
 
@@ -21,14 +20,18 @@
 	}
 
 	function onMouseDown(e: MouseEvent) {
-		panning = e.button === 1;
+		if (e.button === 1) {
+			document.addEventListener('mouseup', stopPanning);
+			document.addEventListener('mousemove', pan);
+		}
 	}
 
-	// TODO remove this listener when it's not visible
-	document.addEventListener('mouseup', () => (panning = false));
+	function stopPanning() {
+		document.removeEventListener('mouseup', stopPanning);
+		document.removeEventListener('mousemove', pan);
+	}
 
-	function onMouseMove(e: MouseEvent) {
-		if (!panning) return; // middle button
+	function pan(e: MouseEvent) {
 		root.scrollTop -= e.movementY;
 		root.scrollLeft -= e.movementX;
 		e.preventDefault();
@@ -48,7 +51,7 @@
 	}
 </script>
 
-<div class="frame-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mousemove={onMouseMove}>
+<div class="frame-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
 	<div class="image-container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}

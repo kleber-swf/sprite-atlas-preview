@@ -9,6 +9,7 @@
 	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
+	import { onMount } from 'svelte';
 
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
@@ -16,7 +17,6 @@
 	let frames: FramesMap;
 
 	const data = createAppModel();
-	data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -51,6 +51,13 @@
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
 	}
+
+	// [DEBUG]
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	onMount(() => {
+		data.select('btn-mid/green/hover');
+	});
+	// [/DEBUG]
 </script>
 
 <main>

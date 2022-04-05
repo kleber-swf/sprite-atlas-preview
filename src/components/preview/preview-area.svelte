@@ -6,7 +6,8 @@
 	export let imgSrc: string;
 	export let selection: SelectionModel;
 
-	let selectedTab = 0;
+	// DEBUG
+	let selectedTab = 1;
 </script>
 
 <div class="preview-area">

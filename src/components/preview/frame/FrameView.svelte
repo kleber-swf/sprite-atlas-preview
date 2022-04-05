@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
+	import NineSliceEdit from './NineSliceEdit.svelte';
 
 	export let selection: SelectionModel;
 	export let imgSrc: string;
@@ -11,7 +12,6 @@
 	let containerHeight: number;
 
 	let root: HTMLDivElement;
-	// let image: HTMLImageElement;
 
 	function onMouseWheel(e: WheelEvent) {
 		if (!e.ctrlKey) return;
@@ -52,7 +52,9 @@
 	<div class="image-container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
-				<div class="frame" {style}>&nbsp;</div>
+				<div class="frame" {style}>
+					<NineSliceEdit />
+				</div>
 			{/if}
 		</div>
 	</div>
@@ -79,6 +81,7 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
+			overflow: hidden;
 			.internal {
 				.frame {
 					transform-origin: center;
@@ -89,7 +92,6 @@
 					-webkit-user-select: none;
 					-ms-user-select: none;
 					display: block;
-					border: 1px solid red;
 				}
 			}
 		}

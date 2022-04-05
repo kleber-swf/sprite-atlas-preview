@@ -44,65 +44,83 @@
 </div>
 
 <style lang="scss">
+	@import 'variables.scss';
+
+	$handle-width: 6px;
+	$handle-ext-width: 2px;
+	$handle-margin: $handle-width - $handle-ext-width;
+	$handle-ext-border: $handle-ext-width dashed #888;
+
 	.nine-slice-edit {
 		position: relative;
 		width: 100%;
 		height: 100%;
 		padding: 0;
 		margin: 0;
-		border: 2px solid #fff;
+		border: 1px solid rgba(white, 0.4);
 
 		.handle {
 			position: absolute;
+			background-color: transparent;
 			opacity: 0.5;
-			background-color: red;
+			transition: opacity 250ms;
+
 			&::after {
 				content: '';
+				box-shadow: $shadow-level-1;
 				user-select: none;
 				pointer-events: none;
 				position: absolute;
 			}
 
+			&:hover {
+				opacity: 1;
+			}
+
 			&.left,
 			&.right {
-				width: 6px;
+				width: $handle-width;
 				top: 0;
 				bottom: 0;
+				cursor: ew-resize;
+				top: -10000px;
+				height: 20000px;
 				&::after {
-					border-left: 2px solid green;
-					top: -10000px;
-					height: 20000px;
-					margin-left: -2px;
+					height: 100%;
+					border-left: $handle-ext-border;
+					margin-left: -$handle-ext-width;
 				}
 			}
 
 			&.left {
-				margin-left: -4px;
+				margin-left: -$handle-margin;
 			}
 
 			&.right {
-				margin-right: -4px;
+				margin-right: -$handle-margin;
 			}
 
 			&.top,
 			&.bottom {
-				height: 6px;
+				height: $handle-width;
 				left: 0;
 				right: 0;
+				cursor: ns-resize;
+				left: -10000px;
+				width: 20000px;
 				&::after {
-					border-bottom: 2px solid green;
-					left: -10000px;
-					width: 20000px;
-					margin-top: 2px;
+					width: 100%;
+					border-bottom: $handle-ext-border;
+					margin-top: $handle-ext-width;
 				}
 			}
 
 			&.top {
-				margin-top: -4px;
+				margin-top: -$handle-margin;
 			}
 
 			&.bottom {
-				margin-bottom: -4px;
+				margin-bottom: -$handle-margin;
 			}
 		}
 	}

@@ -5,18 +5,21 @@
 	export let scale = 1;
 	export let model: NineSliceModel;
 	const dispatch = createEventDispatcher();
+	let _prop: number;
 
 	let handlers: Record<keyof NineSliceModel, (e: MouseEvent) => void> = {
-		top: (e) => (model.top += e.movementY / scale),
-		left: (e) => (model.left += e.movementX / scale),
-		bottom: (e) => (model.bottom -= e.movementY / scale),
-		right: (e) => (model.right -= e.movementX / scale),
+		top: (e) => (model.top = Math.round((_prop += e.movementY / scale))),
+		left: (e) => (model.left = Math.round((_prop += e.movementX / scale))),
+		bottom: (e) => (model.bottom = Math.round((_prop -= e.movementY / scale))),
+		right: (e) => (model.right = Math.round((_prop -= e.movementX / scale))),
 	};
 
 	let handler: (e: MouseEvent) => void;
 
 	function startDrag(e: MouseEvent) {
-		handler = handlers[(e.target as HTMLElement).getAttribute('data')];
+		const key = (e.target as HTMLElement).getAttribute('data');
+		handler = handlers[key];
+		_prop = model[key];
 		document.addEventListener('mousemove', dragHandle);
 		document.addEventListener('mouseup', stopDrag);
 	}

@@ -55,7 +55,6 @@
 
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
 		model = e.detail;
-		console.log(model);
 	}
 </script>
 

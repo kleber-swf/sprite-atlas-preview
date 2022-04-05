@@ -1,15 +1,13 @@
 <script lang="ts">
-	import PreviewArea from './components/preview/preview-area.svelte';
-
+	import { onMount } from 'svelte';
 	import ContentsPanel from './components/contents/ContentsPanel.svelte';
-	import AtlasView from './components/preview/atlas/AtlasView.svelte';
-	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
+	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
+	import PreviewArea from './components/preview/preview-area.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
 	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
-	import { onMount } from 'svelte';
 
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
@@ -69,8 +67,8 @@
 	</div>
 	<div class="content-area">
 		<PreviewArea imgSrc={imageUrl} {selection} on:select={onPreviewAreaTouch} />
+		<FrameProperties {selection} />
 	</div>
-	<PropertiesPanel {selection} />
 </main>
 
 <style lang="scss">

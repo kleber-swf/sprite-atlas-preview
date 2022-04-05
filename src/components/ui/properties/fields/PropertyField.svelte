@@ -8,7 +8,7 @@
 </script>
 
 <div class="properties-field">
-	<div class="title">{title}</div>
+	<div class="title">{title.replace(/([a-z])([A-Z])/g, '$1 $2')}</div>
 	<div class="value">
 		{#if typeof value === 'boolean'}
 			<BooleanFieldValue {value} />
@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 	.properties-field {
 		display: flex;

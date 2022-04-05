@@ -6,7 +6,7 @@
 	{value}
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	.field-value {
 		display: flex;
 		margin-bottom: 6px;

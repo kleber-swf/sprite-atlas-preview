@@ -43,8 +43,6 @@
 		handlerFn = null;
 	}
 
-	// document.addEventListener('keydown', onKeyDown);
-
 	$: {
 		if (selected) {
 			document.addEventListener('keydown', onKeyDown);

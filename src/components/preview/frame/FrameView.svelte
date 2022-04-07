@@ -8,12 +8,14 @@
 	export let imgSrc: string;
 	export let selected = false;
 
-	let style: string;
+	let root: HTMLDivElement;
+
 	let scale = 1;
 	let containerWidth: number;
 	let containerHeight: number;
-
-	let root: HTMLDivElement;
+	let frame: FrameModel;
+	let rect: Rect;
+	let style: string;
 
 	function onMouseWheel(e: WheelEvent) {
 		if (!e.ctrlKey) return;
@@ -40,11 +42,8 @@
 		e.preventDefault();
 	}
 
-	let frame: FrameModel;
-	let rect: Rect;
-
 	$: {
-		frame = selection?.items[0].frame;
+		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
 		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
@@ -66,14 +65,14 @@
 <div class="frame-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
 	<div class="image-container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
 		<div class="internal" style="transform:scale({scale})">
-			{#if style}
+			{#if frame}
 				<div class="frame" {style}>
 					<NineSliceEdit {scale} model={frame.slice} frame={rect} {selected} on:update={onUpdate} />
 				</div>
 			{/if}
 		</div>
 	</div>
-	{#if style}
+	{#if frame}
 		<NineSliceInfoPanel model={frame.slice} />
 	{/if}
 </div>

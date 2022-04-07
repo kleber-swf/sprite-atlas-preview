@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import { createEventDispatcher } from 'svelte';
+	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
 	export let imgSrc: string;
@@ -22,12 +23,12 @@
 	function onImageLoded(e: Event) {
 		image = e.target as HTMLImageElement;
 		if (image.width > image.height) {
-			scale = root.clientWidth / image.width;
+			scale = image.parentElement.clientWidth / image.width;
 		} else {
-			scale = root.clientHeight / image.height;
+			scale = image.parentElement.clientHeight / image.height;
 		}
-		root.addEventListener('scroll', centerImage);
-		root.scrollTo(1, 1);
+		image.parentElement.addEventListener('scroll', centerImage);
+		image.parentElement.scrollTo(1, 1);
 	}
 
 	function centerImage() {
@@ -62,64 +63,30 @@
 		e.preventDefault();
 	}
 
+	function onScaleChanged(e: CustomEvent<number>) {
+		scale = e.detail;
+	}
+
 	$: {
+		console.log(image?.clientHeight);
 		if (image) {
-			containerWidth = scale * (image.clientWidth + 200);
-			containerHeight = scale * (image?.clientHeight + 200);
+			containerWidth = image.clientWidth;
+			containerHeight = image.clientHeight;
 		} else {
-			containerWidth = 200;
-			containerHeight = 200;
+			containerWidth = 0;
+			containerHeight = 0;
 		}
 	}
 </script>
 
-<div class="atlas-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
-	<div class="image-container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
-		<div class="internal" style="transform:scale({scale})">
-			<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
-			{#if selection}
-				{#each selection.items as item (item.path)}
-					<FrameSelection selection={item} {scale} />
-				{/each}
-			{/if}
-		</div>
-	</div>
-</div>
+<ContentView width={containerWidth} height={containerHeight} {scale} on:scaleChanged={onScaleChanged}>
+	<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
+	{#if selection}
+		{#each selection.items as item (item.path)}
+			<FrameSelection selection={item} {scale} />
+		{/each}
+	{/if}
+</ContentView>
 
 <style lang="scss">
-	@import 'variables.scss';
-	.atlas-view {
-		background-color: $dark-background;
-		user-select: none;
-		// background-image: url('/assets/patterns/checkers.png');
-		background-image: url('/assets/patterns/shadow-checkers.png');
-		width: 100%;
-		height: 100%;
-		min-width: 100%;
-		min-height: 100%;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: auto;
-
-		.image-container {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-
-			.internal {
-				img {
-					transform-origin: center;
-					box-sizing: content-box;
-					-webkit-user-drag: none;
-					user-select: none;
-					-moz-user-select: none;
-					-webkit-user-select: none;
-					-ms-user-select: none;
-				}
-			}
-		}
-	}
 </style>

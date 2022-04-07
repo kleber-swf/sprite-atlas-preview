@@ -12,15 +12,15 @@
 
 <div class="preview-area">
 	<div class="tabs">
-		<div class="tab title {selectedTab === 0 ? 'selected' : 'unselected'}" on:click={() => (selectedTab = 0)}>Atlas</div>
-		<div class="tab title {selectedTab === 1 ? 'selected' : 'unselected'}" on:click={() => (selectedTab = 1)}>Frame</div>
+		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
+		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
 	</div>
 	<div class="content">
-		<div class={selectedTab === 0 ? 'selected' : 'unselected'}>
+		<div class:selected={selectedTab === 0}>
 			<AtlasView {imgSrc} {selection} on:select />
 		</div>
-		<div class={selectedTab === 1 ? 'selected' : 'unselected'}>
-			<FrameView {imgSrc} {selection} />
+		<div class:selected={selectedTab === 1}>
+			<FrameView {imgSrc} {selection} selected={selectedTab === 1} />
 		</div>
 	</div>
 </div>
@@ -58,16 +58,14 @@
 				user-select: none;
 				border-bottom: 2px solid;
 
+				color: rgba(white, 0.3);
+				border-color: #1b1b1b;
+				box-shadow: 0 4px 10px $shadow-color inset;
+
 				&.selected {
 					background-color: $primary-color;
 					color: $on-primary;
 					border-color: transparent;
-				}
-
-				&.unselected {
-					color: rgba(white, 0.3);
-					border-color: #1b1b1b;
-					box-shadow: 0 4px 10px $shadow-color inset;
 				}
 			}
 		}
@@ -82,13 +80,9 @@
 			& > div {
 				width: 100%;
 				height: 100%;
-
+				display: none;
 				&.selected {
 					display: block;
-				}
-
-				&.unselected {
-					display: none;
 				}
 			}
 		}

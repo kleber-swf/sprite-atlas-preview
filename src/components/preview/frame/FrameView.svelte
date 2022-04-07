@@ -6,6 +6,7 @@
 
 	export let selection: SelectionModel;
 	export let imgSrc: string;
+	export let selected = false;
 
 	let style: string;
 	let scale = 1;
@@ -57,8 +58,6 @@
 		}
 	}
 
-	// let model: NineSliceModel;
-
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
 		frame.slice = e.detail;
 	}
@@ -69,7 +68,7 @@
 		<div class="internal" style="transform:scale({scale})">
 			{#if style}
 				<div class="frame" {style}>
-					<NineSliceEdit {scale} model={frame.slice} frame={rect} on:update={onUpdate} />
+					<NineSliceEdit {scale} model={frame.slice} frame={rect} {selected} on:update={onUpdate} />
 				</div>
 			{/if}
 		</div>

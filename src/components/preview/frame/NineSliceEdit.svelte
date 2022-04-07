@@ -5,12 +5,15 @@
 	export let scale = 1;
 	export let model: NineSliceModel;
 	export let frame: Rect;
+	export let selected = false;
 	const dispatch = createEventDispatcher();
 
-	let _prop: number;
+	let _propId: string;
+	let _propValue: number;
 
 	function handle(value: number, max: number) {
-		return Math.max(0, Math.min(max, Math.round((_prop += value))));
+		_propValue = Math.max(0, Math.min(max, _propValue + value));
+		return Math.round(_propValue);
 	}
 
 	let handlers: Record<keyof NineSliceModel, (e: MouseEvent) => void> = {
@@ -20,33 +23,79 @@
 		right: (e) => (model.right = handle(-e.movementX / scale, frame.w)),
 	};
 
-	let handler: (e: MouseEvent) => void;
+	let handlerFn: (e: MouseEvent) => void;
 
-	function startDrag(e: MouseEvent) {
-		const key = (e.target as HTMLElement).getAttribute('data');
-		handler = handlers[key];
-		_prop = model[key];
+	function startHandleDrag(e: MouseEvent) {
+		_propId = (e.target as HTMLElement).getAttribute('data');
+		handlerFn = handlers[_propId];
+		_propValue = model[_propId];
 		document.addEventListener('mousemove', dragHandle);
-		document.addEventListener('mouseup', stopDrag);
+		document.addEventListener('mouseup', stopHandleDrag);
 	}
 
 	function dragHandle(e: MouseEvent) {
-		handler(e);
+		handlerFn(e);
 		dispatch('update', model);
 	}
 
-	function stopDrag() {
+	function stopHandleDrag() {
 		document.removeEventListener('mousemove', dragHandle);
-		document.removeEventListener('mouseup', stopDrag);
-		handler = null;
+		document.removeEventListener('mouseup', stopHandleDrag);
+		handlerFn = null;
+	}
+
+	// document.addEventListener('keydown', onKeyDown);
+
+	$: {
+		if (selected) {
+			document.addEventListener('keydown', onKeyDown);
+		} else {
+			document.removeEventListener('keydown', onKeyDown);
+		}
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		console.log(e.key, _propId);
+		if (!(_propId && e.key.startsWith('Arrow'))) return;
+
+		let direction = 0;
+		let max = 0;
+		switch (_propId) {
+			case 'top':
+				max = frame.h;
+				if (e.key === 'ArrowUp') direction = -1;
+				else if (e.key === 'ArrowDown') direction = 1;
+				break;
+			case 'bottom':
+				max = frame.h;
+				if (e.key === 'ArrowUp') direction = 1;
+				else if (e.key === 'ArrowDown') direction = -1;
+				break;
+			case 'left':
+				max = frame.w;
+				if (e.key === 'ArrowLeft') direction = -1;
+				else if (e.key === 'ArrowRight') direction = 1;
+				break;
+			case 'right':
+				max = frame.w;
+				if (e.key === 'ArrowLeft') direction = 1;
+				else if (e.key === 'ArrowRight') direction = -1;
+				break;
+		}
+
+		if (direction !== 0) {
+			model[_propId] = handle(direction * (e.shiftKey ? 10 : 1), max);
+			dispatch('update', model);
+			e.preventDefault();
+		}
 	}
 </script>
 
 <div class="nine-slice-edit">
-	<div class="handle left" data="left" style="left:{model.left}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle right" data="right" style="right:{model.right}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle top" data="top" style="top:{model.top}px" on:mousedown={startDrag}>&nbsp;</div>
-	<div class="handle bottom" data="bottom" style="bottom:{model.bottom}px" on:mousedown={startDrag}>&nbsp;</div>
+	<div class="handle left" data="left" style="left:{model.left}px" on:mousedown={startHandleDrag}>&nbsp;</div>
+	<div class="handle right" data="right" style="right:{model.right}px" on:mousedown={startHandleDrag}>&nbsp;</div>
+	<div class="handle top" data="top" style="top:{model.top}px" on:mousedown={startHandleDrag}>&nbsp;</div>
+	<div class="handle bottom" data="bottom" style="bottom:{model.bottom}px" on:mousedown={startHandleDrag}>&nbsp;</div>
 </div>
 
 <style lang="scss">
@@ -55,7 +104,7 @@
 	$handle-width: 6px;
 	$handle-ext-width: 2px;
 	$handle-margin: $handle-width - $handle-ext-width;
-	$handle-ext-border: $handle-ext-width dashed #888;
+	$handle-ext-border: $handle-ext-width dashed #777;
 
 	.nine-slice-edit {
 		position: relative;
@@ -73,9 +122,8 @@
 
 			&::after {
 				content: '';
-				box-shadow: $shadow-level-1;
 				user-select: none;
-				pointer-events: none;
+				// pointer-events: none;
 				position: absolute;
 			}
 

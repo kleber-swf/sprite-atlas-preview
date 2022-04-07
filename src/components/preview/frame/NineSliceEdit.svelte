@@ -11,16 +11,15 @@
 	let _propId: string;
 	let _propValue: number;
 
-	function handle(value: number, max: number) {
-		_propValue = Math.max(0, Math.min(max, _propValue + value));
-		return Math.round(_propValue);
+	function handleDrag(value: number, max: number) {
+		return Math.round(Math.max(0, Math.min(max, value)));
 	}
 
 	let handlers: Record<keyof NineSliceModel, (e: MouseEvent) => void> = {
-		top: (e) => (model.top = handle(e.movementY / scale, frame.h)),
-		left: (e) => (model.left = handle(e.movementX / scale, frame.w)),
-		bottom: (e) => (model.bottom = handle(-e.movementY / scale, frame.h)),
-		right: (e) => (model.right = handle(-e.movementX / scale, frame.w)),
+		top: (e) => (model.top = handleDrag((_propValue += e.movementY / scale), frame.h)),
+		left: (e) => (model.left = handleDrag((_propValue += e.movementX / scale), frame.w)),
+		bottom: (e) => (model.bottom = handleDrag((_propValue -= e.movementY / scale), frame.h)),
+		right: (e) => (model.right = handleDrag((_propValue -= e.movementX / scale), frame.w)),
 	};
 
 	let handlerFn: (e: MouseEvent) => void;
@@ -55,9 +54,7 @@
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
-		console.log(e.key, _propId);
 		if (!(_propId && e.key.startsWith('Arrow'))) return;
-
 		let direction = 0;
 		let max = 0;
 		switch (_propId) {
@@ -84,7 +81,7 @@
 		}
 
 		if (direction !== 0) {
-			model[_propId] = handle(direction * (e.shiftKey ? 10 : 1), max);
+			model[_propId] = handleDrag(model[_propId] + direction * (e.shiftKey ? 10 : 1), max);
 			dispatch('update', model);
 			e.preventDefault();
 		}

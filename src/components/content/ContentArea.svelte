@@ -10,12 +10,12 @@
 	let selectedTab = 1;
 </script>
 
-<div class="preview-area">
+<div class="content-area">
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
 		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
 	</div>
-	<div class="content">
+	<div class="tab-content">
 		<div class:selected={selectedTab === 0}>
 			<AtlasView {imgSrc} {selection} on:select />
 		</div>
@@ -28,7 +28,7 @@
 <style lang="scss">
 	@import 'variables.scss';
 
-	.preview-area {
+	.content-area {
 		width: 100%;
 		height: 100%;
 		min-width: 100%;
@@ -70,7 +70,7 @@
 			}
 		}
 
-		.content {
+		.tab-content {
 			position: absolute;
 			top: $panel-title-height;
 			left: 0;

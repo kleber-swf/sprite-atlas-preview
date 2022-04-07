@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { NineSliceModel } from 'model/app.model';
+	import type { NineSliceModel } from 'model/atlas.model';
 	import PropertiesPanel from '../../ui/properties/PropertiesPanel.svelte';
 	export let model: NineSliceModel;
 </script>

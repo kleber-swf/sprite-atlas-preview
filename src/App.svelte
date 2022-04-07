@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
-	import PreviewArea from './components/preview/preview-area.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
@@ -39,7 +39,7 @@
 	}
 
 	// TODO this should be inside preview area
-	function onPreviewAreaTouch(e: CustomEvent<Point>) {
+	function onContentAreaTouch(e: CustomEvent<Point>) {
 		const x = e.detail.x;
 		const y = e.detail.y;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
@@ -65,8 +65,8 @@
 	<div class="left-area">
 		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
-	<div class="content-area">
-		<PreviewArea imgSrc={imageUrl} {selection} on:select={onPreviewAreaTouch} />
+	<div class="selection-area">
+		<ContentArea imgSrc={imageUrl} {selection} on:select={onContentAreaTouch} />
 		<FrameProperties {selection} />
 	</div>
 </main>
@@ -103,7 +103,7 @@
 			z-index: 100;
 		}
 
-		.content-area {
+		.selection-area {
 			top: $topbar-height;
 			left: $left-panel-width;
 			bottom: 0;

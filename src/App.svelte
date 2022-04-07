@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import ContentsPanel from './components/contents/ContentsPanel.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import PreviewArea from './components/preview/preview-area.svelte';
+	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
 	import { EXAMPLE_DATA } from './example.data';
@@ -63,7 +63,7 @@
 		<Toolbar on:files-uploaded={onFilesUploaded} />
 	</div>
 	<div class="left-area">
-		<ContentsPanel nodes={root} selected={selection?.path} on:select={onNodeSelected} />
+		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="content-area">
 		<PreviewArea imgSrc={imageUrl} {selection} on:select={onPreviewAreaTouch} />

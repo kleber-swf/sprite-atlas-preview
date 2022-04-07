@@ -6,8 +6,8 @@
 	export let selected: string;
 </script>
 
-<div class="contents-panel">
-	<div class="title">Contents</div>
+<div class="tree-view">
+	<div class="title">Frames</div>
 	<div class="content">
 		<TreeNode {...nodes} on:select {selected} />
 	</div>
@@ -16,7 +16,7 @@
 <style lang="scss">
 	@import 'variables.scss';
 
-	.contents-panel {
+	.tree-view {
 		width: 100%;
 		height: 100%;
 		display: flex;

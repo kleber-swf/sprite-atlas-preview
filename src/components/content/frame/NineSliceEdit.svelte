@@ -132,8 +132,8 @@
 				top: 0;
 				bottom: 0;
 				cursor: ew-resize;
-				top: -1000px;
-				height: 2000px;
+				top: -10000px;
+				height: 20000px;
 				&::after {
 					height: 100%;
 					left: $handle-margin;
@@ -155,8 +155,8 @@
 				left: 0;
 				right: 0;
 				cursor: ns-resize;
-				left: -1000px;
-				width: 2000px;
+				left: -10000px;
+				width: 20000px;
 				&::after {
 					width: 100%;
 					border-top: $handle-ext-border;

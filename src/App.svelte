@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
-	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
@@ -51,10 +49,10 @@
 	}
 
 	// [DEBUG]
-	data.setData('./test/game-ui.png', EXAMPLE_DATA);
-	onMount(() => {
-		data.select('btn-mid/green/hover');
-	});
+	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	// onMount(() => {
+	// 	data.select('btn-mid/green/hover');
+	// });
 	// [/DEBUG]
 </script>
 

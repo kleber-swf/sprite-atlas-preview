@@ -8,7 +8,7 @@
 	export let selection: SelectionModel;
 
 	// DEBUG
-	let selectedTab = 1;
+	let selectedTab = 0;
 </script>
 
 <div class="content-area">

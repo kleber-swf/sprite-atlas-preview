@@ -2,6 +2,7 @@
 	import type { SelectionModel } from 'model/app.model';
 	import AtlasView from './atlas/AtlasView.svelte';
 	import FrameView from './frame/FrameView.svelte';
+	import MultiFrameView from './multi/MultiFrameView.svelte';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
@@ -14,6 +15,7 @@
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
 		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
+		<div class="tab title" class:selected={selectedTab === 2} on:click={() => (selectedTab = 2)}>Animation</div>
 	</div>
 	<div class="tab-content">
 		<div class:selected={selectedTab === 0}>
@@ -21,6 +23,9 @@
 		</div>
 		<div class:selected={selectedTab === 1}>
 			<FrameView {imgSrc} {selection} selected={selectedTab === 1} />
+		</div>
+		<div class:selected={selectedTab === 2}>
+			<MultiFrameView {imgSrc} {selection} selected={selectedTab === 2} />
 		</div>
 	</div>
 </div>

@@ -1,22 +1,22 @@
 <script lang="ts">
-	import type { TreeNodeModel } from '../../model/app.model';
+	import type { TreeNodeModel } from 'model/app.model';
 	import TreeNode from './TreeNode.svelte';
 
 	export let nodes: TreeNodeModel;
 	export let selected: string;
 </script>
 
-<div class="contents-panel">
-	<div class="title">Contents</div>
+<div class="tree-view">
+	<div class="title">Frames</div>
 	<div class="content">
 		<TreeNode {...nodes} on:select {selected} />
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 
-	.contents-panel {
+	.tree-view {
 		width: 100%;
 		height: 100%;
 		display: flex;
@@ -24,6 +24,7 @@
 
 		.title {
 			background-color: $dark-background;
+			height: $panel-title-height;
 			padding: 4px 8px;
 		}
 

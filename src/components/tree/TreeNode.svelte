@@ -35,7 +35,7 @@
 	{/each}
 {/if}
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables';
 	.tree-node {
 		cursor: pointer;

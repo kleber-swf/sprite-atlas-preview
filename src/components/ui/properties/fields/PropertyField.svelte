@@ -7,22 +7,24 @@
 	export let value: any;
 </script>
 
-<div class="properties-field">
-	<div class="title">{title}</div>
+<div class="property-field">
+	<div class="title">{title.replace(/([a-z])([A-Z])/g, '$1 $2')}</div>
 	<div class="value">
 		{#if typeof value === 'boolean'}
 			<BooleanFieldValue {value} />
 		{:else if typeof value === 'string'}
 			<StringFieldValue {value} />
+		{:else if typeof value === 'number'}
+			<StringFieldValue value={value.toString()} />
 		{:else}
 			<ObjectFieldValue {value} />
 		{/if}
 	</div>
 </div>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
-	.properties-field {
+	.property-field {
 		display: flex;
 		margin-bottom: 20px;
 

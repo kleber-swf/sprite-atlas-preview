@@ -1,10 +1,11 @@
 <script lang="ts">
-	import ContentsPanel from './components/contents/ContentsPanel.svelte';
-	import PreviewArea from './components/preview/PreviewArea.svelte';
-	import PropertiesPanel from './components/properties/PropertiesPanel.svelte';
+	import { onMount } from 'svelte';
+	import ContentArea from './components/content/ContentArea.svelte';
+	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
+	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { createAppModel } from './data';
-	// import { EXAMPLE_DATA } from './example.data';
+	import { EXAMPLE_DATA } from './example.data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
@@ -14,7 +15,6 @@
 	let frames: FramesMap;
 
 	const data = createAppModel();
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -38,7 +38,8 @@
 		data.select(e.detail);
 	}
 
-	function onPreviewAreaTouch(e: CustomEvent<Point>) {
+	// TODO this should be inside preview area
+	function onContentAreaTouch(e: CustomEvent<Point>) {
 		const x = e.detail.x;
 		const y = e.detail.y;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
@@ -48,6 +49,13 @@
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
 	}
+
+	// [DEBUG]
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	onMount(() => {
+		data.select('btn-mid/green/hover');
+	});
+	// [/DEBUG]
 </script>
 
 <main>
@@ -55,15 +63,15 @@
 		<Toolbar on:files-uploaded={onFilesUploaded} />
 	</div>
 	<div class="left-area">
-		<ContentsPanel nodes={root} selected={selection?.path} on:select={onNodeSelected} />
+		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
-	<div class="preview-area">
-		<PreviewArea imgSrc={imageUrl} {selection} on:touch={onPreviewAreaTouch} />
+	<div class="selection-area">
+		<ContentArea imgSrc={imageUrl} {selection} on:select={onContentAreaTouch} />
+		<FrameProperties {selection} />
 	</div>
-	<PropertiesPanel {selection} />
 </main>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import 'variables.scss';
 
 	main {
@@ -95,7 +103,7 @@
 			z-index: 100;
 		}
 
-		.preview-area {
+		.selection-area {
 			top: $topbar-height;
 			left: $left-panel-width;
 			bottom: 0;

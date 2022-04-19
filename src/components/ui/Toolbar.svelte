@@ -19,8 +19,8 @@
 			image = files[0];
 		}
 
-		if (!(image.type === 'image/png' && atlas.type === 'application/json')) {
-			throw new Error('Expected .png .json files.');
+		if (!(image.type === 'image/png' || image.type === 'image/jpeg') || atlas.type !== 'application/json') {
+			throw new Error('Expected .png/.jpg and .json files.');
 		}
 
 		atlas
@@ -39,7 +39,7 @@
 <div class="toolbar">
 	<div class="menu">
 		<label class="custom-file-upload">
-			<input id="file-input" type="file" name="file" accept=".json,.png" multiple on:change={onFileUploaded} />
+			<input id="file-input" type="file" name="file" accept=".json,.png,.jpg" multiple on:change={onFileUploaded} />
 			Open Atlas Files
 		</label>
 	</div>

@@ -13,25 +13,19 @@
 </script>
 
 <div class="content-area">
-	<!--
-		TODO I really don't like this. It should be a proper tab pane disabling all the other tabs,
-		not just making them invisible like it is now. This certanly hurts the performance.
-	-->
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
 		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
 		<div class="tab title" class:selected={selectedTab === 2} on:click={() => (selectedTab = 2)}>Animation</div>
 	</div>
 	<div class="tab-content">
-		<div class:selected={selectedTab === 0}>
+		{#if selectedTab == 0}
 			<AtlasView {imgSrc} {selection} on:select />
-		</div>
-		<div class:selected={selectedTab === 1}>
-			<FrameView {imgSrc} {selection} selected={selectedTab === 1} />
-		</div>
-		<div class:selected={selectedTab === 2}>
-			<MultiFrameView {imgSrc} {selection} selected={selectedTab === 2} />
-		</div>
+		{:else if selectedTab == 1}
+			<FrameView {imgSrc} {selection} />
+		{:else}
+			<MultiFrameView {imgSrc} {selection} />
+		{/if}
 	</div>
 </div>
 
@@ -70,7 +64,7 @@
 				color: rgba(white, 0.3);
 				border-color: #1b1b1b;
 				box-shadow: 0 4px 10px $shadow-color inset;
-				
+
 				&.selected {
 					box-shadow: none;
 					background-color: $primary-color;
@@ -85,15 +79,9 @@
 			left: 0;
 			bottom: 0;
 			right: 0;
-
-			& > div {
-				width: 100%;
-				height: 100%;
-				display: none;
-				&.selected {
-					display: block;
-				}
-			}
+			width: 100%;
+			height: 100%;
+			display: block;
 		}
 	}
 </style>

@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { NineSliceModel, Rect } from 'model/atlas.model';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	export let scale = 1;
 	export let model: NineSliceModel;
 	export let frame: Rect;
-	export let selected = false;
 	const dispatch = createEventDispatcher();
 
 	let propId: string;
@@ -75,18 +74,18 @@
 			model[propId] = handleDrag(model[propId] + direction * (e.shiftKey ? 10 : 1), max);
 			dispatch('update', model);
 			e.preventDefault();
+			e.stopImmediatePropagation();
 		}
 	}
 
-	$: {
-		// TODO find if svelt already have a controller for this
-		if (selected) {
-			document.addEventListener('keydown', onKeyDown);
-		} else {
-			document.removeEventListener('keydown', onKeyDown);
-		}
+	onMount(() => {
+		document.addEventListener('keydown', onKeyDown);
 		handleScale = `transform:scale(${1 / scale})`;
-	}
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('keydown', onKeyDown);
+	});
 </script>
 
 <div class="nine-slice-edit">

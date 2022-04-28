@@ -6,7 +6,6 @@
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
-	export let selected: boolean;
 
 	let width = 100;
 	let height = 100;
@@ -31,7 +30,7 @@
 	onMount(() => {
 		context = canvas.getContext('2d');
 		frames = selection?.items.map((e) => e.frame);
-		console.log(frames)
+		console.log(frames);
 		if (frames) {
 			animating = true;
 			rafId = requestAnimationFrame(update);

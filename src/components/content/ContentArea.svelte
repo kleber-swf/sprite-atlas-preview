@@ -7,8 +7,9 @@
 	export let imgSrc: string;
 	export let selection: SelectionModel;
 
-	// DEBUG
+	// [DEBUG]
 	let selectedTab = 0;
+	// [/DEBUG]
 </script>
 
 <div class="content-area">

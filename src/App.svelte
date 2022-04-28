@@ -1,4 +1,7 @@
 <script lang="ts">
+import { EXAMPLE_DATA } from 'example.data';
+import { onMount } from 'svelte';
+
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
@@ -49,10 +52,10 @@
 	}
 
 	// [DEBUG]
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
-	// onMount(() => {
-	// 	data.select('btn-mid/green/hover');
-	// });
+	data.setData('./test/game-ui.png', EXAMPLE_DATA);
+	onMount(() => {
+		data.select('btn-mid/green');
+	});
 	// [/DEBUG]
 </script>
 

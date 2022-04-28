@@ -79,6 +79,7 @@
 	}
 
 	$: {
+		// TODO find if svelt already have a controller for this
 		if (selected) {
 			document.addEventListener('keydown', onKeyDown);
 		} else {

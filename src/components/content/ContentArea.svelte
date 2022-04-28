@@ -12,6 +12,10 @@
 </script>
 
 <div class="content-area">
+	<!--
+		TODO I really don't like this. It should be a proper tab pane disabling all the other tabs,
+		not just making them invisible like it is now. This certanly hurts the performance.
+	-->
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
 		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
@@ -61,16 +65,15 @@
 				align-items: center;
 				justify-content: center;
 				user-select: none;
-				border-bottom: 2px solid;
 
 				color: rgba(white, 0.3);
 				border-color: #1b1b1b;
 				box-shadow: 0 4px 10px $shadow-color inset;
-
+				
 				&.selected {
+					box-shadow: none;
 					background-color: $primary-color;
 					color: $on-primary;
-					border-color: transparent;
 				}
 			}
 		}

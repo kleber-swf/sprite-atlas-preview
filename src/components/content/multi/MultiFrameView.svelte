@@ -18,7 +18,7 @@
 
 	let lastTime = 0;
 	let currentTime = 0;
-	let fps = 10;
+	let fps = 30;
 	let freq = 1000 / fps;
 
 	let animating = false;
@@ -37,7 +37,21 @@
 		lastTime = currentTime;
 		frameIndex = (frameIndex + 1) % frames.length;
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(image, 0, 0);
+		const frame = frames[frameIndex].frame;
+		const source = frames[frameIndex].spriteSourceSize;
+
+		// const tx = (canvas.width - fw) * 0.5;
+		// const ty = (canvas.width - fw) * 0.5;
+		const s = source.h / source.w;
+		const tx = source.x;
+		const ty = source.y;
+		console.log(scale);
+		const tw = frame.w;
+		const th = frame.h * s;
+
+		context.drawImage(image, frame.x, frame.y, frame.w, frame.h, tx, ty, tw, th);
+		// context.strokeStyle = '#FF0';
+		// context.strokeRect(tx, ty, tw, th);
 	}
 
 	onMount(() => {
@@ -51,9 +65,9 @@
 
 	$: {
 		frames = selection?.items.map((e) => e.frame);
-		if (frames && imgSrc) {
-			image = new Image();
-			image.src = imgSrc;
+		if (!image) image = new Image();
+		if (frames) {
+			if (imgSrc) image.src = imgSrc;
 		}
 		// TEMP
 
@@ -76,8 +90,8 @@
 	}
 
 	canvas {
-		width: 2000px;
-		height: 2000px;
+		width: 1000px;
+		height: 1000px;
 		border: 2px solid red;
 	}
 </style>

@@ -1,13 +1,15 @@
-import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import typescript from '@rollup/plugin-typescript';
+import path from 'path';
+import copy from 'rollup-plugin-copy';
+import css from 'rollup-plugin-css-only';
 import livereload from 'rollup-plugin-livereload';
+import svelte from 'rollup-plugin-svelte';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
-import typescript from '@rollup/plugin-typescript';
-import css from 'rollup-plugin-css-only';
-import copy from 'rollup-plugin-copy';
-import path from 'path';
+import * as pkg from './package.json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -41,6 +43,12 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			delimiters: ['%', '%'],
+			include: 'src/data.ts',
+			preventAssignment: true,
+			VERSION: pkg.version,
+		}),
 		svelte({
 			preprocess: sveltePreprocess({
 				sourceMap: !production,

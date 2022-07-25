@@ -1,11 +1,15 @@
-import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import typescript from '@rollup/plugin-typescript';
+import path from 'path';
+import copy from 'rollup-plugin-copy';
+import css from 'rollup-plugin-css-only';
 import livereload from 'rollup-plugin-livereload';
+import svelte from 'rollup-plugin-svelte';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
-import typescript from '@rollup/plugin-typescript';
-import css from 'rollup-plugin-css-only';
+import * as pkg from './package.json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -33,14 +37,23 @@ function serve() {
 export default {
 	input: 'src/main.ts',
 	output: {
-		sourcemap: true,
+		sourcemap: !production,
 		format: 'iife',
 		name: 'app',
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			delimiters: ['%', '%'],
+			include: 'src/data.ts',
+			preventAssignment: true,
+			VERSION: pkg.version,
+		}),
 		svelte({
-			preprocess: sveltePreprocess({ sourceMap: !production }),
+			preprocess: sveltePreprocess({
+				sourceMap: !production,
+				scss: { includePaths: [path.join(__dirname, './src')] }
+			}),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
@@ -49,6 +62,20 @@ export default {
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
+
+		copy({
+			copyOnce: true,
+			targets: [
+				{
+					src: 'node_modules/bootstrap/dist/css/bootstrap.min.css*',
+					dest: 'public/vendor'
+				},
+				{
+					src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js*',
+					dest: 'public/vendor'
+				}
+			]
+		}),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -75,7 +102,18 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser({
+			format: { comments: false, },
+			compress: {
+				arrows: true,
+				arguments: true,
+				booleans_as_integers: true,
+				collapse_vars: true,
+				dead_code: false,
+				drop_console: true,
+				drop_debugger: true,
+			},
+		}),
 	],
 	watch: {
 		clearScreen: false

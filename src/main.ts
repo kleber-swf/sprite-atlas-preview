@@ -3,8 +3,5 @@ import { initFirebase } from './firebase';
 
 initFirebase();
 
-const app = new App({
-	target: document.body,
-});
-
+const app = new App({ target: document.body });
 export default app;

@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
-import type { AppModel, SelectionItem, SelectionModel, TreeNodeModel } from './model/app.model';
+import type { AppModel, SelectionItem, TreeNodeModel } from './model/app.model';
 import type { AtlasDataModel, FramesMap } from './model/atlas.model';
+
+export const VERSION = '%VERSION%';
 
 export function createAppModel() {
 	const { subscribe, update, set } = writable<AppModel>();

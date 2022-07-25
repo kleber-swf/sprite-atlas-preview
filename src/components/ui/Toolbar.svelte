@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { VERSION } from 'data';
 	import { createEventDispatcher } from 'svelte';
 
 	const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -45,6 +46,10 @@
 		</label>
 	</div>
 	<div class="atlas-name">{atlasName}</div>
+	<a href="https://github.com/kleber-swf/sprite-atlas-preview" target="_blank" rel="noopener noreferrer">
+		<span class="version">version {VERSION}</span>
+		<i class="icon-github" /></a
+	>
 </div>
 
 <style lang="scss">
@@ -81,6 +86,22 @@
 		.atlas-name {
 			text-align: center;
 			flex: 1;
+		}
+
+		a {
+			color: white;
+			opacity: 0.5;
+			text-decoration: none;
+			margin: 4px 8px;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			.version {
+				font-size: 80%;
+				font-style: italic;
+			}
 		}
 	}
 </style>

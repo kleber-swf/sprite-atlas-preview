@@ -1,6 +1,6 @@
 {
   "name": "sprite-atlas-preview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/kleber-swf/sprite-atlas-preview"
@@ -20,7 +20,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "clear": "rm -rf public/build public/test public/vendor"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -35,7 +36,7 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0",
+    "svelte": "^3.49.0",
     "svelte-check": "^2.0.0",
     "svelte-preprocess": "^4.10.4",
     "tslib": "^2.0.0",

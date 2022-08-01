@@ -2,7 +2,7 @@
 	import { VERSION } from 'data';
 	import { createEventDispatcher } from 'svelte';
 
-	const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp'];
+	const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 	const dispatch = createEventDispatcher();
 	let atlasName = '';
 
@@ -41,7 +41,7 @@
 <div class="toolbar">
 	<div class="menu">
 		<label class="custom-file-upload">
-			<input id="file-input" type="file" name="file" accept=".json,.png,.jpg,.webp" multiple on:change={onFileUploaded} />
+			<input id="file-input" type="file" name="file" accept=".json,.png,.jpg,.webp,.gif" multiple on:change={onFileUploaded} />
 			Open Atlas Files
 		</label>
 	</div>

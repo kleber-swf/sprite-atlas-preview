@@ -27,13 +27,13 @@ Supported **Image** formats:
 
 ## Atlas View
 
-![](docs/screenshots/atlas-view-01.webp | width=800)
+<img src="docs/screenshots/atlas-view-01.webp" alt="Atlas view" width="600px">
 
 The main section of the tool. This shows the entire atlas file as is and make possible to select individual frames.
 
 ### Frame selection
 
-[SCREENSHOT]
+<img src="docs/screenshots/frame-selection-01.webp" alt="Frame selection" width="160px">
 
 You can look for frames inside the atlas and select them. This make the process of finding individual frames easier.
 
@@ -46,18 +46,19 @@ The selected frame is highlighted and its name is shown. You can select the fram
 
 ## Properties panel
 
-[SCREENSHOT]
+<img src="docs/screenshots/properties-panel-01.webp" alt="Properties panel" width="160px">
 
 A collepsable panel that shows the selected frame properties like its location and whether it's rotated or trimmed, for example.
 
 ## Frames Tree
 
-[SCREENSHOT]
+<img src="docs/screenshots/frames-tree-01.webp" alt="Frames tree" width="160px">
 
 A tree showing frame names and hierarchy. You can select individual frames or frame groups.
 
 ### Frame groups
-[SCREENSHOT]
+
+![Frame groups](docs/screenshots/frame-groups-01.webp)
 
 Groups are made by naming the frames with the `/` separator. 
 
@@ -83,13 +84,13 @@ You can organize your assets like this to easier maintainance and integration.
 
 ## Frame View
 
-[SCREENSHOT]
+![Frame view](docs/screenshots/frame-view-01.webp)
 
 View the selected frame isolated. Like the [Atlas View](#atlas-view) you can zoom in/out and pan the area.
 
 ### 9-Slice editor
 
-[SCREENSHOT]
+<img src="docs/screenshots/9-slice-editor-01.webp" alt="9-slice editor" width="160px">
 
 Edit 9-slice information of the selected frame by dragging the dashed lines around it.
 
@@ -97,7 +98,7 @@ Edit 9-slice information of the selected frame by dragging the dashed lines arou
 
 ### 9-slice panel
 
-[SCREENSHOT]
+<img src="docs/screenshots/9-slice-panel-01.webp" alt="9-slice editor" width="160px">
 
 This panel shows the 9-slice properties of the selected frame.
 

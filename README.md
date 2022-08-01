@@ -1,15 +1,18 @@
 # Sprite Atlas Preview
 
-A simple tool to visualise several types of sprite atlas.
+A simple tool to visualize several types of sprite atlas.
 
 https://sprite-atlas-preview.web.app/
 
-* Features
-* How to use it
-* Development
-* TODO
 
 ![Editor](docs/screenshots/full-01.webp)
+
+# Table of Contents
+
+* [Features](#features)
+* [How to use it](#how-to-use-it)
+* [Development](#development)
+* [TODO](#todo)
 
 # Features
 
@@ -31,7 +34,7 @@ Supported **Image** formats:
 
 The main section of the tool. This shows the entire atlas file as is and make possible to select individual frames.
 
-### Frame selection
+### Frame Selection
 
 <img src="docs/screenshots/frame-selection-01.webp" alt="Frame selection" width="160px">
 
@@ -39,12 +42,12 @@ You can look for frames inside the atlas and select them. This make the process 
 
 The selected frame is highlighted and its name is shown. You can select the frame directly on the [Atlas View](#atlas-view) or on the [Frames Tree](#frames-tree).
 
-### Other features
+### Other Features
 
 * **Zoom**: zoom in and out the atlas with the `ctrl + mouse wheel`.
 * **Pan**: pan the atlas view with `mouse middle button`
 
-## Properties panel
+## Properties Panel
 
 <img src="docs/screenshots/properties-panel-01.webp" alt="Properties panel" width="160px">
 
@@ -56,7 +59,7 @@ A collepsable panel that shows the selected frame properties like its location a
 
 A tree showing frame names and hierarchy. You can select individual frames or frame groups.
 
-### Frame groups
+### Frame Groups
 
 ![Frame groups](docs/screenshots/frame-groups-01.webp)
 
@@ -88,7 +91,7 @@ You can organize your assets like this to easier maintainance and integration.
 
 View the selected frame isolated. Like the [Atlas View](#atlas-view) you can zoom in/out and pan the area.
 
-### 9-Slice editor
+### 9-Slice Editor
 
 <img src="docs/screenshots/9-slice-editor-01.webp" alt="9-slice editor" width="160px">
 
@@ -96,13 +99,13 @@ Edit 9-slice information of the selected frame by dragging the dashed lines arou
 
 > This is a preview-only feature for now and can't save the information into the file. Use it to configure your development tool. 
 
-### 9-slice panel
+### 9-slice Panel
 
 <img src="docs/screenshots/9-slice-panel-01.webp" alt="9-slice editor" width="160px">
 
 This panel shows the 9-slice properties of the selected frame.
 
-# How to use it
+# How To Use It
 
 Click on the button "OPEN ATLAS FILES" to open the dialog. Find your atlas files and select both to open: the .json AND the .png/.jpg/.webp
 
@@ -162,14 +165,3 @@ The following commands are useful to test your code.
 	* background pattern
 	* show full frame names in atlas view
 * standalone version (?)
-
----
-
-> TODO:
-> * badges
-> * logo and icon
-> * screenshot
-> * proper description
-> * how to use
-> * how to develop
-

@@ -6,6 +6,7 @@
 	const dispatch = createEventDispatcher();
 
 	let atlasName = '';
+	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');
 
 	function onFileUploaded(ev: Event) {
 		FileUploader.upload((ev.target as HTMLInputElement).files)
@@ -20,7 +21,7 @@
 <div class="toolbar">
 	<div class="menu">
 		<label class="custom-file-upload">
-			<input id="file-input" type="file" name="file" accept=".json,.png,.jpg,.webp,.gif" multiple on:change={onFileUploaded} />
+			<input id="file-input" type="file" name="file" {accept} multiple on:change={onFileUploaded} />
 			Open Atlas Files
 		</label>
 	</div>

@@ -1,5 +1,3 @@
-const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
-
 export interface AtlasInfo {
 	name: string;
 	atlas: any;
@@ -7,8 +5,11 @@ export interface AtlasInfo {
 }
 
 export class FileUploader {
+	public static readonly SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+	public static readonly SUPPORTED_EXTENSIONS = ['.json', '.png', '.jpg', '.jpeg', '.webp', '.gif'];
+
 	public static async upload(files: FileList): Promise<AtlasInfo> {
-		if (files.length !== 2) throw new Error(`You need two files: a json and a ${SUPPORTED_IMAGES.join('/')} image`);
+		if (files.length !== 2) throw new Error(`You need two files: a json and a ${FileUploader.SUPPORTED_IMAGES.join('/')} image`);
 
 		let atlas: File;
 		let image: File;
@@ -21,7 +22,7 @@ export class FileUploader {
 			image = files.item(0);
 		}
 
-		if (!SUPPORTED_IMAGES.includes(image.type) || atlas.type !== 'application/json') {
+		if (!FileUploader.SUPPORTED_IMAGES.includes(image.type) || atlas.type !== 'application/json') {
 			throw new Error('Expected .png/.jpg and .json files.');
 		}
 

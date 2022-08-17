@@ -1,38 +1,17 @@
 <script lang="ts">
+	import { FileUploader } from 'controller/file.uploader';
 	import { VERSION } from 'data';
 	import { createEventDispatcher } from 'svelte';
 
-	const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 	const dispatch = createEventDispatcher();
+
 	let atlasName = '';
 
 	function onFileUploaded(ev: Event) {
-		const e = (ev.target as HTMLInputElement).files;
-		if (e.length !== 2) throw new Error('You need two files: a .png and a .json');
-		const files = [e.item(0), e.item(1)];
-
-		let atlas: File;
-		let image: File;
-		if (files[0].type === 'application/json') {
-			atlas = files[0];
-			image = files[1];
-		} else {
-			atlas = files[1];
-			image = files[0];
-		}
-
-		if (!SUPPORTED_IMAGES.includes(image.type) || atlas.type !== 'application/json') {
-			throw new Error('Expected .png/.jpg and .json files.');
-		}
-
-		atlas
-			.text()
-			.then((content) => {
-				atlasName = atlas.name.substring(0, atlas.name.lastIndexOf('.'));
-				dispatch('files-uploaded', {
-					atlas: JSON.parse(content),
-					imageUrl: URL.createObjectURL(image),
-				});
+		FileUploader.upload((ev.target as HTMLInputElement).files)
+			.then((result) => {
+				atlasName = result.name;
+				dispatch('files-uploaded', result);
 			})
 			.catch(console.error);
 	}

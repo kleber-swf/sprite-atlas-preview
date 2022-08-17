@@ -53,8 +53,8 @@
 	}
 </script>
 
-<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mouseup={onMouseUp}>
-	<div class="container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
+<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
+	<div class="container" style="min-width:{containerWidth}px; min-height:{containerHeight}px" on:click={onMouseUp}>
 		<div class="internal" style="transform:scale({scale})">
 			<div class="content">
 				<slot />

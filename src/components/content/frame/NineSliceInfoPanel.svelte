@@ -1,7 +1,15 @@
 <script lang="ts">
-	import type { NineSliceModel } from 'model/atlas.model';
+	import type { NineSliceModel, Rect } from 'model/atlas.model';
 	import PropertiesPanel from '../../ui/properties/PropertiesPanel.svelte';
-	export let model: NineSliceModel;
+	export let model: NineSliceModel & { width?: number; height?: number };
+	export let frame: Rect;
+
+	$: {
+		if (model && frame) {
+			model.width = frame.w - (model.left + model.right);
+			model.height = frame.h - (model.top + model.bottom);
+		}
+	}
 </script>
 
 <div class="nine-slice-info-panel">

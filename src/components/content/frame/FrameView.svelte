@@ -50,7 +50,7 @@
 	</ContentView>
 
 	{#if frame}
-		<NineSliceInfoPanel model={frame.slice} />
+		<NineSliceInfoPanel model={frame.slice} frame={rect} />
 	{/if}
 </div>
 

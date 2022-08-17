@@ -17,7 +17,12 @@
 	const dispatch = createEventDispatcher();
 
 	function selectFrame(e: MouseEvent) {
+		e.stopImmediatePropagation();
 		dispatch('select', { x: e.offsetX, y: e.offsetY });
+	}
+
+	function deselectFrames() {
+		dispatch('select', null);
 	}
 
 	function onImageLoded(e: Event) {
@@ -38,37 +43,11 @@
 		root.removeEventListener('scroll', centerImage);
 	}
 
-	function onMouseWheel(e: WheelEvent) {
-		if (!e.ctrlKey) return;
-		scale = Math.max(0.1, Math.min(5, scale - e.deltaY * 0.001));
-		e.preventDefault();
-		e.stopImmediatePropagation();
-	}
-
-	function onMouseDown(e: MouseEvent) {
-		if (e.button === 1) {
-			document.addEventListener('mouseup', stopPanning);
-			document.addEventListener('mousemove', pan);
-		}
-	}
-
-	function stopPanning() {
-		document.removeEventListener('mouseup', stopPanning);
-		document.removeEventListener('mousemove', pan);
-	}
-
-	function pan(e: MouseEvent) {
-		root.scrollTop -= e.movementY;
-		root.scrollLeft -= e.movementX;
-		e.preventDefault();
-	}
-
 	function onScaleChanged(e: CustomEvent<number>) {
 		scale = e.detail;
 	}
 
 	$: {
-		console.log(image?.clientHeight);
 		if (image) {
 			containerWidth = image.clientWidth;
 			containerHeight = image.clientHeight;
@@ -79,7 +58,7 @@
 	}
 </script>
 
-<ContentView width={containerWidth} height={containerHeight} {scale} on:scaleChanged={onScaleChanged}>
+<ContentView width={containerWidth} height={containerHeight} {scale} on:scaleChanged={onScaleChanged} on:unselect={deselectFrames}>
 	<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
 	{#if selection}
 		{#each selection.items as item (item.path)}

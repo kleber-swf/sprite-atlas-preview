@@ -21,6 +21,13 @@
 		e.stopImmediatePropagation();
 	}
 
+	function onMouseUp(e: MouseEvent) {
+		if (e.button === 0 && !e.ctrlKey) {
+			e.stopImmediatePropagation();
+			dispatch('unselect');
+		}
+	}
+
 	function onMouseDown(e: MouseEvent) {
 		if (e.button === 1 && !e.ctrlKey) {
 			document.addEventListener('mouseup', stopPanning);
@@ -28,9 +35,10 @@
 		}
 	}
 
-	function stopPanning() {
+	function stopPanning(e: MouseEvent) {
 		document.removeEventListener('mouseup', stopPanning);
 		document.removeEventListener('mousemove', pan);
+		e.stopImmediatePropagation();
 	}
 
 	function pan(e: MouseEvent) {
@@ -45,7 +53,7 @@
 	}
 </script>
 
-<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
+<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown} on:mouseup={onMouseUp}>
 	<div class="container" style="min-width:{containerWidth}px; min-height:{containerHeight}px">
 		<div class="internal" style="transform:scale({scale})">
 			<div class="content">

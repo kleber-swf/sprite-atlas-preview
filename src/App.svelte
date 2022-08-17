@@ -38,10 +38,14 @@
 
 	// TODO this should be inside preview area
 	function onContentAreaTouch(e: CustomEvent<Point>) {
-		const x = e.detail.x;
-		const y = e.detail.y;
-		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-		data.select(frame?.path);
+		if (e.detail) {
+			const x = e.detail.x;
+			const y = e.detail.y;
+			const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
+			data.select(frame?.path);
+		} else {
+			data.select(null);
+		}
 	}
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {

@@ -9,7 +9,11 @@
 <div class="tree-view">
 	<div class="title">Frames</div>
 	<div class="content">
-		<TreeNode {...nodes} on:select {selected} />
+		{#if nodes}
+			{#each nodes.children as node}
+				<TreeNode {...node} on:select {selected} />
+			{/each}
+		{/if}
 	</div>
 </div>
 

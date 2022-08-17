@@ -3,7 +3,7 @@
 
 	export let name = '';
 	export let children = [];
-	export let indent = 0;
+	export let indent = 12;
 	export let path = '';
 	export let selected: string;
 
@@ -12,8 +12,10 @@
 
 	const dispatch = createEventDispatcher();
 
-	function selectNode() {
+	function selectNode(e: MouseEvent) {
+		console.log('select node', path);
 		dispatch('select', path);
+		e.stopImmediatePropagation();
 	}
 
 	let isSelected: boolean;
@@ -25,26 +27,37 @@
 	}
 </script>
 
-<div bind:this={element} class="tree-node {isSelected ? 'selected' : ''}" style="padding-left: {indent}px" on:click={selectNode}>
-	{name}
-</div>
+<div bind:this={element} class="tree-node" class:selected={isSelected} on:click={selectNode}>
+	<div class="node-name" style="padding-left: {indent}px">{name}</div>
 
-{#if open}
-	{#each children as child (child.path)}
-		<svelte:self {...child} indent={indent + 12} {selected} on:select />
-	{/each}
-{/if}
+	{#if open}
+		<div class="children">
+			{#each children as child (child.path)}
+				<svelte:self {...child} indent={indent + 12} {selected} on:select />
+			{/each}
+		</div>
+	{/if}
+</div>
 
 <style lang="scss">
 	@import 'variables';
 	.tree-node {
 		cursor: pointer;
 		user-select: none;
-		padding: 4px;
 
 		&.selected {
-			color: $on-primary;
-			background-color: $primary-color;
+			& > .node-name {
+				background-color: $primary;
+				color: $on-primary;
+			}
+
+			.children .node-name {
+				color: rgba($on-primary, 0.6);
+			}
+		}
+
+		.node-name {
+			padding: 4px;
 		}
 	}
 </style>

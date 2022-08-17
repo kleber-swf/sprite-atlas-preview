@@ -63,7 +63,7 @@
 				box-shadow: 0 4px 10px $shadow-color inset;
 
 				&.selected {
-					background-color: $primary-color;
+					background-color: $primary;
 					color: $on-primary;
 					border-color: transparent;
 				}

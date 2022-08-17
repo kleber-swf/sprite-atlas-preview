@@ -80,7 +80,7 @@
 			right: 12px;
 			transition: all 250ms;
 			&:hover {
-				color: $primary-color;
+				color: $primary;
 			}
 		}
 	}

@@ -70,6 +70,7 @@
 				color: rgba(white, 0.4);
 				border-radius: 5px 5px 0 0;
 				margin-right: 2px;
+				transition: all $transition-duration;
 
 				&.selected {
 					box-shadow: none;

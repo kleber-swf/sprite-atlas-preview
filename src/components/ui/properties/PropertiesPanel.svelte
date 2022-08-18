@@ -42,12 +42,12 @@
 			box-shadow: $shadow-level-1;
 			border-radius: 4px;
 			opacity: 0.8;
-			transition: opacity 0.25s;
+			transition: opacity $transition-duration;
 			width: 100%;
 			position: relative;
 
 			&:hover {
-				opacity: 0.95;
+				opacity: 1;
 			}
 		}
 
@@ -58,6 +58,11 @@
 			.close {
 				color: #fff;
 				text-shadow: 0 0px 9px #0ff;
+				opacity: 0.5;
+				&:hover {
+					color: #fff;
+					opacity: 1;
+				}
 			}
 		}
 
@@ -78,7 +83,7 @@
 			position: absolute;
 			top: 8px;
 			right: 12px;
-			transition: all 250ms;
+			transition: all $transition-duration;
 			&:hover {
 				color: $primary;
 			}

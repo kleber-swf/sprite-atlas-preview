@@ -76,8 +76,6 @@
 <style lang="scss">
 	@import 'variables';
 
-	$anim-duration: 250ms;
-
 	.tree-node {
 		user-select: none;
 		cursor: pointer;
@@ -95,7 +93,7 @@
 				margin-right: 2px;
 				text-align: center;
 				opacity: 0.5;
-				transition: all $anim-duration;
+				transition: all $transition-duration;
 
 				.icon {
 					visibility: hidden;

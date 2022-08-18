@@ -1,8 +1,8 @@
-$primary-color: #375a7f;
+$primary: #375a7f;
 $on-primary: #dee2e6;
 $text-color: rgba(#fff, 0.4);
 
-$background: rgb(34, 34, 34);
+$background: #222222;
 $dark-background: #1b1b1b;
 
 $shadow-color: rgba(#101010, 80%);
@@ -12,3 +12,5 @@ $shadow-level-1: 0 0 12px $shadow-color;
 $topbar-height: 25px;
 $left-panel-width: 320px;
 $panel-title-height: 24px;
+
+$transition-duration: 250ms;

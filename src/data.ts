@@ -54,9 +54,11 @@ export function createAppModel() {
 
 		select(path: string) {
 			update(data => {
-				data.selection = path
-					? { path, items: getItemForPath(data, path) }
-					: null;
+				if (data) {
+					data.selection = path
+						? { path, items: getItemForPath(data, path) }
+						: null;
+				}
 				return data;
 			});
 		}

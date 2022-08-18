@@ -114,7 +114,7 @@
 			position: absolute;
 			background-color: transparent;
 			opacity: 0.5;
-			transition: opacity 250ms;
+			transition: opacity $transition-duration;
 
 			&::after {
 				content: '';

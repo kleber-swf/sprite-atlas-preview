@@ -1,38 +1,18 @@
 <script lang="ts">
+	import { FileUploader } from 'controller/file.uploader';
 	import { VERSION } from 'data';
 	import { createEventDispatcher } from 'svelte';
 
-	const SUPPORTED_IMAGES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 	const dispatch = createEventDispatcher();
+
 	let atlasName = '';
+	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');
 
 	function onFileUploaded(ev: Event) {
-		const e = (ev.target as HTMLInputElement).files;
-		if (e.length !== 2) throw new Error('You need two files: a .png and a .json');
-		const files = [e.item(0), e.item(1)];
-
-		let atlas: File;
-		let image: File;
-		if (files[0].type === 'application/json') {
-			atlas = files[0];
-			image = files[1];
-		} else {
-			atlas = files[1];
-			image = files[0];
-		}
-
-		if (!SUPPORTED_IMAGES.includes(image.type) || atlas.type !== 'application/json') {
-			throw new Error('Expected .png/.jpg and .json files.');
-		}
-
-		atlas
-			.text()
-			.then((content) => {
-				atlasName = atlas.name.substring(0, atlas.name.lastIndexOf('.'));
-				dispatch('files-uploaded', {
-					atlas: JSON.parse(content),
-					imageUrl: URL.createObjectURL(image),
-				});
+		FileUploader.upload((ev.target as HTMLInputElement).files)
+			.then((result) => {
+				atlasName = result.name;
+				dispatch('files-uploaded', result);
 			})
 			.catch(console.error);
 	}
@@ -40,15 +20,15 @@
 
 <div class="toolbar">
 	<div class="menu">
-		<label class="custom-file-upload">
-			<input id="file-input" type="file" name="file" accept=".json,.png,.jpg,.webp,.gif" multiple on:change={onFileUploaded} />
-			Open Atlas Files
+		<label class="button">
+			<input id="file-input" type="file" name="file" {accept} multiple on:change={onFileUploaded} />
+			<i class="icon-folder-open" /><span>Open</span>
 		</label>
 	</div>
 	<div class="atlas-name">{atlasName}</div>
 	<a href="https://github.com/kleber-swf/sprite-atlas-preview" target="_blank" rel="noopener noreferrer">
 		<span class="version">version {VERSION}</span>
-		<i class="icon-github" /></a
+		<i class="icon-github-circled" /></a
 	>
 </div>
 
@@ -65,8 +45,8 @@
 
 		.menu {
 			width: $left-panel-width;
-			& > * {
-				padding: 4px 8px;
+			.button {
+				padding: 4px 12px 4px 8px;
 				font-size: 10px;
 				font-weight: bold;
 				text-transform: uppercase;
@@ -79,6 +59,11 @@
 
 				& input[type='file'] {
 					display: none;
+				}
+
+				i {
+					padding: 0 4px;
+					font-size: 12px;
 				}
 			}
 		}

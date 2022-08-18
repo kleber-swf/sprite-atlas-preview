@@ -6,14 +6,19 @@
 	export let imgSrc: string;
 	export let selection: SelectionModel;
 
-	// DEBUG
 	let selectedTab = 0;
+
+	function selectTab(index: number, enabled: boolean) {
+		if (enabled) selectedTab = index;
+	}
+
+	$: hasSource = !!imgSrc;
 </script>
 
 <div class="content-area">
 	<div class="tabs">
-		<div class="tab title" class:selected={selectedTab === 0} on:click={() => (selectedTab = 0)}>Atlas</div>
-		<div class="tab title" class:selected={selectedTab === 1} on:click={() => (selectedTab = 1)}>Frame</div>
+		<div class="tab title" class:selected={selectedTab === 0} on:click={() => selectTab(0, true)}>Atlas</div>
+		<div class="tab title" class:selected={selectedTab === 1} class:disabled={!hasSource} on:click={() => selectTab(1, hasSource)}>Frame</div>
 	</div>
 	<div class="tab-content">
 		<div class:selected={selectedTab === 0}>
@@ -27,6 +32,8 @@
 
 <style lang="scss">
 	@import 'variables.scss';
+
+	$tabs-height: $panel-title-height + 6px;
 
 	.content-area {
 		width: 100%;
@@ -42,37 +49,44 @@
 			top: 0;
 			left: 0;
 			right: 0;
-			height: $panel-title-height;
-			box-shadow: $shadow-level-1;
+			height: $tabs-height;
+			box-shadow: 0 4px 10px $shadow-color inset;
 			display: flex;
-			align-items: stretch;
-			justify-content: stretch;
+			align-items: flex-end;
+			justify-content: flex-start;
+			background-color: $dark-background;
 			z-index: 100;
+			border-bottom: 2px solid $primary;
 
 			& > div.tab {
-				flex: 0.5;
+				width: 200px;
 				text-align: center;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				user-select: none;
-				border-bottom: 2px solid;
-
-				color: rgba(white, 0.3);
-				border-color: #1b1b1b;
-				box-shadow: 0 4px 10px $shadow-color inset;
+				padding: 2px;
+				background-color: lighten($background, 5);
+				color: rgba(white, 0.4);
+				border-radius: 5px 5px 0 0;
+				margin-right: 2px;
+				transition: all $transition-duration;
 
 				&.selected {
-					background-color: $primary-color;
+					box-shadow: none;
+					background-color: $primary;
 					color: $on-primary;
-					border-color: transparent;
+				}
+
+				&.disabled {
+					opacity: 0.5;
 				}
 			}
 		}
 
 		.tab-content {
 			position: absolute;
-			top: $panel-title-height;
+			top: $tabs-height;
 			left: 0;
 			bottom: 0;
 			right: 0;

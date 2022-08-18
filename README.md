@@ -165,3 +165,4 @@ The following commands are useful to test your code.
 	* background pattern
 	* show full frame names in atlas view
 * standalone version (?)
+* update screenshots

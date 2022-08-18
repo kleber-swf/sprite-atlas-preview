@@ -20,15 +20,15 @@
 
 <div class="toolbar">
 	<div class="menu">
-		<label class="custom-file-upload">
+		<label class="button">
 			<input id="file-input" type="file" name="file" {accept} multiple on:change={onFileUploaded} />
-			Open Atlas Files
+			<i class="icon-folder-open" /><span>Open</span>
 		</label>
 	</div>
 	<div class="atlas-name">{atlasName}</div>
 	<a href="https://github.com/kleber-swf/sprite-atlas-preview" target="_blank" rel="noopener noreferrer">
 		<span class="version">version {VERSION}</span>
-		<i class="icon-github" /></a
+		<i class="icon-github-circled" /></a
 	>
 </div>
 
@@ -45,8 +45,8 @@
 
 		.menu {
 			width: $left-panel-width;
-			& > * {
-				padding: 4px 8px;
+			.button {
+				padding: 4px 12px 4px 8px;
 				font-size: 10px;
 				font-weight: bold;
 				text-transform: uppercase;
@@ -59,6 +59,11 @@
 
 				& input[type='file'] {
 					display: none;
+				}
+
+				i {
+					padding: 0 4px;
+					font-size: 12px;
 				}
 			}
 		}

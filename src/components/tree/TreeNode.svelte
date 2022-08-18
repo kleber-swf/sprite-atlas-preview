@@ -1,33 +1,60 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	/** Node name (title) */
 	export let name = '';
+
+	/** Child nodes */
 	export let children = [];
+
+	/** The identation in pixel */
 	export let indent = 12;
+
+	/** The path for this node */
 	export let path = '';
+
+	/** The selected path */
 	export let selected: string;
 
+	/** This element */
 	let element: HTMLElement;
+
+	/** Whether this node is open */
 	let open = true;
+
+	/** Whether this node is selected */
+	let isSelected: boolean;
 
 	const dispatch = createEventDispatcher();
 
+	/** Selects this node from the tree */
 	function selectNode(e: MouseEvent) {
 		e.stopImmediatePropagation();
 		dispatch('select', path);
 	}
 
+	/** Toogle the open state of this node */
 	function toggleOpen(e: MouseEvent) {
 		e.stopImmediatePropagation();
 		open = !open;
 	}
 
-	let isSelected: boolean;
-	$: {
-		isSelected = selected === path;
+	/** Sets the open state of this node based on the selected path */
+	function setOpen() {
+		if (!open) open = selected?.indexOf(path) === 0;
+	}
+
+	/** Sets the isSelected state based on the selected path */
+	function setIsSelected(selPath: string) {
+		isSelected = selPath === path;
 		if (isSelected) {
 			element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
+	}
+
+	$: {
+		setOpen();
+		setIsSelected(selected);
 	}
 </script>
 

@@ -1,4 +1,3 @@
-import type { SelectionModel } from 'model/app.model';
 import type { Rect } from 'model/atlas.model';
 
 export class Animator {

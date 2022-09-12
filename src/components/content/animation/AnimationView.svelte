@@ -37,8 +37,8 @@
 	});
 
 	onMount(() => {
+		const context = canvas.getContext('2d');
 		raf = requestAnimationFrame(function update() {
-			const context = canvas.getContext('2d');
 			if (!context) return;
 
 			context.clearRect(0, 0, canvasSize.w, canvasSize.h);

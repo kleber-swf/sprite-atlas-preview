@@ -5,22 +5,29 @@ export class Animator {
 	private img: HTMLImageElement;
 	private currImgSrc: string;
 
-	private index: number;
-	private elapsed: number;
-	private playing = false;
+	private _index: number;
+	private _elapsed: number;
+	private _playing = false;
 
-	private delay = 1000 / 30;
+	private _delay = 1000 / 30;
 
-	public get isPlaying() { return this.playing; }
-
+	public get isPlaying() { return this._playing; }
+	
 	public set frameRate(fps: number) {
-		if (fps > 0) this.delay = 1000 / fps;
+		if (fps > 0) this._delay = 1000 / fps;
+	}
+	
+	public get frameIndex() { return this._index; }
+
+	public set frameIndex(value: number) {
+		if (!this.frames) return;
+		this._index = Math.min(Math.max(value, 0), this.frames.length - 1);
 	}
 
 	public setContent(frames: Rect[], imageUrl: string) {
 		this.frames = frames;
-		this.index = 0;
-		this.elapsed = 0;
+		this.frameIndex = 0;
+		this._elapsed = 0;
 
 		if (this.img && this.currImgSrc === imageUrl) return;
 		this.img = document.createElement('img');
@@ -29,11 +36,11 @@ export class Animator {
 	}
 
 	public play() {
-		this.playing = true;
+		this._playing = true;
 	}
 
 	public pause() {
-		this.playing = false;
+		this._playing = false;
 	}
 
 	public togglePlay() {
@@ -41,24 +48,18 @@ export class Animator {
 		else this.play();
 	}
 
-	public seek(index: number) {
-		if (this.frames) {
-			this.index = Math.min(Math.max(index, 0), this.frames.length - 1);
-		}
-	}
-
 	public update(context: CanvasRenderingContext2D, dt: number) {
 		if (!(this.img && this.frames)) return;
 
-		if (this.playing) {
-			this.elapsed += dt;
-			if (this.elapsed > this.delay) {
-				this.elapsed = 0;
-				this.index = (this.index + 1) % this.frames.length;
+		if (this._playing) {
+			this._elapsed += dt;
+			if (this._elapsed > this._delay) {
+				this._elapsed = 0;
+				this.frameIndex = (this._index + 1) % this.frames.length;
 			}
 		}
 
-		const frame = this.frames[this.index];
+		const frame = this.frames[this._index];
 		context.drawImage(
 			this.img,
 			frame.x, frame.y, frame.w, frame.h,

@@ -10,6 +10,8 @@
 	let raf: number;
 	let now = Date.now();
 	let canvasSize = { w: 512, h: 512 };
+	let isPlaying = false;
+	let frameIndex = 0;
 
 	function getDelta() {
 		const n = Date.now();
@@ -41,6 +43,8 @@
 
 			context.clearRect(0, 0, canvasSize.w, canvasSize.h);
 			animator.update(context, getDelta());
+			isPlaying = animator.isPlaying;
+			frameIndex = animator.frameIndex;
 
 			raf = requestAnimationFrame(update);
 		});
@@ -50,10 +54,7 @@
 
 	function togglePlay() {
 		animator.togglePlay();
-		animator = animator;
 	}
-
-	$: isPlaying = animator.isPlaying;
 </script>
 
 <div class="animation-view">

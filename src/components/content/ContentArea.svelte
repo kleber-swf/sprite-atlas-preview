@@ -24,15 +24,13 @@
 		<div class="tab title" class:selected={selectedTab === 2} class:disabled={!hasSource} on:click={() => selectTab(2, hasSource)}>Animation</div>
 	</div>
 	<div class="tab-content">
-		<div class:selected={selectedTab === 0}>
+		{#if selectedTab === 0}
 			<AtlasView {imgSrc} {selection} on:select />
-		</div>
-		<div class:selected={selectedTab === 1}>
-			<FrameView {imgSrc} {selection} selected={selectedTab === 1} />
-		</div>
-		<div class:selected={selectedTab === 1}>
-			<AnimationView />
-		</div>
+		{:else if selectedTab === 1}
+			<FrameView {imgSrc} {selection} />
+		{:else}
+			<AnimationView {selection} />
+		{/if}
 	</div>
 </div>
 
@@ -96,15 +94,6 @@
 			left: 0;
 			bottom: 0;
 			right: 0;
-
-			& > div {
-				width: 100%;
-				height: 100%;
-				display: none;
-				&.selected {
-					display: block;
-				}
-			}
 		}
 	}
 </style>

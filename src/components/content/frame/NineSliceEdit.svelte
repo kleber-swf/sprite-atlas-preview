@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { NineSliceModel, Rect } from 'model/atlas.model';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	export let scale = 1;
 	export let model: NineSliceModel;
 	export let frame: Rect;
-	export let selected = false;
 	const dispatch = createEventDispatcher();
 
 	let propId: string;
@@ -78,12 +77,15 @@
 		}
 	}
 
+	onMount(() => {
+		document.addEventListener('keydown', onKeyDown);
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('keydown', onKeyDown);
+	});
+
 	$: {
-		if (selected) {
-			document.addEventListener('keydown', onKeyDown);
-		} else {
-			document.removeEventListener('keydown', onKeyDown);
-		}
 		handleScale = `transform:scale(${1 / scale})`;
 	}
 </script>

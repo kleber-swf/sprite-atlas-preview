@@ -7,7 +7,6 @@
 
 	export let selection: SelectionModel;
 	export let imgSrc: string;
-	export let selected = false;
 
 	let scale = 1;
 	let width: number;
@@ -44,7 +43,7 @@
 	<ContentView {width} {height} {scale} on:scaleChanged={onScaleChanged}>
 		{#if frame}
 			<div class="frame" {style}>
-				<NineSliceEdit {scale} model={frame.slice} frame={rect} {selected} on:update={onUpdate} />
+				<NineSliceEdit {scale} model={frame.slice} frame={rect} on:update={onUpdate} />
 			</div>
 		{/if}
 	</ContentView>

@@ -1,15 +1,23 @@
-import type { SelectionItem, SelectionModel } from 'model/app.model';
+import type { SelectionModel } from 'model/app.model';
+import type { Rect } from 'model/atlas.model';
 
 export class Animator {
-	private selection: SelectionItem[];
+	private frames: Rect[];
 	private img: HTMLImageElement;
 	private currImgSrc: string;
 
 	private index: number;
 	private elapsed: number;
+	private playing = false;
 
-	public setSelection(model: SelectionModel, imageUrl: string) {
-		this.selection = model?.items;
+	private delay = 1000 / 30;
+
+	public set frameRate(fps: number) {
+		if (fps > 0) this.delay = 1000 / fps;
+	}
+
+	public setContent(frames: Rect[], imageUrl: string) {
+		this.frames = frames;
 		this.index = 0;
 		this.elapsed = 0;
 
@@ -19,16 +27,36 @@ export class Animator {
 		this.currImgSrc = imageUrl;
 	}
 
-	public update(context: CanvasRenderingContext2D, dt: number) {
-		if (!(this.img && this.selection)) return;
+	public play() {
+		this.playing = true;
+	}
 
-		this.elapsed += dt;
-		if (this.elapsed > 100) {
-			this.elapsed = 0;
-			this.index = (this.index + 1) % this.selection.length;
+	public pause() {
+		this.playing = false;
+	}
+
+	public seek(index: number) {
+		if (this.frames) {
+			this.index = Math.min(Math.max(index, 0), this.frames.length - 1);
+		}
+	}
+
+	public update(context: CanvasRenderingContext2D, dt: number) {
+		if (!(this.img && this.frames)) return;
+
+		if (this.playing) {
+			this.elapsed += dt;
+			if (this.elapsed > this.delay) {
+				this.elapsed = 0;
+				this.index = (this.index + 1) % this.frames.length;
+			}
 		}
 
-		const frame = this.selection[this.index].frame.frame;
-		context.drawImage(this.img, frame.x, frame.y, frame.w, frame.h, 0, 0, frame.w, frame.h);
+		const frame = this.frames[this.index];
+		context.drawImage(
+			this.img,
+			frame.x, frame.y, frame.w, frame.h,
+			0, 0, frame.w, frame.h
+		);
 	}
 }

@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { data } from 'data';
-	import type { SelectionItem, SelectionModel } from 'model/app.model';
 	import { onMount } from 'svelte';
+	import { Animator } from './Animator';
 
+	const CANVAS_WIDTH = 500;
+	const CANVAS_HEIGHT = 500;
+
+	const animator = new Animator();
 	let canvas: HTMLCanvasElement;
-	let selection: SelectionItem[];
-	let img: HTMLImageElement;
-	let currImgSrc: string;
 	let raf: number;
-
-	const cw = 500;
-	const ch = 500;
-
 	let now = Date.now();
 
 	function getDelta() {
@@ -23,52 +20,26 @@
 
 	data.subscribe((data) => {
 		if (!data) return;
-		createImg(data.imageUrl);
-		setSelection(data.selection);
+		animator.setSelection(data.selection, data.imageUrl);
 	});
 
 	onMount(() => {
-		raf = requestAnimationFrame(function animFrame() {
-			update(getDelta());
-			raf = requestAnimationFrame(animFrame);
+		raf = requestAnimationFrame(function update() {
+			const context = canvas.getContext('2d');
+			if (!context) return;
+
+			context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			animator.update(context, getDelta());
+
+			raf = requestAnimationFrame(update);
 		});
+
 		return () => cancelAnimationFrame(raf);
 	});
-
-	function createImg(src: string) {
-		if (img && currImgSrc === src) return;
-		img = document.createElement('img');
-		img.src = src;
-		currImgSrc = src;
-	}
-
-	function setSelection(model: SelectionModel) {
-		selection = model?.items;
-		index = 0;
-	}
-
-	let index = 0;
-	let elapsed = 0;
-
-	function update(dt: number) {
-		if (!(img && selection)) return;
-		const context = canvas.getContext('2d');
-		if (!context) return;
-
-		elapsed += dt;
-		if (elapsed > 100) {
-			elapsed = 0;
-			index = (index + 1) % selection.length;
-		}
-		context.clearRect(0, 0, cw, ch);
-
-		const frame = selection[index].frame.frame;
-		context.drawImage(img, frame.x, frame.y, frame.w, frame.h, 0, 0, frame.w, frame.h);
-	}
 </script>
 
 <div class="animation-view">
-	<canvas bind:this={canvas} width={cw} height={ch} />
+	<canvas bind:this={canvas} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
 </div>
 
 <style lang="scss">

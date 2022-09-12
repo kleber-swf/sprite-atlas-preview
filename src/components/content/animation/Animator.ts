@@ -11,6 +11,8 @@ export class Animator {
 
 	private delay = 1000 / 30;
 
+	public get isPlaying() { return this.playing; }
+
 	public set frameRate(fps: number) {
 		if (fps > 0) this.delay = 1000 / fps;
 	}
@@ -32,6 +34,11 @@ export class Animator {
 
 	public pause() {
 		this.playing = false;
+	}
+
+	public togglePlay() {
+		if (this.isPlaying) this.pause();
+		else this.play();
 	}
 
 	public seek(index: number) {

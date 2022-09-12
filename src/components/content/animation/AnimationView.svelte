@@ -2,9 +2,10 @@
 	import { data } from 'data';
 	import type { AppModel } from 'model/app.model';
 	import { onMount } from 'svelte';
+	import AnimationControls from './AnimationControls.svelte';
 	import { Animator } from './Animator';
 
-	const animator = new Animator();
+	let animator = new Animator();
 	let canvas: HTMLCanvasElement;
 	let raf: number;
 	let now = Date.now();
@@ -31,9 +32,6 @@
 		);
 
 		animator.setContent(frames, data.imageUrl);
-
-		// TODO remove this
-		if (data.selection?.items.length > 0) animator.play();
 	});
 
 	onMount(() => {
@@ -49,10 +47,18 @@
 
 		return () => cancelAnimationFrame(raf);
 	});
+
+	function togglePlay() {
+		animator.togglePlay();
+		animator = animator;
+	}
+
+	$: isPlaying = animator.isPlaying;
 </script>
 
 <div class="animation-view">
 	<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
+	<AnimationControls {isPlaying} on:togglePlay={togglePlay} />
 </div>
 
 <style lang="scss">

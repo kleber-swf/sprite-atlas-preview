@@ -35,7 +35,6 @@
 
 	/** Toogle the open state of this node */
 	function toggleOpen(e: MouseEvent) {
-		console.log('here')
 		e.stopImmediatePropagation();
 		open = !open;
 	}
@@ -61,7 +60,7 @@
 
 <div bind:this={element} class="tree-node" class:selected={isSelected} on:click={selectNode}>
 	<div class="node-header" style="padding-left: {indent}px">
-		<div class="node-icon"  class:expanded={open}>
+		<div class="node-icon" class:expanded={open}>
 			<span class="icon" on:click={toggleOpen} class:visible={children.length}><i class="icon-right-dir" /></span>
 		</div>
 		<span class="node-name">{name}</span>

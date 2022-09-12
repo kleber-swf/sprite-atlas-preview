@@ -1,12 +1,14 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
+	import AnimationView from './animation/AnimationView.svelte';
 	import AtlasView from './atlas/AtlasView.svelte';
 	import FrameView from './frame/FrameView.svelte';
 
 	export let imgSrc: string;
 	export let selection: SelectionModel;
 
-	let selectedTab = 0;
+	// [DEBUG]
+	let selectedTab = 2;
 
 	function selectTab(index: number, enabled: boolean) {
 		if (enabled) selectedTab = index;
@@ -19,6 +21,7 @@
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => selectTab(0, true)}>Atlas</div>
 		<div class="tab title" class:selected={selectedTab === 1} class:disabled={!hasSource} on:click={() => selectTab(1, hasSource)}>Frame</div>
+		<div class="tab title" class:selected={selectedTab === 2} class:disabled={!hasSource} on:click={() => selectTab(2, hasSource)}>Animation</div>
 	</div>
 	<div class="tab-content">
 		<div class:selected={selectedTab === 0}>
@@ -26,6 +29,9 @@
 		</div>
 		<div class:selected={selectedTab === 1}>
 			<FrameView {imgSrc} {selection} selected={selectedTab === 1} />
+		</div>
+		<div class:selected={selectedTab === 1}>
+			<AnimationView />
 		</div>
 	</div>
 </div>

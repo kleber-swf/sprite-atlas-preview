@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import { createAppModel } from './data';
+	import { data } from './data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
@@ -11,8 +13,6 @@
 	let root: TreeNodeModel;
 	let imageUrl: string;
 	let frames: FramesMap;
-
-	const data = createAppModel();
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -53,10 +53,16 @@
 	}
 
 	// [DEBUG]
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
-	// onMount(() => {
-	// 	data.select('btn-mid/green/hover');
-	// });
+	onMount(() => {
+		fetch('./test/robot.json')
+			.then((e) => e.json())
+			.then((json) => {
+				data.setData('./test/robot.png', json);
+			})
+			.then(()=> {
+				data.select('walk')
+			});
+	});
 	// [/DEBUG]
 </script>
 

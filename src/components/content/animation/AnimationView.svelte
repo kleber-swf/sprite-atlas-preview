@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { data } from 'data';
+	import type { AppModel } from 'model/app.model';
 	import { onMount } from 'svelte';
 	import { Animator } from './Animator';
-
-	const CANVAS_WIDTH = 500;
-	const CANVAS_HEIGHT = 500;
 
 	const animator = new Animator();
 	let canvas: HTMLCanvasElement;
 	let raf: number;
 	let now = Date.now();
+	let canvasSize = { w: 512, h: 512 };
 
 	function getDelta() {
 		const n = Date.now();
@@ -18,9 +17,23 @@
 		return delta;
 	}
 
-	data.subscribe((data) => {
-		if (!data) return;
-		animator.setSelection(data.selection, data.imageUrl);
+	data.subscribe((data: AppModel) => {
+		if (!data?.selection) return;
+
+		const frames = data.selection.items.map((e) => e.frame.frame);
+		canvasSize = frames.reduce(
+			(acc, curr) => {
+				acc.w = Math.max(acc.w, curr.w);
+				acc.h = Math.max(acc.h, curr.h);
+				return acc;
+			},
+			{ w: 0, h: 0 }
+		);
+
+		animator.setContent(frames, data.imageUrl);
+
+		// TODO remove this
+		if (data.selection?.items.length > 0) animator.play();
 	});
 
 	onMount(() => {
@@ -28,7 +41,7 @@
 			const context = canvas.getContext('2d');
 			if (!context) return;
 
-			context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			context.clearRect(0, 0, canvasSize.w, canvasSize.h);
 			animator.update(context, getDelta());
 
 			raf = requestAnimationFrame(update);
@@ -39,7 +52,7 @@
 </script>
 
 <div class="animation-view">
-	<canvas bind:this={canvas} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
+	<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 </div>
 
 <style lang="scss">
@@ -57,6 +70,7 @@
 
 		canvas {
 			transform: scale(1);
+			border: 1px solid rgba(white, 0.2);
 		}
 	}
 </style>

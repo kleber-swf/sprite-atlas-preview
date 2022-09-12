@@ -29,7 +29,7 @@
 		{:else if selectedTab === 1}
 			<FrameView {imgSrc} {selection} />
 		{:else}
-			<AnimationView {selection} />
+			<AnimationView />
 		{/if}
 	</div>
 </div>

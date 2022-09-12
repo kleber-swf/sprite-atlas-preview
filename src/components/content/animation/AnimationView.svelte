@@ -1,62 +1,91 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import ContentView from '../ContentView.svelte';
+	import { data } from 'data';
+	import type { SelectionItem, SelectionModel } from 'model/app.model';
+	import { onMount } from 'svelte';
 
-	let scale = 1;
-	let containerWidth: number;
-	let containerHeight: number;
+	let canvas: HTMLCanvasElement;
+	let selection: SelectionItem[];
+	let img: HTMLImageElement;
+	let currImgSrc: string;
+	let raf: number;
 
-	let root: HTMLDivElement;
-	let image: HTMLImageElement;
+	const cw = 500;
+	const ch = 500;
 
-	const dispatch = createEventDispatcher();
+	let now = Date.now();
 
-	function selectFrame(e: MouseEvent) {
-		e.stopImmediatePropagation();
-		dispatch('select', { x: e.offsetX, y: e.offsetY });
+	function getDelta() {
+		const n = Date.now();
+		const delta = n - now;
+		now = n;
+		return delta;
 	}
 
-	function deselectFrames() {
-		dispatch('select', null);
+	data.subscribe((data) => {
+		if (!data) return;
+		createImg(data.imageUrl);
+		setSelection(data.selection);
+	});
+
+	onMount(() => {
+		raf = requestAnimationFrame(function animFrame() {
+			update(getDelta());
+			raf = requestAnimationFrame(animFrame);
+		});
+		return () => cancelAnimationFrame(raf);
+	});
+
+	function createImg(src: string) {
+		if (img && currImgSrc === src) return;
+		img = document.createElement('img');
+		img.src = src;
+		currImgSrc = src;
 	}
 
-	function onImageLoded(e: Event) {
-		image = e.target as HTMLImageElement;
-		if (image.width > image.height) {
-			scale = image.parentElement.clientWidth / image.width;
-		} else {
-			scale = image.parentElement.clientHeight / image.height;
+	function setSelection(model: SelectionModel) {
+		selection = model?.items;
+		index = 0;
+	}
+
+	let index = 0;
+	let elapsed = 0;
+
+	function update(dt: number) {
+		if (!(img && selection)) return;
+		const context = canvas.getContext('2d');
+		if (!context) return;
+
+		elapsed += dt;
+		if (elapsed > 100) {
+			elapsed = 0;
+			index = (index + 1) % selection.length;
 		}
-		image.parentElement.addEventListener('scroll', centerImage);
-		image.parentElement.scrollTo(1, 1);
-	}
+		context.clearRect(0, 0, cw, ch);
 
-	function centerImage() {
-		const left = (root.scrollWidth - root.clientWidth) * 0.5;
-		const top = (root.scrollHeight - root.clientHeight) * 0.5;
-		root.scrollTo({ top, left, behavior: 'smooth' });
-		root.removeEventListener('scroll', centerImage);
-	}
-
-	function onScaleChanged(e: CustomEvent<number>) {
-		scale = e.detail;
-	}
-
-	$: {
-		if (image) {
-			containerWidth = image.clientWidth;
-			containerHeight = image.clientHeight;
-		} else {
-			containerWidth = 0;
-			containerHeight = 0;
-		}
+		const frame = selection[index].frame.frame;
+		context.drawImage(img, frame.x, frame.y, frame.w, frame.h, 0, 0, frame.w, frame.h);
 	}
 </script>
 
-<ContentView width={containerWidth} height={containerHeight} {scale} on:scaleChanged={onScaleChanged} on:unselect={deselectFrames}>
-	<canvas></canvas>	
-</ContentView>
-
+<div class="animation-view">
+	<canvas bind:this={canvas} width={cw} height={ch} />
+</div>
 
 <style lang="scss">
+	div.animation-view {
+		/// THIS IS WHAT I WANTED WITH THE SCALE AND SCROLL!!!
+		/// THE IMMEDIATE CHILD NOW HAS ONLY TO BE SCALED WITH "transform: scale(zoom)"!
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: auto;
+
+		canvas {
+			transform: scale(1);
+		}
+	}
 </style>

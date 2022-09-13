@@ -24,8 +24,15 @@
 		dispatch('toggleLoop');
 	}
 
+	function previousFrame() {
+		dispatch('jumpFrame', -1);
+	}
+
+	function nextFrame() {
+		dispatch('jumpFrame', 1);
+	}
+
 	function changeFrameRate(e: Event) {
-		console.log((e.target as HTMLInputElement).value);
 		dispatch('fpsChanged', (e.target as HTMLInputElement).value);
 	}
 </script>
@@ -40,6 +47,12 @@
 	</div>
 	<div class="reset button">
 		<i class="icon-stop" on:click={stop} />
+	</div>
+	<div class="prev button">
+		<i class="icon-to-start" on:click={previousFrame} />
+	</div>
+	<div class="next button">
+		<i class="icon-to-end" on:click={nextFrame} />
 	</div>
 	<div class="seek-bar">
 		<input type="range" min="0" max={totalFrames} value={frameIndex} on:input={seek} />

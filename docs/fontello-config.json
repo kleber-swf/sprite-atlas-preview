@@ -53,6 +53,18 @@
       "css": "loop",
       "code": 59397,
       "src": "iconic"
+    },
+    {
+      "uid": "0afbb00323696f49e9c47f4d9fe6390b",
+      "css": "to-end",
+      "code": 59399,
+      "src": "entypo"
+    },
+    {
+      "uid": "ceefe7653a4f6edaacce9e7f196cec5a",
+      "css": "to-start",
+      "code": 59400,
+      "src": "entypo"
     }
   ]
 }

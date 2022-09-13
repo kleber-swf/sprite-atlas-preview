@@ -72,6 +72,10 @@
 		animator.frameIndex = e.detail as number;
 	}
 
+	function jumpFrame(e: CustomEvent) {
+		animator.frameIndex = animator.frameIndex + (e.detail as number);
+	}
+
 	function stop() {
 		animator.pause();
 		animator.frameIndex = 0;
@@ -102,6 +106,7 @@
 		on:stop={stop}
 		on:fpsChanged={changeFrameRate}
 		on:toggleLoop={toggleLoop}
+		on:jumpFrame={jumpFrame}
 	/>
 </div>
 

@@ -66,7 +66,7 @@
 		animator.frameIndex = e.detail as number;
 	}
 
-	function reset() {
+	function stop() {
 		animator.pause();
 		animator.frameIndex = 0;
 	}
@@ -85,7 +85,7 @@
 		{frameRate}
 		on:togglePlay={togglePlay}
 		on:seek={seek}
-		on:reset={reset}
+		on:stop={stop}
 		on:fpsChanged={changeFrameRate}
 	/>
 </div>

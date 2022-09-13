@@ -14,8 +14,8 @@
 		dispatch('seek', (e.target as HTMLInputElement).value);
 	}
 
-	function reset() {
-		dispatch('reset');
+	function stop() {
+		dispatch('stop');
 	}
 
 	function changeFrameRate(e: Event) {
@@ -33,7 +33,7 @@
 		{/if}
 	</div>
 	<div class="reset button">
-		<i class="icon-to-start" on:click={reset} />
+		<i class="icon-stop" on:click={stop} />
 	</div>
 	<div class="seek-bar">
 		<input type="range" min="0" max={totalFrames} value={frameIndex} on:input={seek} />

@@ -38,33 +38,58 @@
 	<div class="seek-bar">
 		<input type="range" min="0" max={totalFrames} value={frameIndex} on:input={seek} />
 	</div>
-	<div>
+	<div class="fps-panel">
 		<label for="fps">FPS</label>
 		<input type="number" min="1" max="120" step="1" value={frameRate} on:input={changeFrameRate} />
 	</div>
 </div>
 
 <style lang="scss">
+	@import 'variables';
+
 	.animation-controls {
 		position: absolute;
 		display: flex;
 		bottom: 0;
+		width: 100%;
+		padding: 2px;
+		background-color: $dark-background;
 	}
 
 	.button {
 		display: inline-block;
-		width: 60px;
-		height: 60px;
 		text-align: center;
-		border: 1px solid black;
+		transition: all 150ms;
+
+		&:hover {
+			background-color: lighten($background, 0.3);
+			color: $on-primary;
+		}
 
 		i {
-			font-size: 32px;
+			font-size: 26px;
+			padding: 0;
 			margin: auto;
 		}
 	}
 
 	.seek-bar {
 		flex: 1;
+		display: flex;
+		input {
+			width: 100%;
+			margin: 0 8px;
+		}
+	}
+
+	.fps-panel {
+		display: flex;
+		padding: 0 8px;
+		align-items: center;
+		// max-width: 120px;
+
+		label {
+			margin-right: 1em;
+		}
 	}
 </style>

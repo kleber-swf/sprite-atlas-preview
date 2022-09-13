@@ -5,6 +5,8 @@ export class Animator {
 	private img: HTMLImageElement;
 	private currImgSrc: string;
 
+	public loop: boolean;
+
 	private _index: number;
 	private _elapsed: number;
 	private _playing = false;
@@ -42,6 +44,8 @@ export class Animator {
 	}
 
 	public play() {
+		if (this.frameIndex >= this.frames.length - 1) this.frameIndex = 0;
+		this._elapsed = 0;
 		this._playing = true;
 	}
 
@@ -61,7 +65,13 @@ export class Animator {
 			this._elapsed += dt;
 			if (this._elapsed > this._delay) {
 				this._elapsed = 0;
-				this.frameIndex = (this._index + 1) % this.frames.length;
+				const i = this._index + 1;
+				if (i < this.frames.length) {
+					this.frameIndex = i;
+				} else {
+					if (this.loop) this.frameIndex = 0;
+					else this._playing = false;
+				}
 			}
 		}
 

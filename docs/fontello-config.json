@@ -47,6 +47,12 @@
       "css": "stop",
       "code": 59398,
       "src": "entypo"
+    },
+    {
+      "uid": "5d3ef4b7c90d2931e641b840ee42f694",
+      "css": "loop",
+      "code": 59397,
+      "src": "iconic"
     }
   ]
 }

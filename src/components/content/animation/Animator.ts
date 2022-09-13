@@ -9,14 +9,20 @@ export class Animator {
 	private _elapsed: number;
 	private _playing = false;
 
+	private _frameRate = 30;
 	private _delay = 1000 / 30;
 
 	public get isPlaying() { return this._playing; }
-	
+
+	public get frameRate() { return this._frameRate }
+
 	public set frameRate(fps: number) {
-		if (fps > 0) this._delay = 1000 / fps;
+		if (fps > 0) {
+			this._frameRate = fps;
+			this._delay = 1000 / fps;
+		}
 	}
-	
+
 	public get frameIndex() { return this._index; }
 
 	public set frameIndex(value: number) {

@@ -11,7 +11,9 @@
 	let now = Date.now();
 	let canvasSize = { w: 512, h: 512 };
 	let isPlaying = false;
+	let frameRate = 30;
 	let frameIndex = 0;
+	let totalFrames = 0;
 
 	function getDelta() {
 		const n = Date.now();
@@ -24,6 +26,7 @@
 		if (!data?.selection) return;
 
 		const frames = data.selection.items.map((e) => e.frame.frame);
+		totalFrames = frames.length;
 		canvasSize = frames.reduce(
 			(acc, curr) => {
 				acc.w = Math.max(acc.w, curr.w);
@@ -34,6 +37,7 @@
 		);
 
 		animator.setContent(frames, data.imageUrl);
+		animator.frameRate = frameRate;
 	});
 
 	onMount(() => {
@@ -45,6 +49,7 @@
 			animator.update(context, getDelta());
 			isPlaying = animator.isPlaying;
 			frameIndex = animator.frameIndex;
+			frameRate = animator.frameRate;
 
 			raf = requestAnimationFrame(update);
 		});
@@ -55,11 +60,34 @@
 	function togglePlay() {
 		animator.togglePlay();
 	}
+
+	function seek(e: CustomEvent) {
+		animator.pause();
+		animator.frameIndex = e.detail as number;
+	}
+
+	function reset() {
+		animator.pause();
+		animator.frameIndex = 0;
+	}
+
+	function changeFrameRate(e: CustomEvent) {
+		animator.frameRate = e.detail as number;
+	}
 </script>
 
 <div class="animation-view">
 	<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
-	<AnimationControls {isPlaying} on:togglePlay={togglePlay} />
+	<AnimationControls
+		{isPlaying}
+		{frameIndex}
+		{totalFrames}
+		{frameRate}
+		on:togglePlay={togglePlay}
+		on:seek={seek}
+		on:reset={reset}
+		on:fpsChanged={changeFrameRate}
+	/>
 </div>
 
 <style lang="scss">

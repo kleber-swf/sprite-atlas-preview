@@ -5,13 +5,15 @@
 	import AnimationControls from './AnimationControls.svelte';
 	import { Animator } from './Animator';
 
+	const LS_KEY = 'propeties.anim.fps';
+
 	let animator = new Animator();
 	let canvas: HTMLCanvasElement;
 	let raf: number;
 	let now = Date.now();
 	let canvasSize = { w: 512, h: 512 };
 	let isPlaying = false;
-	let frameRate = 30;
+	let frameRate = parseInt(localStorage.getItem(LS_KEY) ?? '0', 10);
 	let frameIndex = 0;
 	let totalFrames = 0;
 
@@ -72,7 +74,9 @@
 	}
 
 	function changeFrameRate(e: CustomEvent) {
-		animator.frameRate = e.detail as number;
+		const fps = e.detail as number;
+		animator.frameRate = fps;
+		localStorage.setItem(LS_KEY, fps.toString(10));
 	}
 </script>
 

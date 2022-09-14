@@ -19,6 +19,8 @@
 	let totalFrames = 0;
 	let loop = localStorage.getItem(LOOP_LS_KEY) === '1';
 
+	let stage: HTMLElement;
+
 	function getDelta() {
 		const n = Date.now();
 		const delta = n - now;
@@ -60,6 +62,12 @@
 			raf = requestAnimationFrame(update);
 		});
 
+		stage.scrollBy({
+			behavior: 'auto',
+			left: (stage.scrollWidth - stage.offsetWidth) * 0.5,
+			top: (stage.scrollHeight - stage.offsetHeight) * 0.5,
+		});
+
 		return () => cancelAnimationFrame(raf);
 	});
 
@@ -91,41 +99,64 @@
 		animator.frameRate = fps;
 		localStorage.setItem(LOOP_LS_KEY, fps.toString(10));
 	}
+
+	// --
+	function onScroll(e: Event) {
+		const t = e.target as HTMLElement;
+		console.log(t.scrollLeft, t.scrollWidth, t.offsetWidth, t.clientWidth);
+	}
 </script>
 
 <div class="animation-view">
-	<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
-	<AnimationControls
-		{isPlaying}
-		{frameIndex}
-		{totalFrames}
-		{frameRate}
-		{loop}
-		on:togglePlay={togglePlay}
-		on:seek={seek}
-		on:stop={stop}
-		on:fpsChanged={changeFrameRate}
-		on:toggleLoop={toggleLoop}
-		on:jumpFrame={jumpFrame}
-	/>
+	<div class="content-view" bind:this={stage} on:scroll={onScroll}>
+		<div class="stage">
+			<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
+		</div>
+	</div>
+	<div class="controls">
+		<AnimationControls
+			{isPlaying}
+			{frameIndex}
+			{totalFrames}
+			{frameRate}
+			{loop}
+			on:togglePlay={togglePlay}
+			on:seek={seek}
+			on:stop={stop}
+			on:fpsChanged={changeFrameRate}
+			on:toggleLoop={toggleLoop}
+			on:jumpFrame={jumpFrame}
+		/>
+	</div>
 </div>
 
 <style lang="scss">
 	div.animation-view {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	div.content-view {
 		/// THIS IS WHAT I WANTED WITH THE SCALE AND SCROLL!!!
 		/// THE IMMEDIATE CHILD NOW HAS ONLY TO BE SCALED WITH "transform: scale(zoom)"!
 		width: 100%;
 		height: 100%;
 		padding: 0;
 		margin: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		overflow: auto;
+	}
 
-		canvas {
-			transform: scale(1);
-			border: 1px solid rgba(white, 0.2);
-		}
+	div.stage {
+		width: 2048px;
+		height: 2048px;
+		display: grid;
+	}
+
+	canvas {
+		// transform: scale(8);
+		border: 1px solid rgba(white, 0.2);
+		margin: auto;
 	}
 </style>

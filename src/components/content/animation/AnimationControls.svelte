@@ -70,9 +70,7 @@
 	@import 'variables';
 
 	.animation-controls {
-		position: absolute;
 		display: flex;
-		bottom: 0;
 		width: 100%;
 		padding: 2px;
 		background-color: $dark-background;

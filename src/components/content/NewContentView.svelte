@@ -63,7 +63,7 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown}>
+<div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown} on:click>
 	<div class="stage">
 		<div class="inner" style:transform="scale({scale})">
 			<slot />

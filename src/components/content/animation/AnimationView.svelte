@@ -19,8 +19,6 @@
 	let totalFrames = 0;
 	let loop = localStorage.getItem(LOOP_LS_KEY) === '1';
 
-	let stage: HTMLElement;
-
 	function getDelta() {
 		const n = Date.now();
 		const delta = n - now;
@@ -62,10 +60,10 @@
 			raf = requestAnimationFrame(update);
 		});
 
-		stage.scrollBy({
+		element.scrollBy({
 			behavior: 'auto',
-			left: (stage.scrollWidth - stage.offsetWidth) * 0.5,
-			top: (stage.scrollHeight - stage.offsetHeight) * 0.5,
+			left: (element.scrollWidth - element.offsetWidth) * 0.5,
+			top: (element.scrollHeight - element.offsetHeight) * 0.5,
 		});
 
 		return () => cancelAnimationFrame(raf);
@@ -101,16 +99,23 @@
 	}
 
 	// --
-	function onScroll(e: Event) {
-		const t = e.target as HTMLElement;
-		console.log(t.scrollLeft, t.scrollWidth, t.offsetWidth, t.clientWidth);
+	let element: HTMLElement;
+	let scale = 1;
+
+	function onWheel(e: WheelEvent) {
+		if (!e.ctrlKey) return;
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		scale = Math.min(Math.max(0.2, scale - e.deltaY * 0.01), 100);
 	}
 </script>
 
 <div class="animation-view">
-	<div class="content-view" bind:this={stage} on:scroll={onScroll}>
+	<div class="content-view" bind:this={element} on:wheel={onWheel}>
 		<div class="stage">
-			<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
+			<div class="inner" style:transform="scale({scale})">
+				<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
+			</div>
 		</div>
 	</div>
 	<div class="controls">
@@ -138,25 +143,28 @@
 		flex-direction: column;
 	}
 
+	canvas {
+		border: 1px solid rgba(white, 0.2);
+		margin: auto;
+	}
+
 	div.content-view {
-		/// THIS IS WHAT I WANTED WITH THE SCALE AND SCROLL!!!
-		/// THE IMMEDIATE CHILD NOW HAS ONLY TO BE SCALED WITH "transform: scale(zoom)"!
 		width: 100%;
 		height: 100%;
 		padding: 0;
 		margin: 0;
 		overflow: auto;
-	}
 
-	div.stage {
-		width: 2048px;
-		height: 2048px;
-		display: grid;
-	}
+		.stage {
+			width: 2048px;
+			height: 2048px;
+			display: grid;
 
-	canvas {
-		// transform: scale(8);
-		border: 1px solid rgba(white, 0.2);
-		margin: auto;
+			.inner {
+				// display: flex;
+				transform-origin: 50%;
+				margin: auto;
+			}
+		}
 	}
 </style>

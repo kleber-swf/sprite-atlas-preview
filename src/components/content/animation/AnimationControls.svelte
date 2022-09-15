@@ -32,10 +32,45 @@
 		dispatch('jumpFrame', 1);
 	}
 
-	function changeFrameRate(e: Event) {
-		dispatch('fpsChanged', (e.target as HTMLInputElement).value);
+	function changeFrameRate(value: number) {
+		dispatch('fpsChanged', value);
+	}
+
+	function onFrameRateChanged(e: Event) {
+		changeFrameRate((e.target as HTMLInputElement).valueAsNumber);
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.ctrlKey || e.shiftKey || e.altKey) return;
+		switch (e.key) {
+			case ' ':
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				togglePlay();
+				return;
+			case 'x':
+				stop();
+				return;
+			case ',':
+				previousFrame();
+				return;
+			case '.':
+				nextFrame();
+				return;
+			case 'l':
+				toggleLoop();
+				return;
+			case '[':
+				changeFrameRate(frameRate - 1);
+				return;
+			case ']':
+				changeFrameRate(frameRate + 1);
+				return;
+		}
 	}
 </script>
+
+<svelte:window on:keydown={onKeyDown} />
 
 <div class="animation-controls">
 	<div class="play button" on:click={togglePlay}>
@@ -62,7 +97,7 @@
 	</div>
 	<div class="fps-panel">
 		<label for="fps">FPS</label>
-		<input type="number" min="1" max="120" step="1" value={frameRate} on:input={changeFrameRate} />
+		<input type="number" min="1" max="120" step="1" value={frameRate} on:input={onFrameRateChanged} />
 	</div>
 </div>
 

@@ -17,7 +17,7 @@
 	// #region Zoom
 
 	function zoom(value: number) {
-		scale = Math.max(0.1, Math.min(10, value));
+		scale = Math.max(0.2, Math.min(10, value));
 		dispatch('scaleChanged', value);
 	}
 

@@ -124,7 +124,6 @@
 	}
 
 	canvas {
-		border: 1px solid rgba(white, 0.2);
 		margin: auto;
 	}
 </style>

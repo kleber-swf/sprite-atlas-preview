@@ -30,12 +30,24 @@
 
 	function onKeyDown(e: KeyboardEvent) {
 		if (!e.ctrlKey) return;
-		e.preventDefault();
-		e.stopImmediatePropagation();
 
-		if (e.key === '=') zoom(scale + 0.1);
-		else if (e.key === '-') zoom(scale - 0.1);
-		else if (e.key === '0') zoom(1);
+		switch (e.key) {
+			case '=':
+				zoom(scale + 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '-':
+				zoom(scale - 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '0':
+				zoom(1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+		}
 	}
 
 	// #endregion

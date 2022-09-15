@@ -34,12 +34,36 @@
 		else if (e.key === '-') zoom(-0.1);
 		else if (e.key === '0') scale = 1;
 	}
+
+	// #endregion
+
+	// #region Pan
+
+	function onMouseDown(e: MouseEvent) {
+		if (e.button === 1 && !e.ctrlKey) {
+			document.addEventListener('mouseup', stopPanning);
+			document.addEventListener('mousemove', pan);
+		}
+	}
+
+	function stopPanning(e: MouseEvent) {
+		document.removeEventListener('mouseup', stopPanning);
+		document.removeEventListener('mousemove', pan);
+		e.stopImmediatePropagation();
+	}
+
+	function pan(e: MouseEvent) {
+		root.scrollTop -= e.movementY;
+		root.scrollLeft -= e.movementX;
+		e.preventDefault();
+	}
+
 	// #endregion
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="content-view" bind:this={root} on:wheel={onWheel}>
+<div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown}>
 	<div class="stage">
 		<div class="inner" style:transform="scale({scale})">
 			<slot />

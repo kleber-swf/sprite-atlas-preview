@@ -25,8 +25,19 @@
 		zoom(-e.deltaY * 0.002);
 	}
 
+	function onKeyDown(e: KeyboardEvent) {
+		if (!e.ctrlKey) return;
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		if (e.key === '=') zoom(0.1);
+		else if (e.key === '-') zoom(-0.1);
+		else if (e.key === '0') scale = 1;
+	}
 	// #endregion
 </script>
+
+<svelte:window on:keydown={onKeyDown} />
 
 <div class="content-view" bind:this={root} on:wheel={onWheel}>
 	<div class="stage">

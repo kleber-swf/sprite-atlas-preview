@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
-	import NewContentView from '../NewContentView.svelte';
+	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
@@ -40,13 +40,13 @@
 </script>
 
 <div class="frame-view">
-	<NewContentView on:scaleChanged={onScaleChanged}>
+	<ContentView on:scaleChanged={onScaleChanged}>
 		{#if frame}
 			<div class="frame" {style}>
 				<NineSliceEdit {scale} model={frame.slice} frame={rect} on:update={onUpdate} />
 			</div>
 		{/if}
-	</NewContentView>
+	</ContentView>
 
 	{#if frame}
 		<NineSliceInfoPanel model={frame.slice} frame={rect} />

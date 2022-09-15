@@ -2,7 +2,7 @@
 	import { data } from 'data';
 	import type { AppModel } from 'model/app.model';
 	import { onMount } from 'svelte';
-	import NewContentView from '../NewContentView.svelte';
+	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
 	import { Animator } from './Animator';
 
@@ -95,9 +95,9 @@
 </script>
 
 <div class="animation-view">
-	<NewContentView>
+	<ContentView>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
-	</NewContentView>
+	</ContentView>
 	<div class="controls">
 		<AnimationControls
 			{isPlaying}

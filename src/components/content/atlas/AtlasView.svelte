@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import { createEventDispatcher } from 'svelte';
-	import NewContentView from '../NewContentView.svelte';
+	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
 	export let imgSrc: string;
@@ -35,11 +35,11 @@
 	}
 </script>
 
-<NewContentView on:click={deselectFrames}>
+<ContentView on:click={deselectFrames}>
 	<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
 	{#if selection}
 		{#each selection.items as item (item.path)}
 			<FrameSelection selection={item} />
 		{/each}
 	{/if}
-</NewContentView>
+</ContentView>

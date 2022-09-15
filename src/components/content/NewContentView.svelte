@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
+	const dispatch = createEventDispatcher();
 	let root: HTMLElement;
 	let scale = 1;
 
 	onMount(() => {
+		zoom(scale);
 		root.scrollBy({
 			behavior: 'auto',
 			left: (root.scrollWidth - root.offsetWidth) * 0.5,
@@ -14,15 +16,16 @@
 
 	// #region Zoom
 
-	function zoom(amount: number) {
-		scale = Math.max(0.1, Math.min(10, scale + amount));
+	function zoom(value: number) {
+		scale = Math.max(0.1, Math.min(10, value));
+		dispatch('scaleChanged', value);
 	}
 
 	function onWheel(e: WheelEvent) {
 		if (!e.ctrlKey) return;
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		zoom(-e.deltaY * 0.002);
+		zoom(scale - e.deltaY * 0.002);
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
@@ -30,9 +33,9 @@
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		if (e.key === '=') zoom(0.1);
-		else if (e.key === '-') zoom(-0.1);
-		else if (e.key === '0') scale = 1;
+		if (e.key === '=') zoom(scale + 0.1);
+		else if (e.key === '-') zoom(scale - 0.1);
+		else if (e.key === '0') zoom(1);
 	}
 
 	// #endregion

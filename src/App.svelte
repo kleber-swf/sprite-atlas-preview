@@ -13,6 +13,7 @@
 	let root: TreeNodeModel;
 	let imageUrl: string;
 	let frames: FramesMap;
+	let selectedTab = 0;
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -50,17 +51,19 @@
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
+		selectedTab = 0;
 	}
 
 	// [DEBUG]
 	onMount(() => {
+		selectedTab = 2;
 		fetch('./test/robot.json')
 			.then((e) => e.json())
 			.then((json) => {
 				data.setData('./test/robot.png', json);
 			})
-			.then(()=> {
-				data.select('walk')
+			.then(() => {
+				data.select('walk');
 			});
 	});
 	// [/DEBUG]
@@ -74,7 +77,7 @@
 		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="selection-area">
-		<ContentArea imgSrc={imageUrl} {selection} on:select={onContentAreaTouch} />
+		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} on:select={onContentAreaTouch} />
 		<FrameProperties {selection} />
 	</div>
 </main>

@@ -1,7 +1,7 @@
 import type { Rect } from 'model/atlas.model';
 
 export class Animator {
-	private frames: Rect[];
+	private frames: Rect[] = [];
 	private img: HTMLImageElement;
 	private currImgSrc: string;
 
@@ -38,7 +38,7 @@ export class Animator {
 		this._elapsed = 0;
 
 		if (this.img && this.currImgSrc === imageUrl) return;
-		this.img = document.createElement('img');
+		if (!this.img) this.img = document.createElement('img');
 		this.img.src = imageUrl;
 		this.currImgSrc = imageUrl;
 	}
@@ -59,7 +59,7 @@ export class Animator {
 	}
 
 	public update(context: CanvasRenderingContext2D, dt: number) {
-		if (!(this.img && this.frames)) return;
+		if (!(this.currImgSrc && this.frames.length)) return;
 
 		if (this._playing) {
 			this._elapsed += dt;

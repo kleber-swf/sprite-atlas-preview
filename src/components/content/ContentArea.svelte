@@ -7,8 +7,7 @@
 	export let imgSrc: string;
 	export let selection: SelectionModel;
 
-	// [DEBUG]
-	let selectedTab = 2;
+	export let selectedTab = 0;
 
 	function selectTab(index: number, enabled: boolean) {
 		if (enabled) selectedTab = index;

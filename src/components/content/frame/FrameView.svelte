@@ -9,8 +9,6 @@
 	export let imgSrc: string;
 
 	let scale = 1;
-	let width: number;
-	let height: number;
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
@@ -22,11 +20,6 @@
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
 			const s = [`background-image: url(${imgSrc})`, `width: ${rect.w}px`, `height: ${rect.h}px`, `background-position: -${rect.x}px -${rect.y}px`];
 			style = s.join(';');
-			width = rect.w;
-			height = rect.h;
-		} else {
-			width = 0;
-			height = 0;
 		}
 	}
 

@@ -98,7 +98,7 @@
 	<ContentView>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 	</ContentView>
-	<div class="controls">
+	<div class="controls" class:disabled={totalFrames < 2}>
 		<AnimationControls
 			{isPlaying}
 			{frameIndex}
@@ -121,6 +121,11 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+
+		.disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
 	}
 
 	canvas {

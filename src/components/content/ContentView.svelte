@@ -15,7 +15,7 @@
 		root.scrollBy({
 			behavior: 'auto',
 			left: (root.scrollWidth - root.offsetWidth) * 0.5,
-			top: (root.scrollHeight - root.offsetHeight) * 0.5,
+			top: (root.scrollHeight - root.offsetHeight) * 0.5
 		});
 	});
 

@@ -19,8 +19,12 @@
 <div class="content-area">
 	<div class="tabs">
 		<div class="tab title" class:selected={selectedTab === 0} on:click={() => selectTab(0, true)}>Atlas</div>
-		<div class="tab title" class:selected={selectedTab === 1} class:disabled={!hasSource} on:click={() => selectTab(1, hasSource)}>Frame</div>
-		<div class="tab title" class:selected={selectedTab === 2} class:disabled={!hasSource} on:click={() => selectTab(2, hasSource)}>Animation</div>
+		<div class="tab title" class:selected={selectedTab === 1} class:disabled={!hasSource} on:click={() => selectTab(1, hasSource)}>
+			Frame
+		</div>
+		<div class="tab title" class:selected={selectedTab === 2} class:disabled={!hasSource} on:click={() => selectTab(2, hasSource)}>
+			Animation
+		</div>
 	</div>
 	<div class="tab-content">
 		{#if selectedTab === 0}

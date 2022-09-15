@@ -5,7 +5,6 @@ import type { AtlasDataModel, FramesMap } from './model/atlas.model';
 export const VERSION = '%VERSION%';
 
 export const data = (() => {
-	console.log('creating data');
 	const { subscribe, update, set } = writable<AppModel>();
 
 	const framesToRoot = (framesMap: FramesMap) => {

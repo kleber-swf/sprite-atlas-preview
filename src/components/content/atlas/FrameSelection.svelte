@@ -1,15 +1,12 @@
 <script lang="ts">
 	import type { SelectionItem } from 'model/app.model';
-
 	export let selection: SelectionItem;
-	export let scale: number;
-
 	$: frame = selection.frame?.frame;
 </script>
 
 {#if frame}
 	<div class="rect" style="top:{frame.y}px; left:{frame.x}px; width:{frame.w}px; height:{frame.h}px">
-		<div class="name" style="zoom:{1 / scale}">
+		<div class="name">
 			{selection.path}
 		</div>
 	</div>

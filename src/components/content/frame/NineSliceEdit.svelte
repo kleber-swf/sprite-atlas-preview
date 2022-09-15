@@ -77,18 +77,12 @@
 		}
 	}
 
-	onMount(() => {
-		document.addEventListener('keydown', onKeyDown);
-	});
-
-	onDestroy(() => {
-		document.removeEventListener('keydown', onKeyDown);
-	});
-
 	$: {
 		handleScale = `transform:scale(${1 / scale})`;
 	}
 </script>
+
+<svelte:window on:keydown={onKeyDown} />
 
 <div class="nine-slice-edit">
 	<div class="handle left" data="left" style="left:{model.left}px; {handleScale}" on:mousedown={startHandleDrag} />

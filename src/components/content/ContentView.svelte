@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
+	export let minScale = 0.2;
+	export let maxScale = 5;
+	export let stageSize = 4096;
+
 	const dispatch = createEventDispatcher();
+
 	let root: HTMLElement;
 	let scale = 1;
 
@@ -17,8 +22,8 @@
 	// #region Zoom
 
 	function zoom(value: number) {
-		scale = Math.max(0.2, Math.min(10, value));
-		dispatch('scaleChanged', value);
+		scale = Math.max(minScale, Math.min(maxScale, value));
+		dispatch('scaleChanged', scale);
 	}
 
 	function onWheel(e: WheelEvent) {
@@ -79,7 +84,7 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown} on:click>
-	<div class="stage">
+	<div class="stage" style:width="{stageSize}px" style:height="{stageSize}px">
 		<div class="inner" style:transform="scale({scale})">
 			<slot />
 		</div>
@@ -98,8 +103,6 @@
 		user-select: none;
 
 		.stage {
-			width: 2048px;
-			height: 2048px;
 			display: grid;
 			background-color: $dark-background;
 			background-image: url('/assets/patterns/shadow-checkers.png');

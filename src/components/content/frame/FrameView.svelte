@@ -12,6 +12,7 @@
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
+	const stageSize = 2048;
 
 	$: {
 		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
@@ -33,10 +34,10 @@
 </script>
 
 <div class="frame-view">
-	<ContentView on:scaleChanged={onScaleChanged}>
+	<ContentView {stageSize} on:scaleChanged={onScaleChanged}>
 		{#if frame}
 			<div class="frame" {style}>
-				<NineSliceEdit {scale} model={frame.slice} frame={rect} on:update={onUpdate} />
+				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />
 			</div>
 		{/if}
 	</ContentView>

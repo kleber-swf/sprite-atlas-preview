@@ -56,14 +56,14 @@
 
 	// [DEBUG]
 	onMount(() => {
-		selectedTab = 2;
+		selectedTab = 1;
 		fetch('./test/robot.json')
 			.then((e) => e.json())
 			.then((json) => {
 				data.setData('./test/robot.png', json);
 			})
 			.then(() => {
-				data.select('walk');
+				data.select('walk/walk0');
 			});
 	});
 	// [/DEBUG]

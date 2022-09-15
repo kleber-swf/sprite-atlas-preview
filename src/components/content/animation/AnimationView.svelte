@@ -2,6 +2,7 @@
 	import { data } from 'data';
 	import type { AppModel } from 'model/app.model';
 	import { onMount } from 'svelte';
+	import NewContentView from '../NewContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
 	import { Animator } from './Animator';
 
@@ -60,12 +61,6 @@
 			raf = requestAnimationFrame(update);
 		});
 
-		element.scrollBy({
-			behavior: 'auto',
-			left: (element.scrollWidth - element.offsetWidth) * 0.5,
-			top: (element.scrollHeight - element.offsetHeight) * 0.5,
-		});
-
 		return () => cancelAnimationFrame(raf);
 	});
 
@@ -97,27 +92,12 @@
 		animator.frameRate = fps;
 		localStorage.setItem(LOOP_LS_KEY, fps.toString(10));
 	}
-
-	// --
-	let element: HTMLElement;
-	let scale = 1;
-
-	function onWheel(e: WheelEvent) {
-		if (!e.ctrlKey) return;
-		e.preventDefault();
-		e.stopImmediatePropagation();
-		scale = Math.min(Math.max(0.2, scale - e.deltaY * 0.01), 100);
-	}
 </script>
 
 <div class="animation-view">
-	<div class="content-view" bind:this={element} on:wheel={onWheel}>
-		<div class="stage">
-			<div class="inner" style:transform="scale({scale})">
-				<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
-			</div>
-		</div>
-	</div>
+	<NewContentView>
+		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
+	</NewContentView>
 	<div class="controls">
 		<AnimationControls
 			{isPlaying}
@@ -146,25 +126,5 @@
 	canvas {
 		border: 1px solid rgba(white, 0.2);
 		margin: auto;
-	}
-
-	div.content-view {
-		width: 100%;
-		height: 100%;
-		padding: 0;
-		margin: 0;
-		overflow: auto;
-
-		.stage {
-			width: 2048px;
-			height: 2048px;
-			display: grid;
-
-			.inner {
-				// display: flex;
-				transform-origin: 50%;
-				margin: auto;
-			}
-		}
 	}
 </style>

@@ -12,6 +12,7 @@
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
+	let maxScale = 1;
 	const stageSize = 2048;
 
 	$: {
@@ -26,6 +27,8 @@
 				`background-position: -${rect.x}px -${rect.y}px`
 			];
 			style = s.join(';');
+			maxScale = stageSize / (Math.max(rect.w, rect.h) * 1.1);
+			scale = Math.min(1, maxScale);
 		}
 	}
 
@@ -39,7 +42,7 @@
 </script>
 
 <div class="frame-view">
-	<ContentView {stageSize} on:scaleChanged={onScaleChanged}>
+	<ContentView {stageSize} {maxScale} on:scaleChanged={onScaleChanged}>
 		{#if frame}
 			<div class="frame" {style}>
 				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />

@@ -20,6 +20,10 @@
 	let totalFrames = 0;
 	let loop = localStorage.getItem(LOOP_LS_KEY) === '1';
 
+	const stageSize = 2048;
+	let scale = 1;
+	let maxScale = 1;
+
 	function getDelta() {
 		const n = Date.now();
 		const delta = n - now;
@@ -44,6 +48,9 @@
 		animator.setContent(frames, data.imageUrl);
 		animator.frameRate = frameRate;
 		animator.loop = loop;
+
+		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
+		scale = Math.min(1, maxScale);
 	});
 
 	onMount(() => {
@@ -95,7 +102,7 @@
 </script>
 
 <div class="animation-view">
-	<ContentView>
+	<ContentView {scale} {maxScale} {stageSize}>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 	</ContentView>
 	<div class="controls" class:disabled={totalFrames < 2}>

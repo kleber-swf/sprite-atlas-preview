@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
+	export let scale = 1;
 	export let minScale = 0.2;
 	export let maxScale = 5;
 	export let stageSize = 4096;
@@ -8,7 +9,6 @@
 	const dispatch = createEventDispatcher();
 
 	let root: HTMLElement;
-	let scale = 1;
 
 	onMount(() => {
 		zoom(scale);

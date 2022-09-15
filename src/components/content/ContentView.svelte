@@ -11,7 +11,7 @@
 	let root: HTMLElement;
 
 	onMount(() => {
-		zoom(scale);
+		// zoom(scale);
 		root.scrollBy({
 			behavior: 'auto',
 			left: (root.scrollWidth - root.offsetWidth) * 0.5,

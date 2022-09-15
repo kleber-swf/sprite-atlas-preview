@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import type { AppModel, SelectionItem, TreeNodeModel } from './model/app.model';
-import type { AtlasDataModel, FramesMap } from './model/atlas.model';
+import type { AppModel, SelectionItem, TreeNodeModel } from '../model/app.model';
+import type { AtlasDataModel, FramesMap } from '../model/atlas.model';
 
 export const VERSION = '%VERSION%';
 
@@ -40,27 +40,30 @@ export const data = (() => {
 			}));
 	}
 
+	const setData = (imageUrl: string, data: AtlasDataModel) => {
+		set({
+			imageUrl,
+			frames: data.frames,
+			root: framesToRoot(data.frames),
+			selection: null,
+		});
+	};
+
+	const select = (path: string) => {
+		update(model => {
+			if (model) {
+				model.selection = path
+					? { path, items: getItemForPath(model, path) }
+					: null;
+			}
+			return model;
+		});
+	}
+
 	return {
 		subscribe,
-
-		setData(imageUrl: string, data: AtlasDataModel) {
-			set({
-				imageUrl,
-				frames: data.frames,
-				root: framesToRoot(data.frames),
-				selection: null,
-			});
-		},
-
-		select(path: string) {
-			update(model => {
-				if (model) {
-					model.selection = path
-						? { path, items: getItemForPath(model, path) }
-						: null;
-				}
-				return model;
-			});
-		}
+		setData,
+		select,
 	}
 })();
+

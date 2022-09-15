@@ -1,14 +1,17 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
+	import { uiState } from 'store/ui-state';
 	import PropertiesPanel from '../ui/properties/PropertiesPanel.svelte';
 
-	const LS_KEY = 'propeties.panel.collapsed';
-
 	export let selection: SelectionModel;
-	let collapsed = localStorage.getItem(LS_KEY) === '1';
+	let collapsed = false;
+
+	uiState.subscribe((model) => {
+		if (model) collapsed = model.framePropertiesCollapsed;
+	});
 
 	function onPanelCollased(e: CustomEvent<boolean>) {
-		localStorage.setItem(LS_KEY, e.detail ? '1' : '0');
+		uiState.setPreference('framePropertiesCollapsed', e.detail);
 	}
 
 	$: content = selection?.items.length === 1 ? selection.items[0].frame : null;

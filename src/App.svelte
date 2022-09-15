@@ -1,19 +1,21 @@
 <script lang="ts">
+	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
-
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import { data } from './data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
+	import { data } from './store/data';
 
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
 	let imageUrl: string;
 	let frames: FramesMap;
 	let selectedTab = 0;
+
+	uiState.load();
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;

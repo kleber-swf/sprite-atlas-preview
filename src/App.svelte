@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import { createAppModel } from './data';
+	import { data } from './data';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
 	import type { FramesMap, Point } from './model/atlas.model';
 
@@ -11,8 +13,7 @@
 	let root: TreeNodeModel;
 	let imageUrl: string;
 	let frames: FramesMap;
-
-	const data = createAppModel();
+	let selectedTab = 0;
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
@@ -50,13 +51,21 @@
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
+		selectedTab = 0;
 	}
 
 	// [DEBUG]
-	// data.setData('./test/game-ui.png', EXAMPLE_DATA);
-	// onMount(() => {
-	// 	data.select('btn-mid/green/hover');
-	// });
+	onMount(() => {
+		selectedTab = 1;
+		fetch('./test/robot.json')
+			.then((e) => e.json())
+			.then((json) => {
+				data.setData('./test/robot.png', json);
+			})
+			.then(() => {
+				data.select('walk/walk0');
+			});
+	});
 	// [/DEBUG]
 </script>
 
@@ -68,7 +77,7 @@
 		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="selection-area">
-		<ContentArea imgSrc={imageUrl} {selection} on:select={onContentAreaTouch} />
+		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} on:select={onContentAreaTouch} />
 		<FrameProperties {selection} />
 	</div>
 </main>

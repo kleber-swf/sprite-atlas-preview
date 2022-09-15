@@ -1,32 +1,63 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
-	const PADDING = 400;
-
-	export let width: number;
-	export let height: number;
-	export let scale: number;
-
-	let root: HTMLDivElement;
-	let containerWidth: number;
-	let containerHeight: number;
+	export let scale = 1;
+	export let minScale = 0.2;
+	export let maxScale = 5;
+	export let stageSize = 4096;
 
 	const dispatch = createEventDispatcher();
 
-	function onMouseWheel(e: WheelEvent) {
-		if (!e.ctrlKey) return;
-		scale = Math.max(0.1, Math.min(5, scale - e.deltaY * 0.001));
+	let root: HTMLElement;
+
+	onMount(() => {
+		zoom(scale);
+		root.scrollBy({
+			behavior: 'auto',
+			left: (root.scrollWidth - root.offsetWidth) * 0.5,
+			top: (root.scrollHeight - root.offsetHeight) * 0.5
+		});
+	});
+
+	// #region Zoom
+
+	function zoom(value: number) {
+		scale = Math.max(minScale, Math.min(maxScale, value));
 		dispatch('scaleChanged', scale);
-		e.preventDefault();
-		e.stopImmediatePropagation();
 	}
 
-	function onMouseUp(e: MouseEvent) {
-		if (e.button === 0 && !e.ctrlKey) {
-			e.stopImmediatePropagation();
-			dispatch('unselect');
+	function onWheel(e: WheelEvent) {
+		if (!e.ctrlKey) return;
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		zoom(scale - e.deltaY * 0.002);
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (!e.ctrlKey) return;
+
+		switch (e.key) {
+			case '=':
+				zoom(scale + 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '-':
+				zoom(scale - 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '0':
+				zoom(1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
 		}
 	}
+
+	// #endregion
+
+	// #region Pan
 
 	function onMouseDown(e: MouseEvent) {
 		if (e.button === 1 && !e.ctrlKey) {
@@ -47,57 +78,39 @@
 		e.preventDefault();
 	}
 
-	$: {
-		containerWidth = (width ? width * scale : 0) + PADDING;
-		containerHeight = (height ? height * scale : 0) + PADDING;
-	}
+	// #endregion
 </script>
 
-<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
-	<div class="container" style="min-width:{containerWidth}px; min-height:{containerHeight}px" on:click={onMouseUp}>
-		<div class="internal" style="transform:scale({scale})">
-			<div class="content">
-				<slot />
-			</div>
+<svelte:window on:keydown={onKeyDown} />
+
+<div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown} on:click>
+	<div class="stage" style:width="{stageSize}px" style:height="{stageSize}px">
+		<div class="inner" style:transform="scale({scale})">
+			<slot />
 		</div>
 	</div>
 </div>
 
 <style lang="scss">
-	@import 'variables.scss';
-	.content-view {
-		background-color: $dark-background;
-		user-select: none;
-		background-image: url('/assets/patterns/shadow-checkers.png');
+	@import 'variables';
+
+	div.content-view {
 		width: 100%;
 		height: 100%;
-		min-width: 100%;
-		min-height: 100%;
-		max-width: 100%;
-		max-height: 100%;
+		padding: 0;
+		margin: 0;
 		overflow: auto;
+		user-select: none;
 
-		.container {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-			max-width: 100%;
-			max-height: 100%;
-			overflow: hidden;
-			.internal {
-				.content {
-					transform-origin: center;
-					box-sizing: content-box;
-					-webkit-user-drag: none;
-					user-select: none;
-					-moz-user-select: none;
-					-webkit-user-select: none;
-					-ms-user-select: none;
-					display: block;
-				}
+		.stage {
+			display: grid;
+			background-color: $dark-background;
+			background-image: url('/assets/patterns/shadow-checkers.png');
+
+			.inner {
+				// display: flex;
+				transform-origin: 50%;
+				margin: auto;
 			}
 		}
 	}

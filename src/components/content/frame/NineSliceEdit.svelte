@@ -5,7 +5,7 @@
 	export let scale = 1;
 	export let model: NineSliceModel;
 	export let frame: Rect;
-	export let selected = false;
+	export let stageSize: number;
 	const dispatch = createEventDispatcher();
 
 	let propId: string;
@@ -20,7 +20,7 @@
 		top: (e) => (model.top = handleDrag((propValue += e.movementY / scale), frame.h)),
 		left: (e) => (model.left = handleDrag((propValue += e.movementX / scale), frame.w)),
 		bottom: (e) => (model.bottom = handleDrag((propValue -= e.movementY / scale), frame.h)),
-		right: (e) => (model.right = handleDrag((propValue -= e.movementX / scale), frame.w)),
+		right: (e) => (model.right = handleDrag((propValue -= e.movementX / scale), frame.w))
 	};
 
 	let handlerFn: (e: MouseEvent) => void;
@@ -79,20 +79,37 @@
 	}
 
 	$: {
-		if (selected) {
-			document.addEventListener('keydown', onKeyDown);
-		} else {
-			document.removeEventListener('keydown', onKeyDown);
-		}
 		handleScale = `transform:scale(${1 / scale})`;
 	}
 </script>
 
+<svelte:window on:keydown={onKeyDown} />
+
 <div class="nine-slice-edit">
-	<div class="handle left" data="left" style="left:{model.left}px; {handleScale}" on:mousedown={startHandleDrag} />
-	<div class="handle right" data="right" style="right:{model.right}px; {handleScale}" on:mousedown={startHandleDrag} />
-	<div class="handle top" data="top" style="top:{model.top}px; {handleScale}" on:mousedown={startHandleDrag} />
-	<div class="handle bottom" data="bottom" style="bottom:{model.bottom}px; {handleScale}" on:mousedown={startHandleDrag} />
+	<div
+		class="handle left"
+		data="left"
+		style="left:{model.left}px; height:{stageSize}px; {handleScale} translateY(-50%)"
+		on:mousedown={startHandleDrag}
+	/>
+	<div
+		class="handle right"
+		data="right"
+		style="right:{model.right}px; height:{stageSize}px; {handleScale} translateY(-50%)"
+		on:mousedown={startHandleDrag}
+	/>
+	<div
+		class="handle top"
+		data="top"
+		style="top:{model.top}px; width:{stageSize}px; {handleScale} translateX(-50%)"
+		on:mousedown={startHandleDrag}
+	/>
+	<div
+		class="handle bottom"
+		data="bottom"
+		style="bottom:{model.bottom}px; width:{stageSize}px; {handleScale} translateX(-50%)"
+		on:mousedown={startHandleDrag}
+	/>
 </div>
 
 <style lang="scss">
@@ -129,11 +146,9 @@
 			&.left,
 			&.right {
 				width: $handle-width;
-				top: 0;
-				bottom: 0;
 				cursor: ew-resize;
-				top: -10000px;
-				height: 20000px;
+				top: 50%;
+				transform-origin: top;
 				&::after {
 					height: 100%;
 					left: $handle-margin;
@@ -152,11 +167,9 @@
 			&.top,
 			&.bottom {
 				height: $handle-width;
-				left: 0;
-				right: 0;
 				cursor: ns-resize;
-				left: -10000px;
-				width: 20000px;
+				left: 50%;
+				transform-origin: left;
 				&::after {
 					width: 100%;
 					border-top: $handle-ext-border;

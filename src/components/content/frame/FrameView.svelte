@@ -7,27 +7,28 @@
 
 	export let selection: SelectionModel;
 	export let imgSrc: string;
-	export let selected = false;
 
 	let scale = 1;
-	let width: number;
-	let height: number;
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
+	let maxScale = 1;
+	const stageSize = 2048;
 
 	$: {
 		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
 		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
-			const s = [`background-image: url(${imgSrc})`, `width: ${rect.w}px`, `height: ${rect.h}px`, `background-position: -${rect.x}px -${rect.y}px`];
+			const s = [
+				`background-image: url(${imgSrc})`,
+				`width: ${rect.w}px`,
+				`height: ${rect.h}px`,
+				`background-position: -${rect.x}px -${rect.y}px`
+			];
 			style = s.join(';');
-			width = rect.w;
-			height = rect.h;
-		} else {
-			width = 0;
-			height = 0;
+			maxScale = stageSize / (Math.max(rect.w, rect.h) * 1.1);
+			scale = Math.min(1, maxScale);
 		}
 	}
 
@@ -41,10 +42,10 @@
 </script>
 
 <div class="frame-view">
-	<ContentView {width} {height} {scale} on:scaleChanged={onScaleChanged}>
+	<ContentView {stageSize} {maxScale} on:scaleChanged={onScaleChanged}>
 		{#if frame}
 			<div class="frame" {style}>
-				<NineSliceEdit {scale} model={frame.slice} frame={rect} {selected} on:update={onUpdate} />
+				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />
 			</div>
 		{/if}
 	</ContentView>

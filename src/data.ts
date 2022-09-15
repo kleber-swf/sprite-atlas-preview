@@ -4,7 +4,7 @@ import type { AtlasDataModel, FramesMap } from './model/atlas.model';
 
 export const VERSION = '%VERSION%';
 
-export function createAppModel() {
+export const data = (() => {
 	const { subscribe, update, set } = writable<AppModel>();
 
 	const framesToRoot = (framesMap: FramesMap) => {
@@ -53,14 +53,14 @@ export function createAppModel() {
 		},
 
 		select(path: string) {
-			update(data => {
-				if (data) {
-					data.selection = path
-						? { path, items: getItemForPath(data, path) }
+			update(model => {
+				if (model) {
+					model.selection = path
+						? { path, items: getItemForPath(model, path) }
 						: null;
 				}
-				return data;
+				return model;
 			});
 		}
 	}
-}
+})();

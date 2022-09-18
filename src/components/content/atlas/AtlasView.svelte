@@ -9,7 +9,6 @@
 
 	const key = 'atlas';
 	const stageSize = 4096;
-	let scale = 1;
 	let maxScale = 1;
 
 	const dispatch = createEventDispatcher();
@@ -26,11 +25,10 @@
 	function onImageLoded(e: Event) {
 		const img = e.target as HTMLImageElement;
 		maxScale = stageSize / (Math.max(img.width, img.height) * 1.1);
-		scale = Math.min(scale, maxScale);
 	}
 </script>
 
-<ContentView {key} {scale} {maxScale} {stageSize} on:click={deselectFrames}>
+<ContentView {key} {maxScale} {stageSize} on:click={deselectFrames}>
 	<img src={imgSrc} alt="" on:click={selectFrame} on:load={onImageLoded} />
 	{#if selection}
 		{#each selection.items as item (item.path)}

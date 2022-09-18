@@ -29,7 +29,6 @@
 			];
 			style = s.join(';');
 			maxScale = stageSize / (Math.max(rect.w, rect.h) * 1.1);
-			scale = Math.min(scale, maxScale);
 		}
 	}
 
@@ -39,7 +38,7 @@
 </script>
 
 <div class="frame-view">
-	<ContentView {key} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
+	<ContentView {key} {scale} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
 		{#if frame}
 			<div class="frame" {style}>
 				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />

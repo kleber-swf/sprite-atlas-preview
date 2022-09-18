@@ -19,7 +19,6 @@
 	let frameIndex = 0;
 	let totalFrames = 0;
 	let loop = false;
-	let scale = 1;
 	let maxScale = 1;
 
 	function getDelta() {
@@ -28,14 +27,6 @@
 		now = n;
 		return delta;
 	}
-
-	// uiState.subscribe((model) => {
-	// 	if (model?.animation) {
-	// 		frameRate = model.animation.frameRate;
-	// 		loop = model.animation.loop;
-	// 		scale = model.animation.scale;
-	// 	}
-	// });
 
 	data.subscribe((data: AppModel) => {
 		if (!data?.selection) return;
@@ -56,7 +47,6 @@
 		animator.loop = loop;
 
 		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
-		scale = Math.min(scale, maxScale);
 	});
 
 	onMount(() => {
@@ -109,7 +99,7 @@
 </script>
 
 <div class="animation-view">
-	<ContentView {key} {scale} {maxScale} {stageSize}>
+	<ContentView {key} {maxScale} {stageSize}>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 	</ContentView>
 	<div class="controls" class:disabled={totalFrames < 2}>

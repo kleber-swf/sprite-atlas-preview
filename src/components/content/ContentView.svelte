@@ -11,10 +11,9 @@
 
 	let scrollLeft = -1;
 	let scrollTop = -1;
+	let root: HTMLElement;
 
 	const dispatch = createEventDispatcher();
-
-	let root: HTMLElement;
 
 	userPrefs.subscribe((model) => {
 		if (!model) return;
@@ -28,6 +27,8 @@
 		scrollLeft = scrollLeft ?? (root.scrollWidth - root.offsetWidth) * 0.5;
 		scrollTop = scrollTop ?? (root.scrollHeight - root.offsetHeight) * 0.5;
 		root.scrollBy({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+
+		dispatch('scaleChanged', scale);
 
 		return () => {
 			userPrefs.setPreference(key, { scale, scrollLeft, scrollTop });

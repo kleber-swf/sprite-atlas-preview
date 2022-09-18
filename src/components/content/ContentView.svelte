@@ -11,6 +11,7 @@
 
 	let scrollLeft = -1;
 	let scrollTop = -1;
+
 	let root: HTMLElement;
 
 	const dispatch = createEventDispatcher();
@@ -26,9 +27,11 @@
 	onMount(() => {
 		scrollLeft = scrollLeft ?? (root.scrollWidth - root.offsetWidth) * 0.5;
 		scrollTop = scrollTop ?? (root.scrollHeight - root.offsetHeight) * 0.5;
-		root.scrollBy({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
 
 		dispatch('scaleChanged', scale);
+
+		console.log($$slots);
 
 		return () => {
 			userPrefs.setPreference(key, { scale, scrollLeft, scrollTop });
@@ -50,28 +53,6 @@
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		zoom(scale - e.deltaY * 0.002);
-	}
-
-	function onKeyDown(e: KeyboardEvent) {
-		if (!e.ctrlKey) return;
-
-		switch (e.key) {
-			case '=':
-				zoom(scale + 0.1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-			case '-':
-				zoom(scale - 0.1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-			case '0':
-				zoom(1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-		}
 	}
 
 	// #endregion
@@ -98,6 +79,40 @@
 	}
 
 	// #endregion
+
+	function resetScaleAndPan() {
+		scrollLeft = (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+		zoom(1);
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Tab') {
+			resetScaleAndPan();
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+		if (!e.ctrlKey) return;
+
+		switch (e.key) {
+			case '=':
+				zoom(scale + 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '-':
+				zoom(scale - 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '0':
+				zoom(1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+		}
+	}
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -127,7 +142,6 @@
 			background-image: url('/assets/patterns/shadow-checkers.png');
 
 			.inner {
-				// display: flex;
 				transform-origin: 50%;
 				margin: auto;
 			}

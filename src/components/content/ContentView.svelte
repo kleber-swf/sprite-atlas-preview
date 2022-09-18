@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PrefModel, UserPrefsModel } from 'model/ui-state.model';
-	import { uiState as userPrefs } from 'store/user-prefs';
+	import { prefs } from 'store/user-prefs';
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let key: keyof UserPrefsModel;
@@ -16,7 +16,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	userPrefs.subscribe((model) => {
+	prefs.subscribe((model) => {
 		if (!model) return;
 		const pref = model[key] as PrefModel;
 		scale = pref.scale;
@@ -30,12 +30,7 @@
 		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
 
 		dispatch('scaleChanged', scale);
-
-		console.log($$slots);
-
-		return () => {
-			userPrefs.setPreference(key, { scale, scrollLeft, scrollTop });
-		};
+		return () => prefs.setItem(key, { scale, scrollLeft, scrollTop });
 	});
 
 	// #region Zoom

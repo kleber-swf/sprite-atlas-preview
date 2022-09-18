@@ -1,20 +1,16 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
+	import { prefs } from 'store/user-prefs';
 	import PropertiesPanel from '../ui/properties/PropertiesPanel.svelte';
 
 	export let selection: SelectionModel;
 	let collapsed = false;
 
-	// onMount(() => {
-	// 	collapsed = UserPrefs.instance.get('framePropertiesCollapsed') as boolean;
-	// });
-
-	// onDestroy(() => {
-	// 	UserPrefs.instance.set('framePropertiesCollapsed', collapsed);
-	// });
+	prefs.subscribe((model) => (collapsed = model.framePropertiesCollapsed))();
 
 	function onPanelCollased(e: CustomEvent<boolean>) {
 		collapsed = e.detail;
+		prefs.setItem('framePropertiesCollapsed', collapsed);
 	}
 
 	$: content = selection?.items.length === 1 ? selection.items[0].frame : null;

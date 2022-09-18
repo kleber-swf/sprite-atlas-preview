@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 
 const LS_KEY = 'ui.prefs';
 
-export const uiState = (() => {
+export const prefs = (() => {
 	const { subscribe, update, set } = writable<UserPrefsModel>();
 
 	const load = () => {
@@ -31,10 +31,10 @@ export const uiState = (() => {
 		}));
 	};
 
-	const setPreference = (pref: keyof UserPrefsModel, value: any) => {
+	const setItem = (pref: keyof UserPrefsModel, value: any) => {
 		update(model => {
 			if (model && pref in model) {
-				model[pref] = Object.assign(model[pref], value);
+				model[pref] = typeof value === 'object' ? Object.assign(model[pref], value) : value;
 			}
 			save(model);
 			return model;
@@ -45,6 +45,6 @@ export const uiState = (() => {
 		set,
 		subscribe,
 		load,
-		setPreference,
+		setItem,
 	}
 })();

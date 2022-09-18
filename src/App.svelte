@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uiState } from 'store/user-prefs';
+	import { prefs } from 'store/user-prefs';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
@@ -15,7 +15,7 @@
 	let frames: FramesMap;
 	let selectedTab = 0;
 
-	uiState.load();
+	prefs.load();
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { AppModel } from 'model/app.model';
 	import { data } from 'store/data';
+	import { prefs } from 'store/user-prefs';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
@@ -27,6 +28,11 @@
 		now = n;
 		return delta;
 	}
+
+	prefs.subscribe((model) => {
+		loop = model.animation.loop;
+		frameRate = model.animation.frameRate;
+	})();
 
 	data.subscribe((data: AppModel) => {
 		if (!data?.selection) return;
@@ -90,11 +96,13 @@
 	function toggleLoop() {
 		const loop = !animator.loop;
 		animator.loop = loop;
+		prefs.setItem('animation', { loop, frameRate });
 	}
 
 	function changeFrameRate(e: CustomEvent) {
 		const frameRate = e.detail as number;
 		animator.frameRate = frameRate;
+		prefs.setItem('animation', { loop, frameRate });
 	}
 </script>
 

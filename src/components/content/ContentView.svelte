@@ -30,7 +30,7 @@
 		root.scrollBy({ behavior: 'auto', left: scrollLeft, top: scrollTop });
 
 		return () => {
-			userPrefs.setPreference(key, { scale, scrollLeft: root.scrollLeft, scrollTop: root.scrollTop });
+			userPrefs.setPreference(key, { scale, scrollLeft, scrollTop });
 		};
 	});
 
@@ -42,6 +42,9 @@
 	}
 
 	function onWheel(e: WheelEvent) {
+		const t = e.currentTarget as HTMLElement;
+		scrollLeft = t.scrollLeft;
+		scrollTop = t.scrollTop;
 		if (!e.ctrlKey) return;
 		e.preventDefault();
 		e.stopImmediatePropagation();

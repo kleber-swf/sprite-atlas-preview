@@ -135,6 +135,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
 
 		.disabled {
 			pointer-events: none;

@@ -1,22 +1,37 @@
 <script lang="ts">
+	import type { PrefModel, UserPrefsModel } from 'model/ui-state.model';
+	import { uiState as userPrefs } from 'store/user-prefs';
 	import { createEventDispatcher, onMount } from 'svelte';
 
+	export let key: keyof UserPrefsModel;
 	export let scale = 1;
 	export let minScale = 0.2;
 	export let maxScale = 5;
 	export let stageSize = 4096;
 
+	let scrollLeft = -1;
+	let scrollTop = -1;
+
 	const dispatch = createEventDispatcher();
 
 	let root: HTMLElement;
 
+	userPrefs.subscribe((model) => {
+		if (!model) return;
+		const pref = model[key] as PrefModel;
+		scale = pref.scale;
+		scrollLeft = pref.scrollLeft;
+		scrollTop = pref.scrollTop;
+	})();
+
 	onMount(() => {
-		// zoom(scale);
-		root.scrollBy({
-			behavior: 'auto',
-			left: (root.scrollWidth - root.offsetWidth) * 0.5,
-			top: (root.scrollHeight - root.offsetHeight) * 0.5
-		});
+		scrollLeft = scrollLeft ?? (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = scrollTop ?? (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollBy({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+
+		return () => {
+			userPrefs.setPreference(key, { scale, scrollLeft: root.scrollLeft, scrollTop: root.scrollTop });
+		};
 	});
 
 	// #region Zoom

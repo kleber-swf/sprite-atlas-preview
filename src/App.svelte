@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uiState } from 'store/ui-state';
+	import { uiState } from 'store/user-prefs';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';

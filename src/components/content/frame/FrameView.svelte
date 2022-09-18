@@ -1,25 +1,20 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
-	import { uiState } from 'store/ui-state';
-	import { onDestroy } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
+	const key = 'frame';
 	export let selection: SelectionModel;
 	export let imgSrc: string;
 
-	let scale: number;
+	let scale = 1;
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
 	let maxScale = 1;
 	const stageSize = 2048;
-
-	uiState.subscribe((model) => {
-		if (model?.frame) scale = model.frame.scale;
-	});
 
 	$: {
 		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
@@ -41,12 +36,10 @@
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
 		frame.slice = e.detail;
 	}
-
-	onDestroy(() => uiState.setPreference('frame', { scale }));
 </script>
 
 <div class="frame-view">
-	<ContentView {scale} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
+	<ContentView {key} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
 		{#if frame}
 			<div class="frame" {style}>
 				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />

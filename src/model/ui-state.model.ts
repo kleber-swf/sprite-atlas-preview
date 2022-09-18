@@ -1,5 +1,7 @@
 export interface PrefModel {
 	scale: number;
+	scrollLeft?: number;
+	scrollTop?: number;
 }
 
 export interface AnimationPersistentData {
@@ -14,7 +16,7 @@ export interface PersistentData {
 	animation: AnimationPersistentData;
 }
 
-export interface UIStateModel extends PersistentData {
+export interface UserPrefsModel extends PersistentData {
 	atlas: PrefModel;
 	frame: PrefModel;
 	animation: AnimationPrefModel;

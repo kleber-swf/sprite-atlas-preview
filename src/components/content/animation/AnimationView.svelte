@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { AppModel } from 'model/app.model';
 	import { data } from 'store/data';
-	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
 	import { Animator } from './Animator';
+
+	const key = 'animation';
+	const stageSize = 2048;
 
 	let animator = new Animator();
 	let canvas: HTMLCanvasElement;
@@ -17,8 +19,6 @@
 	let frameIndex = 0;
 	let totalFrames = 0;
 	let loop = false;
-
-	const stageSize = 2048;
 	let scale = 1;
 	let maxScale = 1;
 
@@ -29,13 +29,13 @@
 		return delta;
 	}
 
-	uiState.subscribe((model) => {
-		if (model?.animation) {
-			frameRate = model.animation.frameRate;
-			loop = model.animation.loop;
-			scale = model.animation.scale;
-		}
-	});
+	// uiState.subscribe((model) => {
+	// 	if (model?.animation) {
+	// 		frameRate = model.animation.frameRate;
+	// 		loop = model.animation.loop;
+	// 		scale = model.animation.scale;
+	// 	}
+	// });
 
 	data.subscribe((data: AppModel) => {
 		if (!data?.selection) return;
@@ -76,7 +76,6 @@
 
 		return () => {
 			cancelAnimationFrame(raf);
-			uiState.setPreference('animation', { frameRate, loop, scale });
 		};
 	});
 
@@ -110,7 +109,7 @@
 </script>
 
 <div class="animation-view">
-	<ContentView {scale} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
+	<ContentView {key} {scale} {maxScale} {stageSize}>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 	</ContentView>
 	<div class="controls" class:disabled={totalFrames < 2}>

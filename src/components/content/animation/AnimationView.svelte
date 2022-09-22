@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { Animator } from 'controller/animator';
 	import { data } from 'store/data';
 	import { theSelection } from 'store/selection';
 	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
-	import { Animator } from './Animator';
 
 	const key = 'animation';
 	const stageSize = 2048;

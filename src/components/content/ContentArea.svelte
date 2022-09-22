@@ -1,13 +1,18 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
+	import { data } from 'store/data';
 	import AnimationView from './animation/AnimationView.svelte';
 	import AtlasView from './atlas/AtlasView.svelte';
 	import FrameView from './frame/FrameView.svelte';
 
-	export let imgSrc: string;
+	let imgSrc: string;
 	export let selection: SelectionModel;
 
 	export let selectedTab = 0;
+
+	data.subscribe((model) => {
+		if (model) imgSrc = model.imageUrl;
+	});
 
 	function selectTab(index: number, enabled: boolean) {
 		if (enabled) selectedTab = index;

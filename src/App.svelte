@@ -9,27 +9,25 @@
 	import { data } from './store/data';
 
 	let selection: SelectionModel;
-	let imageUrl: string;
 	let selectedTab = 0;
 
 	prefs.load();
 
-	data.subscribe((value) => {
-		if (!value) value = {} as any;
-		imageUrl = value.imageUrl;
-		selection = value.selection;
+	data.subscribe((model) => {
+		if (!model) model = {} as any;
+		selection = model.selection;
 	});
 
 	document.addEventListener('keydown', (e) => {
-		if (!e.ctrlKey) return;
-		if (e.key !== 'c') return;
-		if (!selection?.items?.length) return;
+		if (!(e.ctrlKey || (e.key === 'c' && selection?.items?.length))) return;
 		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));
 		e.preventDefault();
 	});
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
+		// TODO remove selection from data first so I can put the selected tab reset
+		// inside the data changing
 		selectedTab = 0;
 	}
 
@@ -56,7 +54,7 @@
 		<TreeView />
 	</div>
 	<div class="selection-area">
-		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} />
+		<ContentArea {selection} {selectedTab} />
 		<FrameProperties {selection} />
 	</div>
 </main>

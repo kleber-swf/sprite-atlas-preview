@@ -9,7 +9,6 @@
 	import { data } from './store/data';
 
 	let selection: SelectionModel;
-	let root: TreeNodeModel;
 	let imageUrl: string;
 	let selectedTab = 0;
 
@@ -17,7 +16,6 @@
 
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
-		root = value.root;
 		imageUrl = value.imageUrl;
 		selection = value.selection;
 	});
@@ -59,7 +57,7 @@
 		<Toolbar on:files-uploaded={onFilesUploaded} />
 	</div>
 	<div class="left-area">
-		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
+		<TreeView selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="selection-area">
 		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} />

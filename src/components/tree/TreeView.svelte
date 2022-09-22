@@ -1,9 +1,15 @@
 <script lang="ts">
 	import type { TreeNodeModel } from 'model/app.model';
+	import { data } from 'store/data';
 	import TreeNode from './TreeNode.svelte';
 
-	export let nodes: TreeNodeModel;
 	export let selected: string;
+	let nodes: TreeNodeModel;
+
+	data.subscribe((model) => {
+		if (!model) return;
+		nodes = model.root;
+	});
 </script>
 
 <div class="tree-view">

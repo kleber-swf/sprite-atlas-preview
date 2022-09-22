@@ -90,7 +90,7 @@
 		<i class="icon-to-end" on:click={nextFrame} />
 	</div>
 	<div class="seek-bar">
-		<input type="range" min="0" max={totalFrames} value={frameIndex} on:input={seek} />
+		<input type="range" min="0" max={totalFrames - 1} value={frameIndex} on:input={seek} />
 	</div>
 	<div class="loop button" class:selected={loop}>
 		<i class="icon-loop" on:click={toggleLoop} />

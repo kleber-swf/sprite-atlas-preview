@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { AppModel } from 'model/app.model';
 	import { data } from 'store/data';
+	import { theSelection } from 'store/selection';
 	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
@@ -10,6 +10,7 @@
 	const key = 'animation';
 	const stageSize = 2048;
 
+	let imageUrl: string;
 	let animator = new Animator();
 	let canvas: HTMLCanvasElement;
 	let raf: number;
@@ -29,16 +30,13 @@
 		return delta;
 	}
 
-	uiState.subscribe((model) => {
-		loop = model.animation.loop;
-		frameRate = model.animation.frameRate;
-	})();
+	data.subscribe((model) => (imageUrl = model?.imageUrl));
 
-	data.subscribe((data: AppModel) => {
-		if (!data?.selection) return;
+	theSelection.subscribe((model) => {
+		if (!model) return;
 
-		const frames = data.selection.items.map((e) => e.frame.frame);
-		totalFrames = frames.length - 1;
+		const frames = model.items.map((e) => e.frame.frame);
+		totalFrames = frames.length;
 		canvasSize = frames.reduce(
 			(acc, curr) => {
 				acc.w = Math.max(acc.w, curr.w);
@@ -48,12 +46,17 @@
 			{ w: 0, h: 0 }
 		);
 
-		animator.setContent(frames, data.imageUrl);
+		animator.setContent(frames, imageUrl);
 		animator.frameRate = frameRate;
 		animator.loop = loop;
 
 		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
 	});
+
+	uiState.subscribe((model) => {
+		loop = model.animation.loop;
+		frameRate = model.animation.frameRate;
+	})();
 
 	onMount(() => {
 		const context = canvas.getContext('2d');

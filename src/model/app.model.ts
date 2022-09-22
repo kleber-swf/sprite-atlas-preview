@@ -20,5 +20,4 @@ export interface AppModel {
 	imageUrl: string;
 	frames: FramesMap;
 	root: TreeNodeModel;
-	selection: SelectionModel;
 }

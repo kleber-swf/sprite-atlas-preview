@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import { data } from 'store/data';
+	import { theSelection } from 'store/selection';
 	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
@@ -22,11 +23,11 @@
 		const x = e.offsetX;
 		const y = e.offsetY;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-		data.select(frame?.path);
+		theSelection.select(frame?.path);
 	}
 
 	function deselectFrames() {
-		data.select(null);
+		theSelection.select(null);
 	}
 
 	function onImageLoded(e: Event) {

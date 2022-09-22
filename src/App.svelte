@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { prefs } from 'store/user-prefs';
+	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
@@ -11,7 +11,7 @@
 	let selection: SelectionModel;
 	let selectedTab = 0;
 
-	prefs.load();
+	uiState.load();
 
 	data.subscribe((model) => {
 		if (!model) model = {} as any;

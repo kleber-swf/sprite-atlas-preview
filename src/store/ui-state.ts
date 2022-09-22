@@ -1,13 +1,13 @@
-import type { PersistentData, UserPrefsModel } from 'model/ui-state.model';
+import type { PersistentData, UIStateModel } from 'model/ui-state.model';
 import { writable } from 'svelte/store';
 
-const LS_KEY = 'ui.prefs';
+const LS_KEY = 'ui.state';
 
-export const prefs = (() => {
-	const { subscribe, update, set } = writable<UserPrefsModel>();
+export const uiState = (() => {
+	const { subscribe, update, set } = writable<UIStateModel>();
 
 	const load = () => {
-		const loaded: Partial<UserPrefsModel> = JSON.parse(localStorage.getItem(LS_KEY) ?? '{}');
+		const loaded: Partial<UIStateModel> = JSON.parse(localStorage.getItem(LS_KEY) ?? '{}');
 		set({
 			framePropertiesCollapsed: loaded.framePropertiesCollapsed ?? false,
 			atlas: { scale: 1 },
@@ -16,7 +16,7 @@ export const prefs = (() => {
 		});
 	};
 
-	const save = (model: UserPrefsModel) => {
+	const save = (model: UIStateModel) => {
 		if (!model) {
 			localStorage.removeItem(LS_KEY);
 			return;
@@ -31,7 +31,7 @@ export const prefs = (() => {
 		}));
 	};
 
-	const setItem = (pref: keyof UserPrefsModel, value: any) => {
+	const setItem = (pref: keyof UIStateModel, value: any) => {
 		update(model => {
 			if (model && pref in model) {
 				model[pref] = typeof value === 'object' ? Object.assign(model[pref], value) : value;

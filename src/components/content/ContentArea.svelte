@@ -28,7 +28,7 @@
 	</div>
 	<div class="tab-content">
 		{#if selectedTab === 0}
-			<AtlasView {imgSrc} {selection} on:select />
+			<AtlasView {imgSrc} {selection} />
 		{:else if selectedTab === 1}
 			<FrameView {imgSrc} {selection} />
 		{:else}

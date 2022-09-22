@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
-	import { createEventDispatcher } from 'svelte';
+	import { data } from 'store/data';
 	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
@@ -9,17 +9,24 @@
 
 	const key = 'atlas';
 	const stageSize = 4096;
+	let framesArray = [];
+
 	let maxScale = 1;
 
-	const dispatch = createEventDispatcher();
+	data.subscribe((model) => {
+		framesArray = model?.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];
+	});
 
 	function selectFrame(e: MouseEvent) {
 		e.stopImmediatePropagation();
-		dispatch('select', { x: e.offsetX, y: e.offsetY });
+		const x = e.offsetX;
+		const y = e.offsetY;
+		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
+		data.select(frame?.path);
 	}
 
 	function deselectFrames() {
-		dispatch('select', null);
+		data.select(null);
 	}
 
 	function onImageLoded(e: Event) {

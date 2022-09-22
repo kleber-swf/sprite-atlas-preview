@@ -6,13 +6,11 @@
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import type { SelectionModel, TreeNodeModel } from './model/app.model';
-	import type { FramesMap, Point } from './model/atlas.model';
 	import { data } from './store/data';
 
 	let selection: SelectionModel;
 	let root: TreeNodeModel;
 	let imageUrl: string;
-	let frames: FramesMap;
 	let selectedTab = 0;
 
 	prefs.load();
@@ -20,7 +18,6 @@
 	data.subscribe((value) => {
 		if (!value) value = {} as any;
 		root = value.root;
-		frames = value.frames;
 		imageUrl = value.imageUrl;
 		selection = value.selection;
 	});
@@ -33,22 +30,8 @@
 		e.preventDefault();
 	});
 
-	$: framesArray = frames ? Object.keys(frames).map((path) => ({ path, ...frames[path].frame })) : [];
-
 	function onNodeSelected(e: CustomEvent<string>) {
 		data.select(e.detail);
-	}
-
-	// TODO this should be inside preview area
-	function onContentAreaTouch(e: CustomEvent<Point>) {
-		if (e.detail) {
-			const x = e.detail.x;
-			const y = e.detail.y;
-			const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-			data.select(frame?.path);
-		} else {
-			data.select(null);
-		}
 	}
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
@@ -79,7 +62,7 @@
 		<TreeView nodes={root} selected={selection?.path} on:select={onNodeSelected} />
 	</div>
 	<div class="selection-area">
-		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} on:select={onContentAreaTouch} />
+		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} />
 		<FrameProperties {selection} />
 	</div>
 </main>

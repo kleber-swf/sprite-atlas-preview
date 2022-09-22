@@ -20,7 +20,7 @@
 		framesArray = model.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];
 	});
 
-	SelectionState.subscribe((model) => (selection = model));
+	SelectionState.subscribe((state) => (selection = state));
 
 	function selectFrame(e: MouseEvent) {
 		e.stopImmediatePropagation();

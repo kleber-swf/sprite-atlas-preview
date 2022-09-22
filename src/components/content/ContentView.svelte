@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { UIStateItemModel, UIStateModel } from 'model/ui-state.model';
-	import { uiState } from 'store/ui-state';
+	import { AppState } from 'store/app-state';
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let key: keyof UIStateModel;
@@ -16,9 +16,9 @@
 
 	const dispatch = createEventDispatcher();
 
-	uiState.subscribe((model) => {
-		if (!model) return;
-		const pref = model[key] as UIStateItemModel;
+	AppState.subscribe((state) => {
+		if (!state) return;
+		const pref = state[key] as UIStateItemModel;
 		scale = pref.scale;
 		scrollLeft = pref.scrollLeft;
 		scrollTop = pref.scrollTop;
@@ -30,7 +30,7 @@
 		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
 
 		dispatch('scaleChanged', scale);
-		return () => uiState.setItem(key, { scale, scrollLeft, scrollTop });
+		return () => AppState.setItem(key, { scale, scrollLeft, scrollTop });
 	});
 
 	// #region Zoom

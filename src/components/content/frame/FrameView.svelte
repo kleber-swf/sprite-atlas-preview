@@ -22,9 +22,9 @@
 		imgSrc = model.imageUrl;
 	});
 
-	SelectionState.subscribe((model) => {
-		if (!model) return;
-		frame = model.items.length === 1 ? model.items[0].frame : null;
+	SelectionState.subscribe((state) => {
+		if (!state) return;
+		frame = state.items.length === 1 ? state.items[0].frame : null;
 		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };

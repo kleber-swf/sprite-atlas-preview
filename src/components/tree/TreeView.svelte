@@ -11,7 +11,7 @@
 		if (model) nodes = model.root;
 	});
 
-	SelectionState.subscribe((model) => (selection = model?.path));
+	SelectionState.subscribe((state) => (selection = state?.path));
 
 	function onNodeSelected(e: CustomEvent<string>) {
 		SelectionState.select(e.detail);

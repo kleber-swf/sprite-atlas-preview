@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/selection.model';
 	import { SelectionState } from 'store/selection-state';
-	import { uiState } from 'store/ui-state';
+	import { AppState } from 'store/app-state';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
@@ -9,13 +9,13 @@
 	import Toolbar from './components/ui/Toolbar.svelte';
 	import { data } from './store/data';
 
-	uiState.load();
+	AppState.load();
 
 	document.addEventListener('keydown', (e) => {
 		if (!(e.ctrlKey || e.key === 'c')) return;
 
 		let selection: SelectionModel;
-		SelectionState.subscribe((model) => (selection = model))();
+		SelectionState.subscribe((state) => (selection = state))();
 		if (!selection?.items?.length) return;
 
 		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));

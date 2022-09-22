@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 
 const LS_KEY = 'ui.state';
 
-export const uiState = (() => {
+export const AppState = (() => {
 	const { subscribe, update, set } = writable<UIStateModel>();
 
 	const load = () => {

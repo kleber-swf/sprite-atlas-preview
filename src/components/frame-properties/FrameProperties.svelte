@@ -1,21 +1,21 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/selection.model';
 	import { SelectionState } from 'store/selection-state';
-	import { uiState } from 'store/ui-state';
+	import { AppState } from 'store/app-state';
 	import PropertiesPanel from '../ui/properties/PropertiesPanel.svelte';
 
-	let selection: SelectionModel;
+	let content: Record<string, any>;
 	let collapsed = false;
 
-	SelectionState.subscribe((model) => (selection = model));
-	uiState.subscribe((model) => (collapsed = model.framePropertiesCollapsed))();
+	SelectionState.subscribe((selection) => {
+		content = selection?.items.length === 1 ? selection.items[0].frame : null;
+	});
+
+	AppState.subscribe((state) => (collapsed = state.framePropertiesCollapsed))();
 
 	function onPanelCollased(e: CustomEvent<boolean>) {
 		collapsed = e.detail;
-		uiState.setItem('framePropertiesCollapsed', collapsed);
+		AppState.setItem('framePropertiesCollapsed', collapsed);
 	}
-
-	$: content = selection?.items.length === 1 ? selection.items[0].frame : null;
 </script>
 
 <div class="properties">

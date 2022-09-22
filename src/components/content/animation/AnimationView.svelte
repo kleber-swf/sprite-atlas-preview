@@ -2,7 +2,7 @@
 	import { Animator } from 'controllers/animator';
 	import { data } from 'store/data';
 	import { SelectionState } from 'store/selection-state';
-	import { uiState } from 'store/ui-state';
+	import { AppState } from 'store/app-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
@@ -32,9 +32,9 @@
 
 	data.subscribe((model) => (imageUrl = model?.imageUrl));
 
-	SelectionState.subscribe((model) => {
-		if (!model) return;
-		const frames = model.items.map((e) => e.frame.frame);
+	SelectionState.subscribe((state) => {
+		if (!state) return;
+		const frames = state.items.map((e) => e.frame.frame);
 		totalFrames = frames.length;
 		canvasSize = frames.reduce(
 			(acc, curr) => {
@@ -52,9 +52,9 @@
 		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
 	});
 
-	uiState.subscribe((model) => {
-		loop = model.animation.loop;
-		frameRate = model.animation.frameRate;
+	AppState.subscribe((state) => {
+		loop = state.animation.loop;
+		frameRate = state.animation.frameRate;
 	})();
 
 	onMount(() => {
@@ -98,13 +98,13 @@
 	function toggleLoop() {
 		const loop = !animator.loop;
 		animator.loop = loop;
-		uiState.setItem('animation', { loop, frameRate });
+		AppState.setItem('animation', { loop, frameRate });
 	}
 
 	function changeFrameRate(e: CustomEvent) {
 		const frameRate = e.detail as number;
 		animator.frameRate = frameRate;
-		uiState.setItem('animation', { loop, frameRate });
+		AppState.setItem('animation', { loop, frameRate });
 	}
 </script>
 

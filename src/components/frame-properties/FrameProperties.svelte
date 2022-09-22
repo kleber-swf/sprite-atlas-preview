@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/app.model';
+	import type { SelectionModel } from 'model/selection.model';
 	import { SelectionState } from 'store/selection-state';
 	import { uiState } from 'store/ui-state';
 	import PropertiesPanel from '../ui/properties/PropertiesPanel.svelte';

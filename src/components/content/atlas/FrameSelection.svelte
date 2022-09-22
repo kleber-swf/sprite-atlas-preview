@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { SelectionItem } from 'model/app.model';
+	import type { SelectionItem } from 'model/selection.model';
+
 	export let selection: SelectionItem;
 	$: frame = selection.frame?.frame;
 </script>

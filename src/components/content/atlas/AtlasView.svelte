@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/app.model';
+	import type { SelectionModel } from 'model/selection.model';
 	import { data } from 'store/data';
 	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';

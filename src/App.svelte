@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SelectionModel } from 'model/selection.model';
 	import { SelectionState } from 'store/selection-state';
 	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
@@ -6,7 +7,6 @@
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import type { SelectionModel } from './model/app.model';
 	import { data } from './store/data';
 
 	uiState.load();

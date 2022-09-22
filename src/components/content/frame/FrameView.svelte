@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
 	import { data } from 'store/data';
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
@@ -11,7 +11,7 @@
 	const stageSize = 2048;
 	let scale = 1;
 	let maxScale = 1;
-	
+
 	let imgSrc: string;
 	let frame: FrameModel;
 	let rect: Rect;
@@ -22,7 +22,7 @@
 		imgSrc = model.imageUrl;
 	});
 
-	theSelection.subscribe((model) => {
+	SelectionState.subscribe((model) => {
 		if (!model) return;
 		frame = model.items.length === 1 ? model.items[0].frame : null;
 		rect = frame?.frame;

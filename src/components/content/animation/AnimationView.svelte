@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Animator } from 'controllers/animator';
 	import { data } from 'store/data';
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
@@ -32,7 +32,7 @@
 
 	data.subscribe((model) => (imageUrl = model?.imageUrl));
 
-	theSelection.subscribe((model) => {
+	SelectionState.subscribe((model) => {
 		if (!model) return;
 		const frames = model.items.map((e) => e.frame.frame);
 		totalFrames = frames.length;

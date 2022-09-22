@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import { uiState } from 'store/ui-state';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
@@ -15,7 +15,7 @@
 		if (!(e.ctrlKey || e.key === 'c')) return;
 
 		let selection: SelectionModel;
-		theSelection.subscribe((model) => (selection = model))();
+		SelectionState.subscribe((model) => (selection = model))();
 		if (!selection?.items?.length) return;
 
 		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));
@@ -30,7 +30,7 @@
 				data.setData('./test/robot.png', json);
 			})
 			.then(() => {
-				theSelection.select('walk/walk0');
+				SelectionState.select('walk/walk0');
 			});
 	});
 	// [/DEBUG]

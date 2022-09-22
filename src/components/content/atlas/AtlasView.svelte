@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
 	import { data } from 'store/data';
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
@@ -20,18 +20,18 @@
 		framesArray = model.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];
 	});
 
-	theSelection.subscribe((model) => (selection = model));
+	SelectionState.subscribe((model) => (selection = model));
 
 	function selectFrame(e: MouseEvent) {
 		e.stopImmediatePropagation();
 		const x = e.offsetX;
 		const y = e.offsetY;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-		theSelection.select(frame?.path);
+		SelectionState.select(frame?.path);
 	}
 
 	function deselectFrames() {
-		theSelection.select(null);
+		SelectionState.select(null);
 	}
 
 	function onImageLoded(e: Event) {

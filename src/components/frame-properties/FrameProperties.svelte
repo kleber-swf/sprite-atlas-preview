@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/app.model';
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import { uiState } from 'store/ui-state';
 	import PropertiesPanel from '../ui/properties/PropertiesPanel.svelte';
 
 	let selection: SelectionModel;
 	let collapsed = false;
 
-	theSelection.subscribe(model=>selection=model);
+	SelectionState.subscribe((model) => (selection = model));
 	uiState.subscribe((model) => (collapsed = model.framePropertiesCollapsed))();
 
 	function onPanelCollased(e: CustomEvent<boolean>) {

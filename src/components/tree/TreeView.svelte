@@ -1,20 +1,20 @@
 <script lang="ts">
 	import type { TreeNodeModel } from 'model/app.model';
 	import { data } from 'store/data';
-	import { theSelection } from 'store/selection';
+	import { SelectionState } from 'store/selection-state';
 	import TreeNode from './TreeNode.svelte';
 
-	let selected: string;
+	let selection: string;
 	let nodes: TreeNodeModel;
 
 	data.subscribe((model) => {
 		if (model) nodes = model.root;
 	});
 
-	theSelection.subscribe((model) => (selected = model?.path));
+	SelectionState.subscribe((model) => (selection = model?.path));
 
 	function onNodeSelected(e: CustomEvent<string>) {
-		theSelection.select(e.detail);
+		SelectionState.select(e.detail);
 	}
 </script>
 
@@ -23,7 +23,7 @@
 	<div class="content">
 		{#if nodes}
 			{#each nodes.children as node}
-				<TreeNode {...node} on:select={onNodeSelected} {selected} />
+				<TreeNode {...node} on:select={onNodeSelected} selected={selection} />
 			{/each}
 		{/if}
 	</div>

@@ -4,7 +4,7 @@ import { getItemForPath } from 'util/data.util';
 import type { AppModel } from '../model/app.model';
 import { data } from './data';
 
-export const theSelection = (() => {
+export const SelectionState = (() => {
 	const { subscribe, set } = writable<SelectionModel>();
 
 	let model: AppModel;

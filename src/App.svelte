@@ -9,14 +9,15 @@
 	import type { SelectionModel } from './model/app.model';
 	import { data } from './store/data';
 
-	let selection: SelectionModel;
 	uiState.load();
 
-	// TODO remove me
-	theSelection.subscribe((model) => (selection = model));
-
 	document.addEventListener('keydown', (e) => {
-		if (!(e.ctrlKey || (e.key === 'c' && selection?.items?.length))) return;
+		if (!(e.ctrlKey || e.key === 'c')) return;
+
+		let selection: SelectionModel;
+		theSelection.subscribe((model) => (selection = model))();
+		if (!selection?.items?.length) return;
+
 		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));
 		e.preventDefault();
 	});
@@ -43,8 +44,8 @@
 		<TreeView />
 	</div>
 	<div class="selection-area">
-		<ContentArea {selection} />
-		<FrameProperties {selection} />
+		<ContentArea />
+		<FrameProperties />
 	</div>
 </main>
 

@@ -5,8 +5,8 @@
 	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
 
-	export let imgSrc: string;
-	export let selection: SelectionModel;
+	let imgSrc: string;
+	let selection: SelectionModel;
 
 	const key = 'atlas';
 	const stageSize = 4096;
@@ -15,8 +15,12 @@
 	let maxScale = 1;
 
 	data.subscribe((model) => {
-		framesArray = model?.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];
+		if (!model) return;
+		imgSrc = model.imageUrl;
+		framesArray = model.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];
 	});
+
+	theSelection.subscribe((model) => (selection = model));
 
 	function selectFrame(e: MouseEvent) {
 		e.stopImmediatePropagation();

@@ -1,23 +1,30 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/app.model';
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
+	import { data } from 'store/data';
+	import { theSelection } from 'store/selection';
 	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
 	const key = 'frame';
-	export let selection: SelectionModel;
-	export let imgSrc: string;
 
+	const stageSize = 2048;
 	let scale = 1;
+	let maxScale = 1;
+	
+	let imgSrc: string;
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
-	let maxScale = 1;
-	const stageSize = 2048;
 
-	$: {
-		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
+	data.subscribe((model) => {
+		if (!model) return;
+		imgSrc = model.imageUrl;
+	});
+
+	theSelection.subscribe((model) => {
+		if (!model) return;
+		frame = model.items.length === 1 ? model.items[0].frame : null;
 		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
@@ -30,7 +37,7 @@
 			style = s.join(';');
 			maxScale = stageSize / (Math.max(rect.w, rect.h) * 1.1);
 		}
-	}
+	});
 
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
 		frame.slice = e.detail;

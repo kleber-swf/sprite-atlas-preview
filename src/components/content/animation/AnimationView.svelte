@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Animator } from 'controller/animator';
+	import { Animator } from 'controllers/animator';
 	import { data } from 'store/data';
 	import { theSelection } from 'store/selection';
 	import { uiState } from 'store/ui-state';

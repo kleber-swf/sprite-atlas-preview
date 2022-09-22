@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FileUploader } from 'controller/file.uploader';
+	import { FileUploader } from 'controllers/file.uploader';
 	import { VERSION } from 'store/data';
 	import { createEventDispatcher } from 'svelte';
 

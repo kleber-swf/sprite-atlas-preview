@@ -5,7 +5,7 @@
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import type { SelectionModel, TreeNodeModel } from './model/app.model';
+	import type { SelectionModel } from './model/app.model';
 	import { data } from './store/data';
 
 	let selection: SelectionModel;
@@ -27,10 +27,6 @@
 		navigator.clipboard.writeText(selection.items.map((e) => e.path).join(' '));
 		e.preventDefault();
 	});
-
-	function onNodeSelected(e: CustomEvent<string>) {
-		data.select(e.detail);
-	}
 
 	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
 		data.setData(e.detail.imageUrl, e.detail.atlas);
@@ -57,7 +53,7 @@
 		<Toolbar on:files-uploaded={onFilesUploaded} />
 	</div>
 	<div class="left-area">
-		<TreeView selected={selection?.path} on:select={onNodeSelected} />
+		<TreeView />
 	</div>
 	<div class="selection-area">
 		<ContentArea imgSrc={imageUrl} {selection} {selectedTab} />

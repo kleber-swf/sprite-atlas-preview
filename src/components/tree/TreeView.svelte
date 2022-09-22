@@ -3,13 +3,18 @@
 	import { data } from 'store/data';
 	import TreeNode from './TreeNode.svelte';
 
-	export let selected: string;
+	let selected: string;
 	let nodes: TreeNodeModel;
 
 	data.subscribe((model) => {
 		if (!model) return;
+		selected = model.selection?.path;
 		nodes = model.root;
 	});
+
+	function onNodeSelected(e: CustomEvent<string>) {
+		data.select(e.detail);
+	}
 </script>
 
 <div class="tree-view">
@@ -17,7 +22,7 @@
 	<div class="content">
 		{#if nodes}
 			{#each nodes.children as node}
-				<TreeNode {...node} on:select {selected} />
+				<TreeNode {...node} on:select={onNodeSelected} {selected} />
 			{/each}
 		{/if}
 	</div>

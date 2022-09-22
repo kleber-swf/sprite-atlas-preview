@@ -10,8 +10,6 @@
 	import { data } from './store/data';
 
 	let selection: SelectionModel;
-	let selectedTab = 0;
-
 	uiState.load();
 
 	// TODO remove me
@@ -23,16 +21,8 @@
 		e.preventDefault();
 	});
 
-	function onFilesUploaded(e: CustomEvent<{ atlas: any; imageUrl: string }>) {
-		data.setData(e.detail.imageUrl, e.detail.atlas);
-		// TODO remove selection from data first so I can put the selected tab reset
-		// inside the data changing
-		selectedTab = 0;
-	}
-
 	// [DEBUG]
 	onMount(() => {
-		selectedTab = 1;
 		fetch('./test/robot.json')
 			.then((e) => e.json())
 			.then((json) => {
@@ -47,13 +37,13 @@
 
 <main>
 	<div class="toolbar">
-		<Toolbar on:files-uploaded={onFilesUploaded} />
+		<Toolbar />
 	</div>
 	<div class="left-area">
 		<TreeView />
 	</div>
 	<div class="selection-area">
-		<ContentArea {selection} {selectedTab} />
+		<ContentArea {selection} />
 		<FrameProperties {selection} />
 	</div>
 </main>

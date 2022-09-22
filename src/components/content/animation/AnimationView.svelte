@@ -34,7 +34,6 @@
 
 	theSelection.subscribe((model) => {
 		if (!model) return;
-
 		const frames = model.items.map((e) => e.frame.frame);
 		totalFrames = frames.length;
 		canvasSize = frames.reduce(

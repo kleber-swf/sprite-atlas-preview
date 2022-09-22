@@ -8,10 +8,11 @@
 	let imgSrc: string;
 	export let selection: SelectionModel;
 
-	export let selectedTab = 0;
+	let selectedTab = 0;
 
 	data.subscribe((model) => {
 		if (model) imgSrc = model.imageUrl;
+		selectedTab = 0;
 	});
 
 	function selectTab(index: number, enabled: boolean) {

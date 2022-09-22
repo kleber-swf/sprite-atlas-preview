@@ -8,11 +8,14 @@ export const theSelection = (() => {
 	const { subscribe, set } = writable<SelectionModel>();
 
 	let model: AppModel;
-	data.subscribe(dt => model = dt);
+	data.subscribe(dt => {
+		model = dt;
+		set(null);
+	});
 
 	const select = (path: string) => {
-		if (model)
-			set(path ? { path, items: getItemForPath(model, path) } : null);
+		if (model) set(path ? { path, items: getItemForPath(model, path) } : null);
+		else set(null);
 	}
 
 	return {

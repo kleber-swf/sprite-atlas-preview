@@ -21,7 +21,8 @@
 		"dev": "rollup -c -w",
 		"start": "sirv public --no-clear",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"clear": "rm -rf public/build public/test public/vendor"
+		"clear": "rm -rf public/build public/test public/vendor",
+		"dev:create-test-folder": "cd public; ln -s ../example test"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^17.0.0",

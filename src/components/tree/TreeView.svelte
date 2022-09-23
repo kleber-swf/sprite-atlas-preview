@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TreeNodeModel } from 'model/content.model';
+	import type { TreeSelectionEventData } from 'model/selection.model';
 	import { Content } from 'store/content';
 	import { SelectionState } from 'store/selection-state';
 	import TreeNode from './TreeNode.svelte';
@@ -13,8 +14,9 @@
 
 	SelectionState.subscribe((state) => (selection = state?.path));
 
-	function onNodeSelected(e: CustomEvent<string>) {
-		SelectionState.select(e.detail);
+	function onNodeSelected(e: CustomEvent<TreeSelectionEventData>) {
+		console.log(e);
+		SelectionState.select(e.detail.path, e.detail.add);
 	}
 </script>
 

@@ -9,3 +9,8 @@ export interface SelectionItem {
 	path: string;
 	frame: FrameModel;
 }
+
+export interface TreeSelectionEventData {
+	path: string;
+	add: boolean;
+}

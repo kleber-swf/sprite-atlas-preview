@@ -4,11 +4,11 @@ import type { ContentModel } from '../model/content.model';
 import { Content } from './content';
 
 export const SelectionState = (() => {
-	const { subscribe, set } = writable<SelectionModel>();
+	const { subscribe, set, update } = writable<SelectionModel>();
 
-	let model: ContentModel;
+	let content: ContentModel;
 	Content.subscribe(dt => {
-		model = dt;
+		content = dt;
 		set(null);
 	});
 
@@ -20,9 +20,26 @@ export const SelectionState = (() => {
 			.map(frame => ({ frame, path: frame.name }));
 	}
 
-	const select = (path: string) => {
-		if (model) set(path ? { path, items: getItemForPath(model, path) } : null);
-		else set(null);
+	const select = (path: string, add = false) => {
+		if (!(content && path)) {
+			set(null);
+			return;
+		}
+
+		const items = getItemForPath(content, path);
+
+		if (add) {
+			update(model => {
+				if (model) {
+					if (model.items?.length) model.items.push(...items);
+					else model.items = items;
+					return model;
+				}
+				return { path, items };
+			});
+		} else {
+			set({ path, items });
+		}
 	}
 
 	return {

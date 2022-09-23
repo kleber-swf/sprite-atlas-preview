@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { TreeSelectionEventData } from 'model/selection.model';
 	import { createEventDispatcher } from 'svelte';
 
 	/** Node name (title) */
@@ -30,7 +31,7 @@
 	/** Selects this node from the tree */
 	function selectNode(e: MouseEvent) {
 		e.stopImmediatePropagation();
-		dispatch('select', path);
+		dispatch('select', <TreeSelectionEventData>{ path, add: e.ctrlKey });
 	}
 
 	/** Toogle the open state of this node */

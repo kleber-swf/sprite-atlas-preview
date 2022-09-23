@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { TreeSelectionEventData } from 'model/selection.model';
+	import type { TreeNodeModel } from 'model/content.model';
+	import type { SelectionEventData } from 'model/selection.model';
 	import { createEventDispatcher } from 'svelte';
 
 	/** Node name (title) */
 	export let name = '';
 
 	/** Child nodes */
-	export let children = [];
+	export let children: TreeNodeModel[] = [];
 
 	/** The identation in pixel */
 	export let indent = 0;
@@ -31,7 +32,7 @@
 	/** Selects this node from the tree */
 	function selectNode(e: MouseEvent) {
 		e.stopImmediatePropagation();
-		dispatch('select', <TreeSelectionEventData>{ path, add: e.ctrlKey });
+		dispatch('select', <SelectionEventData>{ path, add: e.ctrlKey });
 	}
 
 	/** Toogle the open state of this node */

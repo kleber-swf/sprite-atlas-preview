@@ -10,7 +10,7 @@ export interface SelectionItem {
 	frame: FrameModel;
 }
 
-export interface TreeSelectionEventData {
+export interface SelectionEventData {
 	path: string;
 	add: boolean;
 }

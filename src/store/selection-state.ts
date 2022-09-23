@@ -17,10 +17,7 @@ export const SelectionState = (() => {
 
 		const ipath = path + '/';
 		return Object.values(content.frames).filter(frame => frame.name.startsWith(ipath))
-			.map(frame => ({
-				frame,
-				path: ipath + frame.name
-			}));
+			.map(frame => ({ frame, path: frame.name }));
 	}
 
 	const select = (path: string) => {

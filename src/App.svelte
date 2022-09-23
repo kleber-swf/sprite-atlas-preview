@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/selection.model';
 	import { AppState } from 'store/app-state';
+	import { Content } from 'store/content';
 	import { SelectionState } from 'store/selection-state';
+	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
@@ -21,16 +23,16 @@
 	});
 
 	// [DEBUG]
-	// onMount(() => {
-	// 	fetch('./test/robot.json')
-	// 		.then((e) => e.json())
-	// 		.then((json) => {
-	// 			Content.setData('./test/robot.png', json);
-	// 		})
-	// 		.then(() => {
-	// 			SelectionState.select('walk/walk0');
-	// 		});
-	// });
+	onMount(() => {
+		fetch('./test/robot.json')
+			.then((e) => e.json())
+			.then((json) => {
+				Content.setData('./test/robot.png', json);
+			})
+			.then(() => {
+				SelectionState.select('walk/walk0');
+			});
+	});
 	// [/DEBUG]
 </script>
 

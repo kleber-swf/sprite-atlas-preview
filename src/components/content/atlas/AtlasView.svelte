@@ -27,7 +27,7 @@
 		const x = e.offsetX;
 		const y = e.offsetY;
 		const frame = framesArray.find((e) => x >= e.x && y >= e.y && x <= e.x + e.w && y <= e.y + e.h);
-		SelectionState.select(frame?.path);
+		SelectionState.select(frame?.path, e.ctrlKey);
 	}
 
 	function deselectFrames() {

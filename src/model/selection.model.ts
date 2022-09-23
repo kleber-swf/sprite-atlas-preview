@@ -9,3 +9,9 @@ export interface SelectionItem {
 	path: string;
 	frame: FrameModel;
 }
+
+export interface SelectionEventData {
+	path: string;
+	add: boolean;
+	interval: boolean;
+}

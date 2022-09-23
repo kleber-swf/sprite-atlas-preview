@@ -5,6 +5,7 @@
 	export let frameIndex: number;
 	export let totalFrames: number;
 	export let loop: boolean;
+	export let yoyo: boolean;
 
 	const dispatch = createEventDispatcher();
 
@@ -22,6 +23,10 @@
 
 	function toggleLoop() {
 		dispatch('toggleLoop');
+	}
+
+	function toggleYoyo() {
+		dispatch('toggleYoyo');
 	}
 
 	function previousFrame() {
@@ -60,6 +65,9 @@
 			case 'l':
 				toggleLoop();
 				return;
+			case 'y':
+				toggleYoyo();
+				return;
 			case '[':
 				changeFrameRate(frameRate - 1);
 				return;
@@ -84,18 +92,21 @@
 		<i class="icon-stop" on:click={stop} />
 	</div>
 	<div class="prev button">
-		<i class="icon-to-start" on:click={previousFrame} />
+		<i class="icon-prev" on:click={previousFrame} />
 	</div>
 	<div class="next button">
-		<i class="icon-to-end" on:click={nextFrame} />
+		<i class="icon-next" on:click={nextFrame} />
 	</div>
 	<div class="seek-bar">
 		<input type="range" min="0" max={totalFrames - 1} value={frameIndex} on:input={seek} />
 	</div>
-	<div class="loop button" class:selected={loop}>
+	<div class="loop button right" class:selected={loop}>
 		<i class="icon-loop" on:click={toggleLoop} />
 	</div>
-	<div class="fps-panel">
+	<div class="yoyo button right" class:selected={yoyo}>
+		<i class="icon-yoyo" on:click={toggleYoyo} />
+	</div>
+	<div class="fps-panel right">
 		<label for="fps">FPS</label>
 		<input type="number" min="1" max="120" step="1" value={frameRate} on:input={onFrameRateChanged} />
 	</div>
@@ -176,5 +187,9 @@
 			outline: none !important;
 			color: #fff;
 		}
+	}
+
+	.right {
+		margin: 0 1px;
 	}
 </style>

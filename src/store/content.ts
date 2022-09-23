@@ -7,7 +7,7 @@ export const VERSION = '%VERSION%';
 export const Content = (() => {
 	const { subscribe, set } = writable<ContentModel>();
 
-	function framesToRoot(framesMap: FramesMap) {
+	function framesToNodes(framesMap: FramesMap) {
 		if (!framesMap) return null;
 		const content: TreeNodeModel = { name: '', path: '', children: [] };
 
@@ -33,7 +33,7 @@ export const Content = (() => {
 		set({
 			imageUrl,
 			frames: data.frames,
-			root: framesToRoot(data.frames),
+			root: framesToNodes(data.frames),
 		});
 	};
 

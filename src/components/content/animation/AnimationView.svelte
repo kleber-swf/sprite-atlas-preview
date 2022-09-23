@@ -21,6 +21,7 @@
 	let frameIndex = 0;
 	let totalFrames = 0;
 	let loop = false;
+	let yoyo = false;
 	let maxScale = 1;
 
 	function getDelta() {
@@ -48,17 +49,24 @@
 		animator.setContent(frames, imageUrl);
 		animator.frameRate = frameRate;
 		animator.loop = loop;
+		animator.yoyo = yoyo;
 
 		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
 	});
 
 	AppState.subscribe((state) => {
 		loop = state.animation.loop;
+		yoyo = state.animation.yoyo;
 		frameRate = state.animation.frameRate;
 	})();
 
 	onMount(() => {
 		const context = canvas.getContext('2d');
+
+		animator.frameRate = frameRate;
+		animator.loop = loop;
+		animator.yoyo = yoyo;
+
 		raf = requestAnimationFrame(function update() {
 			if (!context) return;
 
@@ -68,6 +76,7 @@
 			frameIndex = animator.frameIndex;
 			frameRate = animator.frameRate;
 			loop = animator.loop;
+			yoyo = animator.yoyo;
 
 			raf = requestAnimationFrame(update);
 		});
@@ -98,13 +107,19 @@
 	function toggleLoop() {
 		const loop = !animator.loop;
 		animator.loop = loop;
-		AppState.setItem('animation', { loop, frameRate });
+		AppState.setItem('animation', { loop, yoyo, frameRate });
+	}
+
+	function toggleYoyo() {
+		const yoyo = !animator.yoyo;
+		animator.yoyo = yoyo;
+		AppState.setItem('animation', { loop, yoyo, frameRate });
 	}
 
 	function changeFrameRate(e: CustomEvent) {
 		const frameRate = e.detail as number;
 		animator.frameRate = frameRate;
-		AppState.setItem('animation', { loop, frameRate });
+		AppState.setItem('animation', { loop, yoyo, frameRate });
 	}
 </script>
 
@@ -119,11 +134,13 @@
 			{totalFrames}
 			{frameRate}
 			{loop}
+			{yoyo}
 			on:togglePlay={togglePlay}
 			on:seek={seek}
 			on:stop={stop}
 			on:fpsChanged={changeFrameRate}
 			on:toggleLoop={toggleLoop}
+			on:toggleYoyo={toggleYoyo}
 			on:jumpFrame={jumpFrame}
 		/>
 	</div>

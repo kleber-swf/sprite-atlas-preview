@@ -19,5 +19,6 @@ export interface AnimationPrefModel extends AppStateItemModel, AnimationPersiste
 
 export interface AnimationPersistentData {
 	loop: boolean;
+	yoyo: boolean;
 	frameRate: number;
 }

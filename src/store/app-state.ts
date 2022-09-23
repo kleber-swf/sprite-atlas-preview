@@ -12,7 +12,7 @@ export const AppState = (() => {
 			framePropertiesCollapsed: loaded.framePropertiesCollapsed ?? false,
 			atlas: { scale: 1 },
 			frame: { scale: 1 },
-			animation: Object.assign({ scale: 1, loop: true, frameRate: 25 }, loaded.animation || {})
+			animation: Object.assign({ scale: 1, loop: true, yoyo: false, frameRate: 25 }, loaded.animation || {})
 		});
 	};
 
@@ -27,6 +27,7 @@ export const AppState = (() => {
 			animation: {
 				frameRate: model.animation.frameRate,
 				loop: model.animation.loop,
+				yoyo: model.animation.yoyo,
 			}
 		}));
 	};

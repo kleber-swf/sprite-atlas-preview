@@ -53,3 +53,8 @@ body {
 	border: 2px solid #fff;
 	box-shadow: 0 0 2px #fff, 0 0 4px #0df, 0 0 10px #0ff, 0 0 4px #0df inset, 0 0 10px #0ff inset;
 }
+
+.icon-loop,
+.icon-yoyo {
+	font-size: 1.25em !important;
+}

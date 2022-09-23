@@ -7,12 +7,14 @@ export class Animator {
 
 	public loop: boolean;
 
+	private _yoyo: boolean;
 	private _index: number;
 	private _elapsed: number;
 	private _playing = false;
 
 	private _frameRate = 30;
 	private _delay = 1000 / 30;
+	private _direction = 1;
 
 	public get isPlaying() { return this._playing; }
 
@@ -30,6 +32,13 @@ export class Animator {
 	public set frameIndex(value: number) {
 		if (!this.frames) return;
 		this._index = Math.min(Math.max(value, 0), this.frames.length - 1);
+	}
+
+	public get yoyo() { return this._yoyo; }
+
+	public set yoyo(value: boolean) {
+		this._yoyo = value;
+		this._direction = 1;
 	}
 
 	public setContent(frames: Rect[], imageUrl: string) {
@@ -63,16 +72,7 @@ export class Animator {
 
 		if (this._playing) {
 			this._elapsed += dt;
-			if (this._elapsed > this._delay) {
-				this._elapsed = 0;
-				const i = this._index + 1;
-				if (i < this.frames.length) {
-					this.frameIndex = i;
-				} else {
-					if (this.loop) this.frameIndex = 0;
-					else this._playing = false;
-				}
-			}
+			this._index = this.getNextFrame();
 		}
 
 		const frame = this.frames[this._index];
@@ -81,5 +81,34 @@ export class Animator {
 			frame.x, frame.y, frame.w, frame.h,
 			0, 0, frame.w, frame.h
 		);
+	}
+
+	private getNextFrame() {
+		if (this._elapsed < this._delay) return this._index;
+		this._elapsed = 0;
+
+		const i = this._index + this._direction;
+
+		if (i === 0) {
+			if (this.yoyo) {
+				this._playing = this.loop;
+				this._direction *= -1;
+			}
+			return i;
+		}
+
+		if (i >= this.frames.length) {
+			if (this.yoyo) {
+				this._direction *= -1;
+				return i - 1;
+			}
+			if (this.loop) return 0;
+			else {
+				this._playing = false;
+				return this._index;
+			}
+		}
+
+		return i;
 	}
 }

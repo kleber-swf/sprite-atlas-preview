@@ -1,22 +1,36 @@
 <script lang="ts">
+	import type { AppStateItemModel, AppStateModel } from 'model/app-state.model';
+	import { AppState } from 'store/app-state';
 	import { createEventDispatcher, onMount } from 'svelte';
 
+	export let key: keyof AppStateModel;
 	export let scale = 1;
 	export let minScale = 0.2;
 	export let maxScale = 5;
 	export let stageSize = 4096;
 
-	const dispatch = createEventDispatcher();
+	let scrollLeft = -1;
+	let scrollTop = -1;
 
 	let root: HTMLElement;
 
+	const dispatch = createEventDispatcher();
+
+	AppState.subscribe((state) => {
+		if (!state) return;
+		const pref = state[key] as AppStateItemModel;
+		scale = pref.scale;
+		scrollLeft = pref.scrollLeft;
+		scrollTop = pref.scrollTop;
+	})();
+
 	onMount(() => {
-		zoom(scale);
-		root.scrollBy({
-			behavior: 'auto',
-			left: (root.scrollWidth - root.offsetWidth) * 0.5,
-			top: (root.scrollHeight - root.offsetHeight) * 0.5
-		});
+		scrollLeft = scrollLeft ?? (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = scrollTop ?? (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+
+		dispatch('scaleChanged', scale);
+		return () => AppState.setItem(key, { scale, scrollLeft, scrollTop });
 	});
 
 	// #region Zoom
@@ -27,32 +41,13 @@
 	}
 
 	function onWheel(e: WheelEvent) {
+		const t = e.currentTarget as HTMLElement;
+		scrollLeft = t.scrollLeft;
+		scrollTop = t.scrollTop;
 		if (!e.ctrlKey) return;
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		zoom(scale - e.deltaY * 0.002);
-	}
-
-	function onKeyDown(e: KeyboardEvent) {
-		if (!e.ctrlKey) return;
-
-		switch (e.key) {
-			case '=':
-				zoom(scale + 0.1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-			case '-':
-				zoom(scale - 0.1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-			case '0':
-				zoom(1);
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				return;
-		}
 	}
 
 	// #endregion
@@ -79,6 +74,40 @@
 	}
 
 	// #endregion
+
+	function resetScaleAndPan() {
+		scrollLeft = (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+		zoom(1);
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Tab') {
+			resetScaleAndPan();
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+		if (!e.ctrlKey) return;
+
+		switch (e.key) {
+			case '=':
+				zoom(scale + 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '-':
+				zoom(scale - 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '0':
+				zoom(1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+		}
+	}
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -108,7 +137,6 @@
 			background-image: url('/assets/patterns/shadow-checkers.png');
 
 			.inner {
-				// display: flex;
 				transform-origin: 50%;
 				margin: auto;
 			}

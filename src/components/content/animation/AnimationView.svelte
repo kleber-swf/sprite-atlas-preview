@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { data } from 'data';
-	import type { AppModel } from 'model/app.model';
+	import { Animator } from 'controllers/animator';
+	import { AppState } from 'store/app-state';
+	import { Content } from 'store/content';
+	import { SelectionState } from 'store/selection-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
-	import { Animator } from './Animator';
 
-	const FPS_LS_KEY = 'propeties.anim.fps';
-	const LOOP_LS_KEY = 'propeties.anim.loop';
+	const key = 'animation';
+	const stageSize = 2048;
 
+	let imageUrl: string;
 	let animator = new Animator();
 	let canvas: HTMLCanvasElement;
 	let raf: number;
 	let now = Date.now();
 	let canvasSize = { w: 512, h: 512 };
 	let isPlaying = false;
-	let frameRate = parseInt(localStorage.getItem(FPS_LS_KEY) ?? '0', 10);
+	let frameRate = 20;
 	let frameIndex = 0;
 	let totalFrames = 0;
-	let loop = localStorage.getItem(LOOP_LS_KEY) === '1';
-
-	const stageSize = 2048;
-	let scale = 1;
+	let loop = false;
 	let maxScale = 1;
 
 	function getDelta() {
@@ -31,11 +30,12 @@
 		return delta;
 	}
 
-	data.subscribe((data: AppModel) => {
-		if (!data?.selection) return;
+	Content.subscribe((model) => (imageUrl = model?.imageUrl));
 
-		const frames = data.selection.items.map((e) => e.frame.frame);
-		totalFrames = frames.length - 1;
+	SelectionState.subscribe((state) => {
+		if (!state) return;
+		const frames = state.items.map((e) => e.frame.frame);
+		totalFrames = frames.length;
 		canvasSize = frames.reduce(
 			(acc, curr) => {
 				acc.w = Math.max(acc.w, curr.w);
@@ -45,13 +45,17 @@
 			{ w: 0, h: 0 }
 		);
 
-		animator.setContent(frames, data.imageUrl);
+		animator.setContent(frames, imageUrl);
 		animator.frameRate = frameRate;
 		animator.loop = loop;
 
 		maxScale = stageSize / (Math.max(canvasSize.w, canvasSize.h) * 1.1);
-		scale = Math.min(1, maxScale);
 	});
+
+	AppState.subscribe((state) => {
+		loop = state.animation.loop;
+		frameRate = state.animation.frameRate;
+	})();
 
 	onMount(() => {
 		const context = canvas.getContext('2d');
@@ -68,7 +72,9 @@
 			raf = requestAnimationFrame(update);
 		});
 
-		return () => cancelAnimationFrame(raf);
+		return () => {
+			cancelAnimationFrame(raf);
+		};
 	});
 
 	function togglePlay() {
@@ -90,19 +96,20 @@
 	}
 
 	function toggleLoop() {
-		animator.loop = !animator.loop;
-		localStorage.setItem(LOOP_LS_KEY, animator.loop ? '1' : '0');
+		const loop = !animator.loop;
+		animator.loop = loop;
+		AppState.setItem('animation', { loop, frameRate });
 	}
 
 	function changeFrameRate(e: CustomEvent) {
-		const fps = e.detail as number;
-		animator.frameRate = fps;
-		localStorage.setItem(LOOP_LS_KEY, fps.toString(10));
+		const frameRate = e.detail as number;
+		animator.frameRate = frameRate;
+		AppState.setItem('animation', { loop, frameRate });
 	}
 </script>
 
 <div class="animation-view">
-	<ContentView {scale} {maxScale} {stageSize}>
+	<ContentView {key} {maxScale} {stageSize}>
 		<canvas bind:this={canvas} width={canvasSize.w} height={canvasSize.h} />
 	</ContentView>
 	<div class="controls" class:disabled={totalFrames < 2}>
@@ -128,6 +135,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
 
 		.disabled {
 			pointer-events: none;

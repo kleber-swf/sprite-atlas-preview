@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { FileUploader } from 'controller/file.uploader';
-	import { VERSION } from 'data';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
+	import { FileUploader } from 'controllers/file.uploader';
+	import { Content, VERSION } from 'store/content';
 
 	let atlasName = '';
 	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');
@@ -12,7 +9,7 @@
 		FileUploader.upload((ev.target as HTMLInputElement).files)
 			.then((result) => {
 				atlasName = result.name;
-				dispatch('files-uploaded', result);
+				Content.setData(result.imageUrl, result.atlas);
 			})
 			.catch(console.error);
 	}

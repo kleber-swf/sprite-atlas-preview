@@ -23,16 +23,16 @@
 	});
 
 	// [DEBUG]
-	onMount(() => {
-		fetch('./test/robot.json')
-			.then((e) => e.json())
-			.then((json) => {
-				Content.setData('./test/robot.png', json);
-			})
-			.then(() => {
-				SelectionState.select('walk/walk0');
-			});
-	});
+	// onMount(() => {
+	// 	fetch('./test/robot.json')
+	// 		.then((e) => e.json())
+	// 		.then((json) => {
+	// 			Content.setData('./test/robot.png', json);
+	// 		})
+	// 		.then(() => {
+	// 			SelectionState.select('walk/walk0');
+	// 		});
+	// });
 	// [/DEBUG]
 </script>
 

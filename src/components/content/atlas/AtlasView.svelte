@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/selection.model';
-	import { data } from 'store/data';
+	import { Content } from 'store/content';
 	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';
 	import FrameSelection from './FrameSelection.svelte';
@@ -14,7 +14,7 @@
 
 	let maxScale = 1;
 
-	data.subscribe((model) => {
+	Content.subscribe((model) => {
 		if (!model) return;
 		imgSrc = model.imageUrl;
 		framesArray = model.frames ? Object.keys(model.frames).map((path) => ({ path, ...model.frames[path].frame })) : [];

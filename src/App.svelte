@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { SelectionModel } from 'model/selection.model';
-	import { SelectionState } from 'store/selection-state';
 	import { AppState } from 'store/app-state';
+	import { SelectionState } from 'store/selection-state';
 	import { onMount } from 'svelte';
 	import ContentArea from './components/content/ContentArea.svelte';
 	import FrameProperties from './components/frame-properties/FrameProperties.svelte';
 	import TreeView from './components/tree/TreeView.svelte';
 	import Toolbar from './components/ui/Toolbar.svelte';
-	import { data } from './store/data';
+	import { Content } from './store/content';
 
 	AppState.load();
 
@@ -27,7 +27,7 @@
 		fetch('./test/robot.json')
 			.then((e) => e.json())
 			.then((json) => {
-				data.setData('./test/robot.png', json);
+				Content.setData('./test/robot.png', json);
 			})
 			.then(() => {
 				SelectionState.select('walk/walk0');

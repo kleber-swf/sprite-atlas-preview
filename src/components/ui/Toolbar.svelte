@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { FileUploader } from 'controllers/file.uploader';
-	import { data, VERSION } from 'store/data';
+	import { Content, VERSION } from 'store/content';
 
 	let atlasName = '';
 	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');
@@ -9,7 +9,7 @@
 		FileUploader.upload((ev.target as HTMLInputElement).files)
 			.then((result) => {
 				atlasName = result.name;
-				data.setData(result.imageUrl, result.atlas);
+				Content.setData(result.imageUrl, result.atlas);
 			})
 			.catch(console.error);
 	}

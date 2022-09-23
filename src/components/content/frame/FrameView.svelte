@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
-	import { data } from 'store/data';
+	import { Content } from 'store/content';
 	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
@@ -17,7 +17,7 @@
 	let rect: Rect;
 	let style: string;
 
-	data.subscribe((model) => {
+	Content.subscribe((model) => {
 		if (!model) return;
 		imgSrc = model.imageUrl;
 	});

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { TreeNodeModel } from 'model/app.model';
-	import { data } from 'store/data';
+	import type { TreeNodeModel } from 'model/content.model';
+	import { Content } from 'store/content';
 	import { SelectionState } from 'store/selection-state';
 	import TreeNode from './TreeNode.svelte';
 
 	let selection: string;
 	let nodes: TreeNodeModel;
 
-	data.subscribe((model) => {
+	Content.subscribe((model) => {
 		if (model) nodes = model.root;
 	});
 

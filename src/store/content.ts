@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
-import type { AppModel, TreeNodeModel } from '../model/app.model';
 import type { AtlasDataModel, FramesMap } from '../model/atlas.model';
+import type { ContentModel, TreeNodeModel } from '../model/content.model';
 
 export const VERSION = '%VERSION%';
 
-export const data = (() => {
-	const { subscribe, set } = writable<AppModel>();
+export const Content = (() => {
+	const { subscribe, set } = writable<ContentModel>();
 
 	function framesToRoot(framesMap: FramesMap) {
 		if (!framesMap) return null;

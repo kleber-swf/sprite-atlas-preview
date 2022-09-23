@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Animator } from 'controllers/animator';
-	import { data } from 'store/data';
-	import { SelectionState } from 'store/selection-state';
 	import { AppState } from 'store/app-state';
+	import { Content } from 'store/content';
+	import { SelectionState } from 'store/selection-state';
 	import { onMount } from 'svelte';
 	import ContentView from '../ContentView.svelte';
 	import AnimationControls from './AnimationControls.svelte';
@@ -30,7 +30,7 @@
 		return delta;
 	}
 
-	data.subscribe((model) => (imageUrl = model?.imageUrl));
+	Content.subscribe((model) => (imageUrl = model?.imageUrl));
 
 	SelectionState.subscribe((state) => {
 		if (!state) return;

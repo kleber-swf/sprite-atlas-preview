@@ -1,22 +1,22 @@
 import type { SelectionItem, SelectionModel } from 'model/selection.model';
 import { writable } from 'svelte/store';
-import type { AppModel } from '../model/app.model';
-import { data } from './data';
+import type { ContentModel } from '../model/content.model';
+import { Content } from './content';
 
 export const SelectionState = (() => {
 	const { subscribe, set } = writable<SelectionModel>();
 
-	let model: AppModel;
-	data.subscribe(dt => {
+	let model: ContentModel;
+	Content.subscribe(dt => {
 		model = dt;
 		set(null);
 	});
 
-	function getItemForPath(data: AppModel, path: string): SelectionItem[] {
-		if (path in data.frames) return [{ path, frame: data.frames[path] }];
+	function getItemForPath(content: ContentModel, path: string): SelectionItem[] {
+		if (path in content.frames) return [{ path, frame: content.frames[path] }];
 
 		const ipath = path + '/';
-		return Object.values(data.frames).filter(frame => frame.name.startsWith(ipath))
+		return Object.values(content.frames).filter(frame => frame.name.startsWith(ipath))
 			.map(frame => ({
 				frame,
 				path: ipath + frame.name

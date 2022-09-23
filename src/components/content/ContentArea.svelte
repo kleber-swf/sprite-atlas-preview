@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { data } from 'store/data';
+	import { Content } from 'store/content';
 	import AnimationView from './animation/AnimationView.svelte';
 	import AtlasView from './atlas/AtlasView.svelte';
 	import FrameView from './frame/FrameView.svelte';
@@ -7,7 +7,7 @@
 	let imgSrc: string;
 	let selectedTab = 0;
 
-	data.subscribe((model) => {
+	Content.subscribe((model) => {
 		if (model) imgSrc = model.imageUrl;
 		selectedTab = 0;
 	});

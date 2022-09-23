@@ -1,6 +1,6 @@
 import type { FramesMap } from './atlas.model';
 
-export interface AppModel {
+export interface ContentModel {
 	imageUrl: string;
 	frames: FramesMap;
 	root: TreeNodeModel;

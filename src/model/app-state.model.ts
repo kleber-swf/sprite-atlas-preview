@@ -3,19 +3,19 @@ export interface PersistentData {
 	animation: AnimationPersistentData;
 }
 
-export interface UIStateModel extends PersistentData {
-	atlas: UIStateItemModel;
-	frame: UIStateItemModel;
+export interface AppStateModel extends PersistentData {
+	atlas: AppStateItemModel;
+	frame: AppStateItemModel;
 	animation: AnimationPrefModel;
 }
 
-export interface UIStateItemModel {
+export interface AppStateItemModel {
 	scale: number;
 	scrollLeft?: number;
 	scrollTop?: number;
 }
 
-export interface AnimationPrefModel extends UIStateItemModel, AnimationPersistentData { }
+export interface AnimationPrefModel extends AppStateItemModel, AnimationPersistentData { }
 
 export interface AnimationPersistentData {
 	loop: boolean;

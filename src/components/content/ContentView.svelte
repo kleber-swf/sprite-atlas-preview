@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { UIStateItemModel, UIStateModel } from 'model/ui-state.model';
+	import type { AppStateItemModel, AppStateModel } from 'model/app-state.model';
 	import { AppState } from 'store/app-state';
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let key: keyof UIStateModel;
+	export let key: keyof AppStateModel;
 	export let scale = 1;
 	export let minScale = 0.2;
 	export let maxScale = 5;
@@ -18,7 +18,7 @@
 
 	AppState.subscribe((state) => {
 		if (!state) return;
-		const pref = state[key] as UIStateItemModel;
+		const pref = state[key] as AppStateItemModel;
 		scale = pref.scale;
 		scrollLeft = pref.scrollLeft;
 		scrollTop = pref.scrollTop;

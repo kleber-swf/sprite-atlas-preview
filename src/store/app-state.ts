@@ -1,13 +1,13 @@
-import type { PersistentData, UIStateModel } from 'model/ui-state.model';
+import type { AppStateModel, PersistentData } from 'model/app-state.model';
 import { writable } from 'svelte/store';
 
 const LS_KEY = 'ui.state';
 
 export const AppState = (() => {
-	const { subscribe, update, set } = writable<UIStateModel>();
+	const { subscribe, update, set } = writable<AppStateModel>();
 
 	const load = () => {
-		const loaded: Partial<UIStateModel> = JSON.parse(localStorage.getItem(LS_KEY) ?? '{}');
+		const loaded: Partial<AppStateModel> = JSON.parse(localStorage.getItem(LS_KEY) ?? '{}');
 		set({
 			framePropertiesCollapsed: loaded.framePropertiesCollapsed ?? false,
 			atlas: { scale: 1 },
@@ -16,7 +16,7 @@ export const AppState = (() => {
 		});
 	};
 
-	const save = (model: UIStateModel) => {
+	const save = (model: AppStateModel) => {
 		if (!model) {
 			localStorage.removeItem(LS_KEY);
 			return;
@@ -31,7 +31,7 @@ export const AppState = (() => {
 		}));
 	};
 
-	const setItem = (pref: keyof UIStateModel, value: any) => {
+	const setItem = (pref: keyof AppStateModel, value: any) => {
 		update(model => {
 			if (model && pref in model) {
 				model[pref] = typeof value === 'object' ? Object.assign(model[pref], value) : value;

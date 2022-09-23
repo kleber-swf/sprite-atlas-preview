@@ -13,4 +13,5 @@ export interface SelectionItem {
 export interface SelectionEventData {
 	path: string;
 	add: boolean;
+	interval: boolean;
 }

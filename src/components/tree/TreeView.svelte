@@ -15,7 +15,7 @@
 	SelectionState.subscribe((state) => (selection = state?.items.map((e) => e.path)));
 
 	function onNodeSelected(e: CustomEvent<SelectionEventData>) {
-		SelectionState.select(e.detail.path, e.detail.add);
+		SelectionState.select(e.detail.path, e.detail.add, e.detail.interval);
 	}
 </script>
 

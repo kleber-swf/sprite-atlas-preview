@@ -22,7 +22,7 @@
 	let element: HTMLElement;
 
 	/** Whether this node is open */
-	let open = true;
+	let expanded = true;
 
 	/** Whether this node is selected */
 	let isSelected: boolean;
@@ -34,18 +34,18 @@
 	/** Selects this node from the tree */
 	function selectNode(e: MouseEvent) {
 		e.stopImmediatePropagation();
-		dispatch('select', <SelectionEventData>{ path, add: e.ctrlKey });
+		dispatch('select', <SelectionEventData>{ path, add: e.ctrlKey, interval: e.shiftKey });
 	}
 
 	/** Toogle the open state of this node */
 	function toggleOpen(e: MouseEvent) {
 		e.stopImmediatePropagation();
-		open = !open;
+		expanded = !expanded;
 	}
 
 	/** Sets the open state of this node based on the selected path */
 	function setOpen() {
-		if (!open) open = selected.includes(path);
+		if (!expanded) expanded = selected.includes(path);
 	}
 
 	/** Sets the isSelected state based on the selected path */
@@ -66,18 +66,18 @@
 
 <div bind:this={element} class="tree-node" class:selected={isSelected} on:click={selectNode}>
 	<div class="node-header" style="padding-left: {indent}px">
-		<div class="node-icon" class:expanded={open}>
+		<div class="node-icon" class:expanded>
 			<span class="icon" on:click={toggleOpen} class:visible={children.length}>
 				<i class="icon-right-dir" />
 			</span>
 		</div>
-		<span class="node-name">{name}</span>
+		<div class="node-name" class:parent={children.length}><span>{name}</span></div>
 		{#if selectionIndex}
 			<span class="selection-index neon-text">{selectionIndex}</span>
 		{/if}
 	</div>
 
-	<div class="children" class:expanded={open}>
+	<div class="children" class:expanded>
 		{#each children as child (child.path)}
 			<svelte:self {...child} indent={indent + 12} {selected} on:select />
 		{/each}
@@ -98,6 +98,10 @@
 			padding: 4px 0;
 			line-height: 20px;
 			position: relative;
+
+			&:hover {
+				color: $on-primary;
+			}
 
 			.node-icon {
 				display: inline-block;
@@ -122,15 +126,15 @@
 				}
 			}
 
-			&:hover {
-				color: $on-primary !important;
-			}
-
 			.node-name {
 				flex: 1;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
+
+				&.parent {
+					font-style: italic;
+				}
 			}
 
 			.selection-index {
@@ -151,10 +155,10 @@
 			& > .node-header {
 				background-color: $primary;
 				color: $on-primary;
-			}
 
-			.children .node-header {
-				color: rgba($on-primary, 0.6);
+				&:hover {
+					background-color: lighten($primary, 5);
+				}
 			}
 		}
 	}

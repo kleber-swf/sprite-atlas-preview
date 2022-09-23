@@ -27,6 +27,8 @@
 	/** Whether this node is selected */
 	let isSelected: boolean;
 
+	let selectionIndex: number;
+
 	const dispatch = createEventDispatcher();
 
 	/** Selects this node from the tree */
@@ -48,7 +50,9 @@
 
 	/** Sets the isSelected state based on the selected path */
 	function setIsSelected(selPaths: string[]) {
-		isSelected = selPaths?.includes(path);
+		const index = selPaths?.indexOf(path);
+		isSelected = index >= 0;
+		selectionIndex = selPaths?.length > 1 ? index + 1 : null;
 		if (isSelected) {
 			element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
@@ -68,6 +72,9 @@
 			</span>
 		</div>
 		<span class="node-name">{name}</span>
+		{#if selectionIndex}
+			<span class="selection-index neon-text">{selectionIndex}</span>
+		{/if}
 	</div>
 
 	<div class="children" class:expanded={open}>
@@ -90,6 +97,7 @@
 			align-items: stretch;
 			padding: 4px 0;
 			line-height: 20px;
+			position: relative;
 
 			.node-icon {
 				display: inline-block;
@@ -116,6 +124,17 @@
 
 			&:hover {
 				color: $on-primary !important;
+			}
+
+			.node-name {
+				flex: 1;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.selection-index {
+				padding: 0 6px;
 			}
 		}
 

@@ -15,7 +15,7 @@
 	export let path = '';
 
 	/** The selected path */
-	export let selected: string;
+	export let selected: string[];
 
 	/** This element */
 	let element: HTMLElement;
@@ -42,12 +42,12 @@
 
 	/** Sets the open state of this node based on the selected path */
 	function setOpen() {
-		if (!open) open = selected?.indexOf(path) === 0;
+		if (!open) open = selected.includes(path);
 	}
 
 	/** Sets the isSelected state based on the selected path */
-	function setIsSelected(selPath: string) {
-		isSelected = selPath === path;
+	function setIsSelected(selPaths: string[]) {
+		isSelected = selPaths?.includes(path);
 		if (isSelected) {
 			element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}

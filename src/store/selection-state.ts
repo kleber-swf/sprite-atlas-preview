@@ -31,8 +31,13 @@ export const SelectionState = (() => {
 		if (add) {
 			update(model => {
 				if (model) {
-					if (model.items?.length) model.items.push(...items);
-					else model.items = items;
+					if (model.items?.length) {
+						items.forEach(it => {
+							const index = model.items.findIndex(i => i.path === it.path);
+							if (index < 0) model.items.push(it);
+							else model.items.splice(index, 1);
+						})
+					} else model.items = items;
 					return model;
 				}
 				return { path, items };

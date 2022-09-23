@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { FileUploader } from 'controllers/file.uploader';
-	import { Content, VERSION } from 'store/content';
+	import { Content } from 'store/content';
+	import { VERSION } from 'version';
 
 	let atlasName = '';
 	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');

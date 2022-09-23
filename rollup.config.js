@@ -45,7 +45,7 @@ export default {
 	plugins: [
 		replace({
 			delimiters: ['%', '%'],
-			include: 'src/data.ts',
+			include: 'src/version.ts',
 			preventAssignment: true,
 			VERSION: pkg.version,
 		}),

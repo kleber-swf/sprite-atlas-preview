@@ -2,8 +2,6 @@ import { writable } from 'svelte/store';
 import type { AtlasDataModel, FramesMap } from '../model/atlas.model';
 import type { ContentModel, TreeNodeModel } from '../model/content.model';
 
-export const VERSION = '%VERSION%';
-
 export const Content = (() => {
 	const { subscribe, set } = writable<ContentModel>();
 

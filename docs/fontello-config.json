@@ -26,7 +26,7 @@
     },
     {
       "uid": "0f6a2573a7b6df911ed199bb63717e27",
-      "css": "github-circled",
+      "css": "github",
       "code": 61595,
       "src": "fontawesome"
     },
@@ -49,22 +49,34 @@
       "src": "entypo"
     },
     {
-      "uid": "5d3ef4b7c90d2931e641b840ee42f694",
-      "css": "loop",
-      "code": 59397,
-      "src": "iconic"
-    },
-    {
       "uid": "0afbb00323696f49e9c47f4d9fe6390b",
-      "css": "to-end",
+      "css": "next",
       "code": 59399,
       "src": "entypo"
     },
     {
       "uid": "ceefe7653a4f6edaacce9e7f196cec5a",
-      "css": "to-start",
+      "css": "prev",
       "code": 59400,
       "src": "entypo"
+    },
+    {
+      "uid": "f9c3205df26e7778abac86183aefdc99",
+      "css": "loop",
+      "code": 59401,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "6020aff067fc3c119cdd75daa5249220",
+      "css": "yoyo",
+      "code": 61676,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ce3cf091d6ebd004dd0b52d24074e6e3",
+      "css": "help",
+      "code": 61736,
+      "src": "fontawesome"
     }
   ]
 }

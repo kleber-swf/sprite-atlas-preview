@@ -7,7 +7,12 @@
 	let collapsed = false;
 
 	SelectionState.subscribe((selection) => {
-		content = selection?.items.length === 1 ? selection.items[0].frame : null;
+		if (selection?.items.length === 1) {
+			content = Object.assign({}, selection.items[0].frame);
+			delete content.slice;
+		} else {
+			content = null;
+		}
 	});
 
 	AppState.subscribe((state) => (collapsed = state.framePropertiesCollapsed))();

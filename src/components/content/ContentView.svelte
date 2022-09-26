@@ -1,32 +1,58 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import type { AppStateItemModel, AppStateModel } from 'model/app-state.model';
+	import { AppState } from 'store/app-state';
+	import { createEventDispatcher, onMount } from 'svelte';
 
-	const PADDING = 400;
+	export let key: keyof AppStateModel;
+	export let scale = 1;
+	export let minScale = 0.2;
+	export let maxScale = 5;
+	export let stageSize = 4096;
 
-	export let width: number;
-	export let height: number;
-	export let scale: number;
+	let scrollLeft = -1;
+	let scrollTop = -1;
 
-	let root: HTMLDivElement;
-	let containerWidth: number;
-	let containerHeight: number;
+	let root: HTMLElement;
 
 	const dispatch = createEventDispatcher();
 
-	function onMouseWheel(e: WheelEvent) {
-		if (!e.ctrlKey) return;
-		scale = Math.max(0.1, Math.min(5, scale - e.deltaY * 0.001));
+	AppState.subscribe((state) => {
+		if (!state) return;
+		const pref = state[key] as AppStateItemModel;
+		scale = pref.scale;
+		scrollLeft = pref.scrollLeft;
+		scrollTop = pref.scrollTop;
+	})();
+
+	onMount(() => {
+		scrollLeft = scrollLeft ?? (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = scrollTop ?? (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+
 		dispatch('scaleChanged', scale);
-		e.preventDefault();
-		e.stopImmediatePropagation();
+		return () => AppState.setItem(key, { scale, scrollLeft, scrollTop });
+	});
+
+	// #region Zoom
+
+	function zoom(value: number) {
+		scale = Math.max(minScale, Math.min(maxScale, value));
+		dispatch('scaleChanged', scale);
 	}
 
-	function onMouseUp(e: MouseEvent) {
-		if (e.button === 0 && !e.ctrlKey) {
-			e.stopImmediatePropagation();
-			dispatch('unselect');
-		}
+	function onWheel(e: WheelEvent) {
+		const t = e.currentTarget as HTMLElement;
+		scrollLeft = t.scrollLeft;
+		scrollTop = t.scrollTop;
+		if (!e.ctrlKey) return;
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		zoom(scale - e.deltaY * 0.002);
 	}
+
+	// #endregion
+
+	// #region Pan
 
 	function onMouseDown(e: MouseEvent) {
 		if (e.button === 1 && !e.ctrlKey) {
@@ -47,57 +73,73 @@
 		e.preventDefault();
 	}
 
-	$: {
-		containerWidth = (width ? width * scale : 0) + PADDING;
-		containerHeight = (height ? height * scale : 0) + PADDING;
+	// #endregion
+
+	function resetScaleAndPan() {
+		scrollLeft = (root.scrollWidth - root.offsetWidth) * 0.5;
+		scrollTop = (root.scrollHeight - root.offsetHeight) * 0.5;
+		root.scrollTo({ behavior: 'auto', left: scrollLeft, top: scrollTop });
+		zoom(1);
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Tab') {
+			resetScaleAndPan();
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+		
+		if (!e.ctrlKey) return;
+
+		switch (e.key) {
+			case '=':
+				zoom(scale + 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '-':
+				zoom(scale - 0.1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			case '0':
+				zoom(1);
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+		}
 	}
 </script>
 
-<div class="content-view" bind:this={root} on:wheel={onMouseWheel} on:mousedown={onMouseDown}>
-	<div class="container" style="min-width:{containerWidth}px; min-height:{containerHeight}px" on:click={onMouseUp}>
-		<div class="internal" style="transform:scale({scale})">
-			<div class="content">
-				<slot />
-			</div>
+<svelte:window on:keydown={onKeyDown} />
+
+<div class="content-view" bind:this={root} on:wheel={onWheel} on:mousedown={onMouseDown} on:click>
+	<div class="stage" style:width="{stageSize}px" style:height="{stageSize}px">
+		<div class="inner" style:transform="scale({scale})">
+			<slot />
 		</div>
 	</div>
 </div>
 
 <style lang="scss">
-	@import 'variables.scss';
-	.content-view {
-		background-color: $dark-background;
-		user-select: none;
-		background-image: url('/assets/patterns/shadow-checkers.png');
+	@import 'variables';
+
+	div.content-view {
 		width: 100%;
 		height: 100%;
-		min-width: 100%;
-		min-height: 100%;
-		max-width: 100%;
-		max-height: 100%;
+		padding: 0;
+		margin: 0;
 		overflow: auto;
+		user-select: none;
 
-		.container {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-			max-width: 100%;
-			max-height: 100%;
-			overflow: hidden;
-			.internal {
-				.content {
-					transform-origin: center;
-					box-sizing: content-box;
-					-webkit-user-drag: none;
-					user-select: none;
-					-moz-user-select: none;
-					-webkit-user-select: none;
-					-ms-user-select: none;
-					display: block;
-				}
+		.stage {
+			display: grid;
+			background-color: $dark-background;
+			background-image: url('/assets/patterns/shadow-checkers.png');
+
+			.inner {
+				transform-origin: 50%;
+				margin: auto;
 			}
 		}
 	}

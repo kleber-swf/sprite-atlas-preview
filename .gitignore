@@ -1,5 +1,5 @@
 /node_modules/
 /public/build/
 /public/vendor/
-/public/test/
+/public/test
 .DS_Store

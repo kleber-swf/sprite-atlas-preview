@@ -1,50 +1,54 @@
 <script lang="ts">
-	import type { SelectionModel } from 'model/app.model';
 	import type { FrameModel, NineSliceModel, Rect } from 'model/atlas.model';
+	import { Content } from 'store/content';
+	import { SelectionState } from 'store/selection-state';
 	import ContentView from '../ContentView.svelte';
 	import NineSliceEdit from './NineSliceEdit.svelte';
 	import NineSliceInfoPanel from './NineSliceInfoPanel.svelte';
 
-	export let selection: SelectionModel;
-	export let imgSrc: string;
-	export let selected = false;
+	const key = 'frame';
 
+	const stageSize = 2048;
 	let scale = 1;
-	let width: number;
-	let height: number;
+	let maxScale = 1;
+
+	let imgSrc: string;
 	let frame: FrameModel;
 	let rect: Rect;
 	let style: string;
 
-	$: {
-		frame = selection?.items.length === 1 ? selection?.items[0].frame : null;
+	Content.subscribe((model) => {
+		if (!model) return;
+		imgSrc = model.imageUrl;
+	});
+
+	SelectionState.subscribe((state) => {
+		if (!state) return;
+		frame = state.items.length === 1 ? state.items[0].frame : null;
 		rect = frame?.frame;
 		if (frame) {
 			frame.slice = frame.slice ?? { top: 0, left: 0, bottom: 0, right: 0 };
-			const s = [`background-image: url(${imgSrc})`, `width: ${rect.w}px`, `height: ${rect.h}px`, `background-position: -${rect.x}px -${rect.y}px`];
+			const s = [
+				`background-image: url(${imgSrc})`,
+				`width: ${rect.w}px`,
+				`height: ${rect.h}px`,
+				`background-position: -${rect.x}px -${rect.y}px`
+			];
 			style = s.join(';');
-			width = rect.w;
-			height = rect.h;
-		} else {
-			width = 0;
-			height = 0;
+			maxScale = stageSize / (Math.max(rect.w, rect.h) * 1.1);
 		}
-	}
+	});
 
 	function onUpdate(e: CustomEvent<NineSliceModel>) {
 		frame.slice = e.detail;
 	}
-
-	function onScaleChanged(e: CustomEvent<number>) {
-		scale = e.detail;
-	}
 </script>
 
 <div class="frame-view">
-	<ContentView {width} {height} {scale} on:scaleChanged={onScaleChanged}>
+	<ContentView {key} {scale} {maxScale} {stageSize} on:scaleChanged={(e) => (scale = e.detail)}>
 		{#if frame}
 			<div class="frame" {style}>
-				<NineSliceEdit {scale} model={frame.slice} frame={rect} {selected} on:update={onUpdate} />
+				<NineSliceEdit {scale} {stageSize} model={frame.slice} frame={rect} on:update={onUpdate} />
 			</div>
 		{/if}
 	</ContentView>
@@ -58,5 +62,6 @@
 	.frame-view {
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
 	}
 </style>

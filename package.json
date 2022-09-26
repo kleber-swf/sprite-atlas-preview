@@ -1,50 +1,51 @@
 {
-  "name": "sprite-atlas-preview",
-  "version": "0.2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kleber-swf/sprite-atlas-preview"
-  },
-  "author": {
-    "name": "Kleber Silva",
-    "email": "kleber.swf@gmail.com",
-    "url": "http://kleber-silva.com"
-  },
-  "bugs": {
-    "url": "https://github.com/kleber-swf/sprite-atlas-preview/issues"
-  },
-  "homepage": "https://github.com/kleber-swf/sprite-atlas-preview",
-  "license": "MIT",
-  "private": false,
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "clear": "rm -rf public/build public/test public/vendor"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.0.0",
-    "@tsconfig/svelte": "^2.0.0",
-    "rollup": "^2.3.4",
-    "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^7.0.0",
-    "rollup-plugin-terser": "^7.0.0",
-    "sass": "^1.54.4",
-    "svelte": "^3.49.0",
-    "svelte-check": "^2.0.0",
-    "svelte-preprocess": "^4.10.4",
-    "tslib": "^2.0.0",
-    "typescript": "^4.0.0"
-  },
-  "dependencies": {
-    "bootstrap": "^5.1.3",
-    "firebase": "^9.9.1",
-    "sirv-cli": "^2.0.0"
-  }
+	"name": "sprite-atlas-preview",
+	"version": "0.3.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kleber-swf/sprite-atlas-preview"
+	},
+	"author": {
+		"name": "Kleber Silva",
+		"email": "kleber.swf@gmail.com",
+		"url": "https://klebersilva.dev"
+	},
+	"bugs": {
+		"url": "https://github.com/kleber-swf/sprite-atlas-preview/issues"
+	},
+	"homepage": "https://github.com/kleber-swf/sprite-atlas-preview",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"build": "rollup -c",
+		"dev": "rollup -c -w",
+		"start": "sirv public --no-clear",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"clear": "rm -rf public/build public/test public/vendor",
+		"dev:create-test-folder": "cd public; ln -s ../example test"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^17.0.0",
+		"@rollup/plugin-node-resolve": "^11.0.0",
+		"@rollup/plugin-replace": "^4.0.0",
+		"@rollup/plugin-typescript": "^8.0.0",
+		"@tsconfig/svelte": "^2.0.0",
+		"rollup": "^2.3.4",
+		"rollup-plugin-copy": "^3.4.0",
+		"rollup-plugin-css-only": "^3.1.0",
+		"rollup-plugin-livereload": "^2.0.0",
+		"rollup-plugin-svelte": "^7.0.0",
+		"rollup-plugin-terser": "^7.0.0",
+		"sass": "^1.54.4",
+		"svelte": "^3.49.0",
+		"svelte-check": "^2.0.0",
+		"svelte-preprocess": "^4.10.4",
+		"tslib": "^2.0.0",
+		"typescript": "^4.0.0"
+	},
+	"dependencies": {
+		"bootstrap": "^5.1.3",
+		"firebase": "^9.9.1",
+		"sirv-cli": "^2.0.0"
+	}
 }

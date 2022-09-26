@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { FileUploader } from 'controller/file.uploader';
-	import { VERSION } from 'data';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
+	import { FileUploader } from 'controllers/file.uploader';
+	import { Content } from 'store/content';
+	import { VERSION } from 'version';
 
 	let atlasName = '';
 	const accept = FileUploader.SUPPORTED_EXTENSIONS.join(',');
@@ -12,7 +10,7 @@
 		FileUploader.upload((ev.target as HTMLInputElement).files)
 			.then((result) => {
 				atlasName = result.name;
-				dispatch('files-uploaded', result);
+				Content.setData(result.imageUrl, result.atlas);
 			})
 			.catch(console.error);
 	}
@@ -24,6 +22,9 @@
 			<input id="file-input" type="file" name="file" {accept} multiple on:change={onFileUploaded} />
 			<i class="icon-folder-open" /><span>Open</span>
 		</label>
+		<a href="https://github.com/kleber-swf/sprite-atlas-preview/blob/master/README.md" target="_blank" class="help-button"
+			><i class="icon-help" /></a
+		>
 	</div>
 	<div class="atlas-name">{atlasName}</div>
 	<a href="https://github.com/kleber-swf/sprite-atlas-preview" target="_blank" rel="noopener noreferrer">
@@ -45,6 +46,22 @@
 
 		.menu {
 			width: $left-panel-width;
+			display: inline-flex;
+			justify-content: space-between;
+			align-items: stretch;
+			position: relative;
+
+			&::after {
+				content: '';
+				display: inline-block;
+				position: absolute;
+				right: 0;
+				width: 1px;
+				height: 20px;
+				margin: 5px 0;
+				background-color: lighten(#333, 6);
+			}
+
 			.button {
 				padding: 4px 12px 4px 8px;
 				font-size: 10px;
@@ -64,6 +81,24 @@
 				i {
 					padding: 0 4px;
 					font-size: 12px;
+				}
+			}
+
+			.help-button {
+				opacity: 0.5;
+				color: $on-primary;
+				display: flex;
+
+				&:hover {
+					opacity: 1;
+				}
+
+				&:active {
+					opacity: 0.5;
+				}
+
+				i {
+					margin: auto;
 				}
 			}
 		}

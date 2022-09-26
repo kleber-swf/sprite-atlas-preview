@@ -88,6 +88,7 @@
 			e.preventDefault();
 			e.stopImmediatePropagation();
 		}
+		
 		if (!e.ctrlKey) return;
 
 		switch (e.key) {

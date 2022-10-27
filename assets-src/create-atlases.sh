@@ -1,0 +1,74 @@
+#!/bin/bash
+
+IN_DIR=robot
+IN_FILE=robot-project.tps
+
+OUT_BASE_DIR=out
+OUT_FILE=robot
+
+declare -A FORMATS(	\
+	["2dtoolkit"]="bytes"	\
+	["amethyst"]=""	\
+	["agk"]=""	\
+	["batterytech"]=""	\
+	["bhive"]=""	\
+	["black"]=""	\
+	["caat"]=""	\
+	["cegui"]=""	\
+	["cocos2d"]=""	\
+	["cocos2d-v2"]=""	\
+	["cocos2d-x"]=""	\
+	["css"]=""	\
+	["css-simple"]=""	\
+	["easeljs"]=""	\
+	["egret"]=""	\
+	["gideros"]=""	\
+	["godot3-spritesheet"]=""	\
+	["godot3-tileset"]=""	\
+	["json-array"]=""	\
+	["json"]=""	\
+	["kivy"]=""	\
+	["kwik"]=""	\
+	["laya"]=""	\
+	["less"]=""	\
+	["libgdx"]=""	\
+	["libRocket"]=""	\
+	["mapbox"]=""	\
+	["melonjs"]=""	\
+	["moai"]=""	\
+	["molecule"]=""	\
+	["monogame"]=""	\
+	["orx"]=""	\
+	["panda"]=""	\
+	["phaser-json-array"]=""	\
+	["phaser-json-hash"]=""	\
+	["phaser"]=""	\
+	["pixijs4"]=""	\
+	["playcanvas"]=""	\
+	["popcornfx"]=""	\
+	["sass-mixins"]=""	\
+	["shiva3d-jpsprite"]=""	\
+	["shiva3d"]=""	\
+	["slick2d"]=""	\
+	["solar2d"]=""	\
+	["spark"]=""	\
+	["sparrow"]=""	\
+	["spine"]=""	\
+	["spritesheet-only"]=""	\
+	["spritekit"]=""	\
+	["spritekit-swift"]=""	\
+	["spriter"]=""	\
+	["spritestudio"]=""	\
+	["tresensa"]=""	\
+	["uikit"]=""	\
+	["unity"]="tpsheet"	\
+	["unity-texture2d"]=""	\
+	["unreal-paper2d"]=""	\
+	["vplay"]=""	\
+	["wave-engine-1"]=""	\
+	["x2d"]=""	\
+	["xaml"]=""	\
+	["xml"]=""	\
+	["plain"]=""	\
+)
+FORMATS=()
